@@ -1,0 +1,15 @@
+# project start
+
+Task(Hours)
+Complete Human Subjects Research course to access MIMIC III DB	(3)
+Establish Connection to MIMIC III DB	(2)
+Data Exploration : Diagnosis and prescriptions tables	(3)
+Design Visual Encodings for Diagnosis and prescription tables	(2)
+Data and Task abstraction	(3)
+Design the interactions with Data	(3)
+
+
+# prototype
+# alpha
+# beta
+# release
