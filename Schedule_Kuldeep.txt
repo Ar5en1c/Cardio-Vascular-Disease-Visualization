@@ -1,0 +1,14 @@
+# project start
+
+Task(Hours)
+Design the UI for patient transfer	(4)
+Data Exploration : Lab Events, Prescription	(3)
+Design Visual Encodings for the above	(3)
+Data and Task abstraction	(3)
+Design the interactions with Data	(3)
+
+
+# prototype
+# alpha
+# beta
+# release
