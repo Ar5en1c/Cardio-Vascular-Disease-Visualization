@@ -20,13 +20,11 @@ body {
 }
 
 .header {
-  height: auto;
+  height: 40px;
   width: auto;
   display: block;
   top: 0%;
   background: #333;
-  align-items: center;
-  align-content: center;
   text-align: center;
 }
 
@@ -36,21 +34,59 @@ body {
   color: bisque;
 }
 
-.container-fluid {
+.filter_area {
+  height: 40px;
   width: auto;
+  display: block;
+  top: 0%;
+  background: whitesmoke;
+  text-align: center;
+}
+
+.filter {
+  display: inline-block;
+  position: relative;
+  color: black;
+}
+
+.parent {
   display: grid;
-  grid-template-columns: 1fr 3fr;
-}
-
-.sidebar {
-  background-color: darkgrey;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
   height: 100vh;
-  position: sticky;
-  text-align: center;
 }
 
-.main-content {
-  background-color: antiquewhite;
-  height: auto;
-  text-align: center;
+.div1 {
+  grid-area: 1 / 1 / 3 / 2;
+  background-color: wheat;
+}
+.div2 {
+  grid-area: 3 / 1 / 5 / 2;
+  background-color: wheat;
+}
+.div3 {
+  grid-area: 5 / 1 / 7 / 2;
+  background-color: wheat;
+}
+.div4 {
+  grid-area: 1 / 2 / 4 / 3;
+  background-color: wheat;
+}
+.div5 {
+  grid-area: 4 / 2 / 7 / 3;
+  background-color: wheat;
+}
+.div6 {
+  grid-area: 1 / 3 / 3 / 4;
+  background-color: wheat;
+}
+.div7 {
+  grid-area: 3 / 3 / 5 / 4;
+  background-color: wheat;
+}
+.div8 {
+  grid-area: 5 / 3 / 7 / 4;
+  background-color: wheat;
 }
