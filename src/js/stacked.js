@@ -23,7 +23,7 @@ d3.csv(
   "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_stacked.csv",
   function (data) {
     // List of subgroups = header of the csv files = soil condition here
-    var subgroups = data.columns.slice(1);
+    var subgroups = ['Nitrogen', 'normal', 'stress'];
 
     // List of groups = species here = value of the first column called group -> I show them on the X axis
     var groups = d3
