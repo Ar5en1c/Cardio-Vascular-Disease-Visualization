@@ -33,7 +33,11 @@ d3.csv(
       .keys();
 
     // Add X axis
-    var x = d3.scaleBand().domain(groups).range([0, width]).padding([0.2]);
+    var x = d3
+      .scaleBand()
+      .domain(groups)
+      .range([0, width - 20])
+      .padding([0.2]);
     svg
       .append("g")
       .attr("transform", "translate(0," + height + ")")
