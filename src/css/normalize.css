@@ -106,3 +106,9 @@ body {
 .axis {
   font-size: 1rem;
 }
+
+img {
+  margin: 20px;
+  width: 400px;
+  height: 400px;
+}
