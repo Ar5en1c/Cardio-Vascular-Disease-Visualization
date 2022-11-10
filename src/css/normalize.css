@@ -16,7 +16,7 @@ html {
 
 body {
   margin: 0;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
 }
 
 .header {
@@ -89,4 +89,8 @@ body {
 .div8 {
   grid-area: 5 / 3 / 7 / 4;
   background-color: wheat;
+}
+
+.axis {
+  font-size: 1rem;
 }
