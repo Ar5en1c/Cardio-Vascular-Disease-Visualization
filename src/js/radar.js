@@ -5,7 +5,7 @@ let features = [
   "Hemoglboin",
   "Weight",
   "Systolic",
-  "DiSystolic",
+  "Diastolic",
 ];
 //generate the data
 for (var i = 0; i < 3; i++) {
