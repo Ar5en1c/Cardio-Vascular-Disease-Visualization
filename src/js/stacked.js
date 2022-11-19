@@ -5,7 +5,7 @@ var margin = {
     left: 30,
     right: 20,
   },
-  width = parseInt(d3.select("#radar_plot").style("width")) / 1.3,
+  width = parseInt(d3.select("#radar_plot").style("width")),
   mapRatio = 0.8,
   height = width * mapRatio;
 
@@ -19,70 +19,73 @@ var svg = d3
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // Parse the Data
-d3.csv(
-  "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_stacked.csv",
-  function (data) {
-    // List of subgroups = header of the csv files = soil condition here
-    var subgroups = ["Nitrogen", "normal", "stress"];
+async function draw_stack() {
+  // List of subgroups = header of the csv files = soil condition here
+  dataset_stack = await d3.csv("/js/stack.csv");
+  var subgroups = ["Nitrogen", "normal", "stress"];
 
-    // List of groups = species here = value of the first column called group -> I show them on the X axis
-    var groups = d3
-      .map(data, function (d) {
-        return d.group;
-      })
-      .keys();
+  // List of groups = species here = value of the first column called group -> I show them on the X axis
 
-    // Add X axis
-    var x = d3
-      .scaleBand()
-      .domain(groups)
-      .range([0, width - 20])
-      .padding([0.2]);
-    svg
-      .append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x).tickSizeOuter(0));
+  var groups = d3
+    .map(dataset_stack, function (d) {
+      return d.group;
+    })
+    .keys();
 
-    // Add Y axis
-    var y = d3.scaleLinear().domain([0, 60]).range([height, 0]);
-    svg.append("g").call(d3.axisLeft(y));
+  // Add X axis
+  var x = d3
+    .scaleBand()
+    .domain(groups)
+    .range([0, width - 20])
+    .padding([0.2]);
+  svg
+    .append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x).tickSizeOuter(0));
 
-    // color palette = one color per subgroup
-    var color = d3
-      .scaleOrdinal()
-      .domain(subgroups)
-      .range(["#e41a1c", "#377eb8", "#4daf4a"]);
+  // Add Y axis
+  var y = d3.scaleLinear().domain([0, 60]).range([height, 0]);
+  svg.append("g").call(d3.axisLeft(y));
 
-    //stack the data? --> stack per subgroup
-    var stackedData = d3.stack().keys(subgroups)(data);
+  // color palette = one color per subgroup
+  var color = d3
+    .scaleOrdinal()
+    .domain(subgroups)
+    .range(["#e41a1c", "#377eb8", "#4daf4a"]);
 
-    // Show the bars
-    svg
-      .append("g")
-      .selectAll("g")
-      // Enter in the stack data = loop key per key = group per groups
-      .data(stackedData)
-      .enter()
-      .append("g")
-      .attr("fill", function (d) {
-        return color(d.key);
-      })
-      .selectAll("rect")
-      // enter a second time = loop subgroup per subgroup to add all rectangles
-      .data(function (d) {
-        return d;
-      })
-      .enter()
-      .append("rect")
-      .attr("x", function (d) {
-        return x(d.data.group);
-      })
-      .attr("y", function (d) {
-        return y(d[1]);
-      })
-      .attr("height", function (d) {
-        return y(d[0]) - y(d[1]);
-      })
-      .attr("width", x.bandwidth());
-  }
-);
+  //stack the data? --> stack per subgroup
+  var stackedData = d3.stack().keys(subgroups)(dataset_stack);
+
+  console.log(stackedData);
+  // Show the bars
+  svg
+    .append("g")
+    .selectAll("g")
+    // Enter in the stack data = loop key per key = group per groups
+    .data(stackedData)
+    .enter()
+    .append("g")
+    .attr("fill", function (d) {
+      return color(d.key);
+    })
+    .selectAll("rect")
+    // enter a second time = loop subgroup per subgroup to add all rectangles
+    .data(function (d) {
+      return d;
+    })
+    .enter()
+    .append("rect")
+    .attr("x", function (d) {
+      return x(d.data.group);
+    })
+    .attr("y", function (d) {
+      return y(d[1]);
+    })
+    .attr("height", function (d) {
+      console.log(y(d[0]) - y(d[1]));
+      return y(d[0]) - y(d[1]);
+    })
+    .attr("width", x.bandwidth());
+}
+
+draw_stack();
