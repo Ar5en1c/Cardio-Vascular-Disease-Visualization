@@ -4,7 +4,7 @@
  *    user zoom.
  */
 
-html {
+ html {
   font-family: sans-serif; /* 1 */
   -ms-text-size-adjust: 100%; /* 2 */
   -webkit-text-size-adjust: 100%; /* 2 */
@@ -43,12 +43,6 @@ body {
   top: 0%;
   background: whitesmoke;
   text-align: center;
-}
-
-.filter {
-  display: inline-block;
-  position: relative;
-  color: black;
 }
 
 .parent {
@@ -101,4 +95,14 @@ body {
   grid-area: 5 / 3 / 7 / 4;
   background-color: white;
   border-radius: 20px;
+}
+
+.axis {
+  font-size: 1rem;
+}
+
+img {
+  margin: 20px;
+  width: 400px;
+  height: 400px;
 }
