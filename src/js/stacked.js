@@ -19,10 +19,11 @@ var svg = d3
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // Parse the Data
-d3.csv(
+d3.csv
 "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_stacked.csv",
 function (data) {
   // List of subgroups = header of the csv files = soil condition here
+  console.log(data)
   var subgroups = ['Nitrogen', 'normal', 'stress'];
 
   // List of groups = species here = value of the first column called group -> I show them on the X axis
@@ -85,4 +86,3 @@ function (data) {
     })
     .attr("width", x.bandwidth());
 }
-);
