@@ -5,8 +5,8 @@ var margin = {
     left: 30,
     right: 20,
   },
-  width = parseInt(d3.select("#radar_plot").style("width")),
-  mapRatio = 0.8,
+  width = parseInt(d3.select("#stack_plot").style("width")),
+  mapRatio = 0.7,
   height = width * mapRatio;
 
 // append the svg object to the body of the page
@@ -16,7 +16,7 @@ var svg = d3
   .attr("width", width + margin.left + margin.right)
   .attr("height", height + margin.top + margin.bottom)
   .append("g")
-  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  .attr("transform", `translate(${margin.left},${margin.top})`);
 
 // Parse the Data
 async function draw_stack() {
@@ -26,21 +26,13 @@ async function draw_stack() {
 
   // List of groups = species here = value of the first column called group -> I show them on the X axis
 
-  var groups = d3
-    .map(dataset_stack, function (d) {
-      return d.group;
-    })
-    .keys();
+  const groups = dataset_stack.map((d) => d.group);
 
   // Add X axis
-  var x = d3
-    .scaleBand()
-    .domain(groups)
-    .range([0, width - 20])
-    .padding([0.2]);
+  var x = d3.scaleBand().domain(groups).range([0, width]).padding([0.2]);
   svg
     .append("g")
-    .attr("transform", "translate(0," + height + ")")
+    .attr("transform", `translate(0, ${height})`)
     .call(d3.axisBottom(x).tickSizeOuter(0));
 
   // Add Y axis
@@ -82,7 +74,6 @@ async function draw_stack() {
       return y(d[1]);
     })
     .attr("height", function (d) {
-      console.log(y(d[0]) - y(d[1]));
       return y(d[0]) - y(d[1]);
     })
     .attr("width", x.bandwidth());

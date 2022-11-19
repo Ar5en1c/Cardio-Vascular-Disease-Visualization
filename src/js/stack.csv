@@ -1,5 +1,5 @@
-,group,Nitrogen,normal,stress
-0,0to20,12,1,13
-1,20to40,6,6,33
-2,40to60,11,28,12
-3,60to80,19,6,1
+group,Nitrogen,normal,stress
+banana,12,1,13
+poacee,6,6,33
+sorgho,11,28,12
+triticum,19,6,1
