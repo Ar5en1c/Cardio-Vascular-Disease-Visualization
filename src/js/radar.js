@@ -21,7 +21,7 @@ var margin = {
     left: 10,
     right: 10,
   },
-  width = parseInt(d3.select("#radar_plot").style("width")),
+  width = parseInt(d3version4.select("#radar_plot").style("width")),
   mapRatio = 0.75,
   height = width * mapRatio;
 
