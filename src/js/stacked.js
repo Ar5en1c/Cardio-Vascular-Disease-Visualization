@@ -1,46 +1,38 @@
 // set the dimensions and margins of the graph
 var margin = {
-  top: 10,
-  bottom: 30,
-  left: 30,
-  right: 20,
-},
-width = parseInt(d3.select("#radar_plot").style("width")),
-mapRatio = 0.8,
-height = width * mapRatio;
+    top: 10,
+    bottom: 30,
+    left: 30,
+    right: 20,
+  },
+  width = parseInt(d3.select("#stack_plot").style("width")),
+  mapRatio = 0.7,
+  height = width * mapRatio;
 
 // append the svg object to the body of the page
 var svg = d3
-.select("#stack_plot")
-.append("svg")
-.attr("width", width + margin.left + margin.right)
-.attr("height", height + margin.top + margin.bottom)
-.append("g")
-.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  .select("#stack_plot")
+  .append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", `translate(${margin.left},${margin.top})`);
 
 // Parse the Data
-d3.csv(
-"https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_stacked.csv",
-function (data) {
+async function draw_stack() {
   // List of subgroups = header of the csv files = soil condition here
-  var subgroups = ['Nitrogen', 'normal', 'stress'];
+  dataset_stack = await d3.csv("/js/stack.csv");
+  var subgroups = ["Nitrogen", "normal", "stress"];
 
   // List of groups = species here = value of the first column called group -> I show them on the X axis
-  var groups = d3
-    .map(data, function (d) {
-      return d.group;
-    })
-    .keys();
+
+  const groups = dataset_stack.map((d) => d.group);
 
   // Add X axis
-  var x = d3
-    .scaleBand()
-    .domain(groups)
-    .range([0, width - 20])
-    .padding([0.2]);
+  var x = d3.scaleBand().domain(groups).range([0, width]).padding([0.2]);
   svg
     .append("g")
-    .attr("transform", "translate(0," + height + ")")
+    .attr("transform", `translate(0, ${height})`)
     .call(d3.axisBottom(x).tickSizeOuter(0));
 
   // Add Y axis
@@ -54,8 +46,9 @@ function (data) {
     .range(["#e41a1c", "#377eb8", "#4daf4a"]);
 
   //stack the data? --> stack per subgroup
-  var stackedData = d3.stack().keys(subgroups)(data);
+  var stackedData = d3.stack().keys(subgroups)(dataset_stack);
 
+  console.log(stackedData);
   // Show the bars
   svg
     .append("g")
@@ -85,4 +78,5 @@ function (data) {
     })
     .attr("width", x.bandwidth());
 }
-);
+
+draw_stack();
