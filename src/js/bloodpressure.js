@@ -43,7 +43,7 @@ ranges = [
 ];
 
 async function draw() {
-  const dataset = await d3.csv("/src/js/hypertension_sample.csv");
+  const dataset = await d3.csv("/js/hypertension_sample.csv");
   const xAccessor = (d) => Number(d.SYSTOLIC_PRESSURE);
   const yAccessor = (d) => Number(d.DIASTOLIC_PRESSURE);
 

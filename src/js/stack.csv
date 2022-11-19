@@ -1,0 +1,5 @@
+group,Nitrogen,normal,stress
+0to20,12,1,13
+20to40,6,6,33
+40to60,11,28,12
+60to80,19,6,1

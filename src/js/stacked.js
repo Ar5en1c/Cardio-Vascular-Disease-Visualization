@@ -5,7 +5,7 @@ var margin = {
     left: 30,
     right: 20,
   },
-  width = parseInt(d3.select("#radar_plot").style("width")),
+  width = parseInt(d3.select("#radar_plot").style("width")) / 1.3,
   mapRatio = 0.8,
   height = width * mapRatio;
 
@@ -23,7 +23,7 @@ d3.csv(
   "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_stacked.csv",
   function (data) {
     // List of subgroups = header of the csv files = soil condition here
-    var subgroups = ['Nitrogen', 'normal', 'stress'];
+    var subgroups = ["Nitrogen", "normal", "stress"];
 
     // List of groups = species here = value of the first column called group -> I show them on the X axis
     var groups = d3
