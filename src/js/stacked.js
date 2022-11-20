@@ -1,82 +1,106 @@
 // set the dimensions and margins of the graph
-var margin = {
-    top: 10,
-    bottom: 30,
-    left: 30,
-    right: 20,
-  },
-  width = parseInt(d3.select("#stack_plot").style("width")),
-  mapRatio = 0.7,
-  height = width * mapRatio;
+const margin_sb = { top: 10, right: 30, bottom: 20, left: 50 },
+  width_sb = 500 - margin_sb.left - margin_sb.right,
+  height_sb = 380 - margin_sb.top - margin_sb.bottom;
 
 // append the svg object to the body of the page
-var svg = d3
+const svgStacked = d3
   .select("#stack_plot")
   .append("svg")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
+  .attr("width", width_sb + margin_sb.left + margin_sb.right)
+  .attr("height", height_sb + margin_sb.top + margin_sb.bottom)
   .append("g")
   .attr("transform", `translate(${margin.left},${margin.top})`);
 
 // Parse the Data
-async function draw_stack() {
+async function draw_stacked() {
   // List of subgroups = header of the csv files = soil condition here
-  dataset_stack = await d3.csv("/js/stack.csv");
-  var subgroups = ["Nitrogen", "normal", "stress"];
+  stacked_datset = await d3.csv(
+    "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_stacked.csv"
+  );
+
+  const subgroups = ["Nitrogen", "normal", "stress"];
 
   // List of groups = species here = value of the first column called group -> I show them on the X axis
-
-  const groups = dataset_stack.map((d) => d.group);
+  const groups = stacked_datset.map((d) => d.group);
 
   // Add X axis
-  var x = d3.scaleBand().domain(groups).range([0, width]).padding([0.2]);
-  svg
+  const x = d3
+    .scaleBand()
+    .domain(groups)
+    .range([0, width - 100])
+    .padding([0.1]);
+  svgStacked
     .append("g")
-    .attr("transform", `translate(0, ${height})`)
-    .call(d3.axisBottom(x).tickSizeOuter(0));
+    .attr("transform", `translate(0, ${height_sb})`)
+    .call(d3.axisBottom(x).tickSizeOuter(-1));
 
   // Add Y axis
-  var y = d3.scaleLinear().domain([0, 60]).range([height, 0]);
-  svg.append("g").call(d3.axisLeft(y));
+  const y = d3.scaleLinear().domain([0, 60]).range([height_sb, 0]);
+  svgStacked.append("g").call(d3.axisLeft(y));
 
   // color palette = one color per subgroup
-  var color = d3
+  const color = d3
     .scaleOrdinal()
     .domain(subgroups)
-    .range(["#e41a1c", "#377eb8", "#4daf4a"]);
+    .range(["#C7EFCF", "#FE5F55", "#EEF5DB"]);
 
   //stack the data? --> stack per subgroup
-  var stackedData = d3.stack().keys(subgroups)(dataset_stack);
+  const stackedData = d3.stack().keys(subgroups)(stacked_datset);
 
-  console.log(stackedData);
+  // ----------------
+  // Create a tooltip
+  // ----------------
+  const tooltip = d3
+    .select("#stack_plot")
+    .append("div")
+    .style("opacity", 0)
+    .attr("class", "tooltip")
+    .style("background-color", "white")
+    .style("border", "solid")
+    .style("border-width", "1px")
+    .style("border-radius", "5px")
+    .style("padding", "10px");
+
+  // Three function that change the tooltip when user hover / move / leave a cell
+  const mouseover = function (event, d) {
+    const subgroupName = d3.select(this.parentNode).datum().key;
+    const subgroupValue = d.data[subgroupName];
+
+    tooltip
+      .html("subgroup: " + subgroupName + "<br>" + "Value: " + subgroupValue)
+      .style("opacity", 1);
+  };
+  const mousemove = function (event, d) {
+    tooltip
+      .style("transform", "translateY(-100%)")
+      .style("left", event.x / 2 + "px")
+      .style("top", event.y / 2 - 30 + "px");
+  };
+  const mouseleave = function (event, d) {
+    tooltip.style("opacity", 0);
+  };
+
   // Show the bars
-  svg
+  svgStacked
     .append("g")
     .selectAll("g")
-    // Enter in the stack data = loop key per key = group per groups
+    // Enter in the stack data = loop key per key = group per group
     .data(stackedData)
-    .enter()
-    .append("g")
-    .attr("fill", function (d) {
-      return color(d.key);
-    })
+    .join("g")
+    .attr("fill", (d) => color(d.key))
     .selectAll("rect")
     // enter a second time = loop subgroup per subgroup to add all rectangles
-    .data(function (d) {
-      return d;
-    })
-    .enter()
-    .append("rect")
-    .attr("x", function (d) {
-      return x(d.data.group);
-    })
-    .attr("y", function (d) {
-      return y(d[1]);
-    })
-    .attr("height", function (d) {
-      return y(d[0]) - y(d[1]);
-    })
-    .attr("width", x.bandwidth());
+    .data((d) => d)
+    .join("rect")
+    .attr("x", (d) => x(d.data.group))
+    .attr("y", (d) => y(d[1]))
+    .attr("height", (d) => y(d[0]) - y(d[1]))
+    .attr("width", x.bandwidth())
+    .attr("stroke", "grey")
+    .on("mouseover", mouseover)
+    .on("mousemove", mousemove)
+    .on("mouseleave", mouseleave);
 }
 
-draw_stack();
+draw_stacked();
