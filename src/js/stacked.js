@@ -20,7 +20,7 @@ var svg = d3
 
 // Parse the Data
 d3.csv
-"https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_stacked.csv",
+("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_stacked.csv",
 function (data) {
   // List of subgroups = header of the csv files = soil condition here
   console.log(data)
@@ -86,3 +86,4 @@ function (data) {
     })
     .attr("width", x.bandwidth());
 }
+);
