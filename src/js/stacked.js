@@ -21,7 +21,7 @@ var svg = d3
 // Parse the Data
 async function draw_stack() {
   // List of subgroups = header of the csv files = soil condition here
-  dataset_stack = await d3.csv("/js/stack.csv");
+  dataset_stack = await d3.csv("./js/stack.csv");
   var subgroups = ["Nitrogen", "normal", "stress"];
 
   // List of groups = species here = value of the first column called group -> I show them on the X axis
