@@ -19,7 +19,7 @@ async function draw_stacked() {
   var subgroups = ["Nitrogen", "normal", "stress"];
 
   // List of groups = species here = value of the first column called group -> I show them on the X axis
-  const groups = stacked_datset.map((d) => d.group);
+  const groups = dataset_stack.map((d) => d.group);
 
   // Add X axis
   const x = d3
@@ -43,7 +43,7 @@ async function draw_stacked() {
     .range(["#C7EFCF", "#FE5F55", "#EEF5DB"]);
 
   //stack the data? --> stack per subgroup
-  const stackedData = d3.stack().keys(subgroups)(stacked_datset);
+  const stackedData = d3.stack().keys(subgroups)(dataset_stack);
 
   // ----------------
   // Create a tooltip
