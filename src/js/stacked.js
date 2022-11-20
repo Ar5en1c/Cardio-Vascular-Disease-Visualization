@@ -15,11 +15,8 @@ const svgStacked = d3
 // Parse the Data
 async function draw_stacked() {
   // List of subgroups = header of the csv files = soil condition here
-  stacked_datset = await d3.csv(
-    "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_stacked.csv"
-  );
-
-  const subgroups = ["Nitrogen", "normal", "stress"];
+  dataset_stack = await d3.csv("./js/stack.csv");
+  var subgroups = ["Nitrogen", "normal", "stress"];
 
   // List of groups = species here = value of the first column called group -> I show them on the X axis
   const groups = stacked_datset.map((d) => d.group);
