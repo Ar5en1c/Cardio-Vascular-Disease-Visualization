@@ -92,8 +92,8 @@ function draw(dataset) {
   const yAccessor = (d) => Number(d.diastolic);
 
   let dimensions = {
-    width: 400,
-    height: 400,
+    width: 500,
+    height: 500,
     margin: {
       top: 50,
       bottom: 50,
