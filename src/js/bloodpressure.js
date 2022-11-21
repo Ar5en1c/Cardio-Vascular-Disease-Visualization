@@ -1,6 +1,10 @@
-var e = document.getElementById("ddlViewBy");
-var value = e.value;
-var text = e.options[e.selectedIndex].text;
+var disease = document.getElementById("diseases");
+var disease_val = disease.value;
+var gender = document.getElementById("gender");
+var gender_val = gender.value;
+var disease_code = document.getElementById("disease_code");
+var code_val = disease_code.value;
+console.log(disease_val, gender_val, code_val)
 ranges = [
   // https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings
   {
