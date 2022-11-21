@@ -45,7 +45,7 @@ async function draw_stacked() {
   // Create a tooltip
   // ----------------
   const tooltip = d3
-    .select("#bubble_1")
+    .select("#stack_plot")
     .append("div")
     .style("opacity", 0)
     .attr("class", "tooltip")
