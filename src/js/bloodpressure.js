@@ -1,6 +1,6 @@
 // load data
 var data;
-async function load_data(){
+async function load_data() {
   data = await d3.csv('./data/final_data.csv');
   draw(data);
 }
@@ -11,33 +11,33 @@ load_data();
 var disease = document.getElementById("diseases");
 var gender = document.getElementById("gender");
 var disease_code = document.getElementById("disease_code");
-console.log(disease_val, gender_val, code_val)
+// console.log(disease_val, gender_val, code_val)
 
 function filter_data() {
   var gender_val = gender.value;
   var disease_val = disease.value;
   var code_val = disease_code.value;
   var dataset = data;
-  
+
   if (gender_val != 'both' && gender_val != 'select') {
     gender_val = gender_val.toUpperCase();
-    dataset = dataset.filter(function(row) {
+    dataset = dataset.filter(function (row) {
       return row.SEX == gender_val;
-  });
+    });
   };
 
   if (code_val != 'both' && code_val != 'select') {
     code_val = code_val.toUpperCase();
-    dataset = dataset.filter(function(row) {
+    dataset = dataset.filter(function (row) {
       return row.Diagnosis_Code == code_val;
-  });
+    });
   };
-  
+
   console.log('dataset', dataset)
   bp_svg.selectAll('*').remove();
   draw(dataset);
-    
-  
+
+
 };
 
 function draw(dataset) {
@@ -60,7 +60,7 @@ function draw(dataset) {
   dimensions.containerHeight =
     dimensions.height - dimensions.margin.top - dimensions.margin.bottom;
 
-  
+
   bp_svg.attr("width", dimensions.width)
     .attr("height", dimensions.height);
 
@@ -121,5 +121,13 @@ function draw(dataset) {
     .html("Diastolic (mmHg)")
     .style("transform", "rotate(270deg)")
     .style("text-anchor", "middle");
+
+  container.append("text")
+    .attr("x", (width / 2))
+    .attr("y", 0 - (margin.top * 3))
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .style("text-decoration", "underline")
+    .text("Systolic vs Diastolic B.P.");
 };
 

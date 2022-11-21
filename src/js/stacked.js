@@ -94,6 +94,14 @@ async function draw_stacked() {
     .on("mouseover", mouseover)
     .on("mousemove", mousemove)
     .on("mouseleave", mouseleave);
+
+  svgStacked.append("text")
+    .attr("x", (width / 2))
+    .attr("y", 0 - (margin.top))
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .style("text-decoration", "underline")
+    .text("CVD distribution across centers");
 }
 
 draw_stacked();
