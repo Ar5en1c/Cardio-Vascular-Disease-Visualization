@@ -129,5 +129,14 @@ function draw(dataset) {
     .style("font-size", "16px")
     .style("text-decoration", "underline")
     .text("Systolic vs Diastolic B.P.");
+
+
+  container.append('rect')
+    .attr('x', 10)
+    .attr('y', 120)
+    .attr('width', 600)
+    .attr('height', 40)
+    .attr('stroke', 'black')
+    .attr('fill', '#69a3b2')
 };
 
