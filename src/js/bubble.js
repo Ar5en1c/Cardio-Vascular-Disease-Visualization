@@ -1,6 +1,6 @@
-const margin_bc = { top: 10, right: 20, bottom: 30, left: 50 },
-  width_bc = 450 - margin_bc.left - margin_bc.right,
-  height_bc = 400 - margin_bc.top - margin_bc.bottom;
+const margin_bc = { top: 30, right: 30, bottom: 15, left: 50 },
+  width_bc = 500 - margin_bc.left - margin_bc.right,
+  height_bc = 490 - margin_bc.top - margin_bc.bottom;
 
 // append the svg object to the body of the page
 const svg_bc = d3
@@ -37,10 +37,11 @@ d3.csv(
 
   // -1- Create a tooltip div that is hidden by default:
   const tooltip = d3
-    .select("#my_dataviz")
+    .select("#bubble")
     .append("div")
     .style("opacity", 0)
     .attr("class", "tooltip")
+    .attr("style", "position: absolute; opacity: 0;")
     .style("background-color", "black")
     .style("border-radius", "5px")
     .style("padding", "10px")
@@ -57,8 +58,8 @@ d3.csv(
   };
   const moveTooltip = function (event, d) {
     tooltip
-      .style("left", event.x / 2 + "px")
-      .style("top", event.y / 2 + 30 + "px");
+      .style("left", event.x / 3.5 + "px")
+      .style("top", event.y / 2 + 10 + "px");
   };
   const hideTooltip = function (event, d) {
     tooltip.transition().duration(200).style("opacity", 0);

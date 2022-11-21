@@ -48,8 +48,8 @@ async function draw() {
   const yAccessor = (d) => Number(d.DIASTOLIC_PRESSURE);
 
   let dimensions = {
-    width: 400,
-    height: 400,
+    width: 500,
+    height: 500,
     margin: {
       top: 50,
       bottom: 50,

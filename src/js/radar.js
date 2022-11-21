@@ -1,8 +1,8 @@
 function RadarChart(id, data, options) {
   var cfg = {
-    w: 300, //Width of the circle
-    h: 300, //Height of the circle
-    margin: { top: 20, right: 20, bottom: 20, left: 20 }, //The margins of the SVG
+    w: 500, //Width of the circle
+    h: 490, //Height of the circle
+    margin: { top: 30, right: 30, bottom: 15, left: 50 }, //The margins of the SVG
     levels: 3, //How many levels or inner circles should there be drawn
     maxValue: 0, //What is the value that the biggest circle will represent
     labelFactor: 1.25, //How much farther than the radius of the outer circle should the labels be placed
@@ -40,7 +40,7 @@ function RadarChart(id, data, options) {
       return i.axis;
     }), //Names of each axis
     total = allAxis.length, //The number of different axes
-    radius = Math.min(cfg.w / 3, cfg.h / 3), //Radius of the outermost circle
+    radius = Math.min(cfg.w / 2.2, cfg.h / 2.2), //Radius of the outermost circle
     Format = d3.format("%"), //Percentage formatting
     angleSlice = (Math.PI * 2) / total; //The width in radians of each "slice"
 
@@ -52,14 +52,14 @@ function RadarChart(id, data, options) {
   /////////////////////////////////////////////////////////
 
   //Remove whatever chart with the same id/class was present before
-  d3.select("#radar_plot").select("svg").remove();
+  // d3.select("#radar_plot").select("svg").remove();
 
   //Initiate the radar chart SVG
   var svg = d3
     .select("#radar_plot")
     .append("svg")
-    .attr("width", cfg.w + cfg.margin.left + cfg.margin.right)
-    .attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
+    .attr("width", 500)
+    .attr("height", 500)
     .attr("class", "radar" + id);
   //Append a g element
   var g = svg
@@ -67,9 +67,9 @@ function RadarChart(id, data, options) {
     .attr(
       "transform",
       "translate(" +
-        (cfg.w / 2 + cfg.margin.left) +
+        (cfg.w / 1.5 + cfg.margin.left) +
         "," +
-        (cfg.h / 2 + cfg.margin.top) +
+        (cfg.h / 1.7 + cfg.margin.top) +
         ")"
     );
 
