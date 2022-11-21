@@ -11,7 +11,7 @@ load_data();
 var disease = document.getElementById("diseases");
 var gender = document.getElementById("gender");
 var disease_code = document.getElementById("disease_code");
-console.log(disease_val, gender_val, code_val);
+// console.log(disease_val, gender_val, code_val)
 
 function filter_data() {
   var gender_val = gender.value;
@@ -148,4 +148,13 @@ function draw(dataset) {
     .html("Diastolic (mmHg)")
     .style("transform", "rotate(270deg)")
     .style("text-anchor", "middle");
+
+  container
+    .append("text")
+    .attr("x", width / 2)
+    .attr("y", 0 - margin.top * 3)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .style("text-decoration", "underline")
+    .text("Systolic vs Diastolic B.P.");
 }
