@@ -6,14 +6,12 @@ async function load_data(){
   draw(data);
 }
 load_data();
+const bp_svg = d3.select("#blood_pressure").append("svg");
 
 // filter values
 var disease = document.getElementById("diseases");
-var disease_val = disease.value;
 var gender = document.getElementById("gender");
-var gender_val = gender.value;
 var disease_code = document.getElementById("disease_code");
-var code_val = disease_code.value;
 console.log(disease_val, gender_val, code_val)
 
 ranges = [
@@ -60,10 +58,10 @@ ranges = [
   },
 ];
 
-function gender_select() {
-  gender_val = gender.value;
-  disease_val = disease.value;
-  code_val = disease_code.value;
+function filter_data() {
+  var gender_val = gender.value;
+  var disease_val = disease.value;
+  var code_val = disease_code.value;
   var dataset = data;
   
   if (gender_val != 'both' && gender_val != 'select') {
@@ -81,7 +79,7 @@ function gender_select() {
   };
   
   console.log('dataset', dataset)
-  //svg.selectAll('*').remove();
+  bp_svg.selectAll('*').remove();
   draw(dataset);
     
   
@@ -107,13 +105,11 @@ function draw(dataset) {
   dimensions.containerHeight =
     dimensions.height - dimensions.margin.top - dimensions.margin.bottom;
 
-  const svg = d3
-    .select("#blood_pressure")
-    .append("svg")
-    .attr("width", dimensions.width)
+  
+  bp_svg.attr("width", dimensions.width)
     .attr("height", dimensions.height);
 
-  const container = svg
+  const container = bp_svg
     .append("g")
     .attr(
       "transform",

@@ -55,18 +55,18 @@
         <option value="arrhythmia">Arrhythmia</option>
       </select>
       <label for="gender">select a gender</label>
-      <select name="gender" id="gender" onchange="gender_select()">
+      <select name="gender" id="gender" onchange="filter_data()">
         <option value="select">Select</option>
         <option value="male">Male</option>
         <option value="female">Female</option>
         <option value="both">Both</option>
       </select>
       <label for="disease">select a disease code</label>
-      <select name="disease" id="disease_code" onchange="code_select()">
+      <select name="disease" id="disease_code" onchange="filter_data()">
         <option value="select">Select</option>
-        <option value="1021">1021</option>
-        <option value="101">101</option>
-        <option value="k11">K11</option>
+        <option value="E100">E100</option>
+        <option value="I10X">I10X</option>
+        <option value="O102">O102</option>
         <option value="D-124">D-124</option>
       </select>
     </div>
