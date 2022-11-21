@@ -1,3 +1,6 @@
+var e = document.getElementById("ddlViewBy");
+var value = e.value;
+var text = e.options[e.selectedIndex].text;
 ranges = [
   // https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings
   {
