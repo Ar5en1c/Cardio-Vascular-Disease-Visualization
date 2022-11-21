@@ -37,8 +37,8 @@ function RadarChart(id, data, options) {
   );
 
   var allAxis = data[0].map(function (i, j) {
-      return i.axis;
-    }), //Names of each axis
+    return i.axis;
+  }), //Names of each axis
     total = allAxis.length, //The number of different axes
     radius = Math.min(cfg.w / 2.2, cfg.h / 2.2), //Radius of the outermost circle
     Format = d3.format("%"), //Percentage formatting
@@ -67,12 +67,20 @@ function RadarChart(id, data, options) {
     .attr(
       "transform",
       "translate(" +
-        (cfg.w / 1.5 + cfg.margin.left) +
-        "," +
-        (cfg.h / 1.7 + cfg.margin.top) +
-        ")"
+      (cfg.w / 1.5 + cfg.margin.left) +
+      "," +
+      (cfg.h / 1.7 + cfg.margin.top) +
+      ")"
     );
 
+  //title code
+  svg.append("text")
+    .attr("x", (width / 2))
+    .attr("y", (margin.top)*2)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .style("text-decoration", "underline")
+    .text("Normal vs Selected Disease");
   /////////////////////////////////////////////////////////
   ////////// Glow filter for some extra pizzazz ///////////
   /////////////////////////////////////////////////////////

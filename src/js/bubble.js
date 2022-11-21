@@ -80,4 +80,12 @@ d3.csv(
     .on("mouseover", showTooltip)
     .on("mousemove", moveTooltip)
     .on("mouseleave", hideTooltip);
+
+    svg_bc.append("text")
+    .attr("x", (width / 2))
+    .attr("y", 0 - (margin.top))
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .style("text-decoration", "underline")
+    .text("Co-occurring Diseases");
 });
