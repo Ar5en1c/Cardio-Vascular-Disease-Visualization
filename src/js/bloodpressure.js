@@ -1,3 +1,13 @@
+// load data
+var data;
+async function load_data(){
+  data = await d3.csv('./data/final_data.csv');
+  console.log('Original:', data)
+  draw(data);
+}
+load_data();
+
+// filter values
 var disease = document.getElementById("diseases");
 var disease_val = disease.value;
 var gender = document.getElementById("gender");
@@ -5,6 +15,7 @@ var gender_val = gender.value;
 var disease_code = document.getElementById("disease_code");
 var code_val = disease_code.value;
 console.log(disease_val, gender_val, code_val)
+
 ranges = [
   // https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings
   {
@@ -49,10 +60,36 @@ ranges = [
   },
 ];
 
-async function draw() {
-  const dataset = await d3.csv("./js/hypertension_sample.csv");
-  const xAccessor = (d) => Number(d.SYSTOLIC_PRESSURE);
-  const yAccessor = (d) => Number(d.DIASTOLIC_PRESSURE);
+function gender_select() {
+  gender_val = gender.value;
+  disease_val = disease.value;
+  code_val = disease_code.value;
+  var dataset = data;
+  
+  if (gender_val != 'both' && gender_val != 'select') {
+    gender_val = gender_val.toUpperCase();
+    dataset = dataset.filter(function(row) {
+      return row.SEX == gender_val;
+  });
+  };
+
+  if (code_val != 'both' && code_val != 'select') {
+    code_val = code_val.toUpperCase();
+    dataset = dataset.filter(function(row) {
+      return row.Diagnosis_Code === code_val;
+  });
+  };
+  
+  console.log('dataset', dataset)
+  //svg.selectAll('*').remove();
+  draw(dataset);
+    
+  
+};
+
+function draw(dataset) {
+  const xAccessor = (d) => Number(d.systolic);
+  const yAccessor = (d) => Number(d.diastolic);
 
   let dimensions = {
     width: 400,
@@ -133,6 +170,5 @@ async function draw() {
     .html("Diastolic (mmHg)")
     .style("transform", "rotate(270deg)")
     .style("text-anchor", "middle");
-}
+};
 
-draw();
