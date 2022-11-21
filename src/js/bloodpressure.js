@@ -2,61 +2,16 @@
 var data;
 async function load_data(){
   data = await d3.csv('./data/final_data.csv');
-  console.log('Original:', data)
   draw(data);
 }
-load_data();
 const bp_svg = d3.select("#blood_pressure").append("svg");
+load_data();
 
 // filter values
 var disease = document.getElementById("diseases");
 var gender = document.getElementById("gender");
 var disease_code = document.getElementById("disease_code");
 console.log(disease_val, gender_val, code_val)
-
-ranges = [
-  // https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings
-  {
-    label: "Stage 2",
-    systolic: 150,
-    diastolic: 105,
-    color: "red",
-    x: 50,
-    y: 145,
-  },
-  {
-    label: "Stage 1",
-    systolic: 140,
-    diastolic: 90,
-    color: "orange",
-    x: 50,
-    y: 135,
-  },
-  {
-    label: "Elevated",
-    systolic: 130,
-    diastolic: 80,
-    color: "yellow",
-    x: 50,
-    y: 125,
-  },
-  {
-    label: "Normal",
-    systolic: 120,
-    diastolic: 80,
-    color: "lightgreen",
-    x: 50,
-    y: 110,
-  },
-  {
-    label: "Low",
-    systolic: 90,
-    diastolic: 60,
-    color: "lightblue",
-    x: 50,
-    y: 80,
-  },
-];
 
 function filter_data() {
   var gender_val = gender.value;
@@ -74,7 +29,7 @@ function filter_data() {
   if (code_val != 'both' && code_val != 'select') {
     code_val = code_val.toUpperCase();
     dataset = dataset.filter(function(row) {
-      return row.Diagnosis_Code === code_val;
+      return row.Diagnosis_Code == code_val;
   });
   };
   
