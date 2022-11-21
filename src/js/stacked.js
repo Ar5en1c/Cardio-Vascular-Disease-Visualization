@@ -53,7 +53,7 @@ async function draw_stacked() {
     .append("div")
     .style("opacity", 0)
     .attr("class", "tooltip")
-    .style("background-color", "white")
+    .style("background-color", "#333333")
     .style("border", "solid")
     .style("border-width", "1px")
     .style("border-radius", "5px")

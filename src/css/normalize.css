@@ -16,8 +16,12 @@ html {
 
 body {
   margin: 0;
-  background: #333;
+  background: whitesmoke;
   /* overflow-y: hidden; */
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: white;
+  background-color: white;
 }
 
 .header {
@@ -41,61 +45,36 @@ body {
   width: auto;
   display: block;
   top: 0%;
-  background: whitesmoke;
+  background: black;
   text-align: center;
 }
 
 .parent {
   display: grid;
-  grid-template-columns: 1fr 1.2fr 1fr;
-  grid-template-rows: repeat(6, 1fr);
-  grid-column-gap: 5px;
-  grid-row-gap: 5px;
-  height: 150vh;
-  margin: 5px;
-  overflow: hidden;
+  height: 120vh;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 2px;
+  grid-row-gap: 2px;
 }
 
 .div1 {
-  grid-area: 1 / 1 / 3 / 2;
-  background-color: white;
-  /* border-radius: 20px; */
+  background-color: #333;
 }
 .div2 {
-  grid-area: 3 / 1 / 5 / 2;
-  background-color: white;
-  /* border-radius: 20px; */
+  background-color: #333;
 }
 .div3 {
-  grid-area: 5 / 1 / 7 / 2;
-  background-color: white;
-  /* border-radius: 20px; */
-  /* overflow-y: visible; */
+  background-color: #333;
 }
 .div4 {
-  grid-area: 1 / 2 / 4 / 3;
-  background-color: white;
-  /* border-radius: 20px; */
-}
-.div5 {
-  grid-area: 4 / 2 / 7 / 3;
-  background-color: white;
-  /* border-radius: 20px; */
+  background-color: #333;
 }
 .div6 {
-  grid-area: 1 / 3 / 3 / 4;
-  background-color: white;
-  /* border-radius: 20px; */
-}
-.div7 {
-  grid-area: 3 / 3 / 5 / 4;
-  background-color: white;
-  /* border-radius: 20px; */
+  background-color: #333;
 }
 .div8 {
-  grid-area: 5 / 3 / 7 / 4;
-  background-color: white;
-  /* border-radius: 20px; */
+  background-color: #333;
 }
 
 .axis {

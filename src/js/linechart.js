@@ -1,6 +1,6 @@
 const margin_lc = { top: 10, right: 30, bottom: 30, left: 60 },
-  width_lc = 420 - margin_lc.left - margin_lc.right,
-  height_lc = 400 - margin_lc.top - margin_lc.bottom;
+  width_lc = 450 - margin_lc.left - margin_lc.right,
+  height_lc = 350 - margin_lc.top - margin_lc.bottom;
 
 // append the svg object to the body of the page
 const svg_lc = d3
