@@ -1,7 +1,7 @@
 // set the dimensions and margins of the graph
-const margin_sb = { top: 10, right: 30, bottom: 20, left: 50 },
+const margin_sb = { top: 30, right: 30, bottom: 15, left: 50 },
   width_sb = 500 - margin_sb.left - margin_sb.right,
-  height_sb = 380 - margin_sb.top - margin_sb.bottom;
+  height_sb = 490 - margin_sb.top - margin_sb.bottom;
 
 // append the svg object to the body of the page
 const svgStacked = d3
@@ -10,7 +10,7 @@ const svgStacked = d3
   .attr("width", width_sb + margin_sb.left + margin_sb.right)
   .attr("height", height_sb + margin_sb.top + margin_sb.bottom)
   .append("g")
-  .attr("transform", `translate(${margin.left},${margin.top})`);
+  .attr("transform", `translate(${margin_sb.left},${margin_sb.top})`);
 
 // Parse the Data
 async function draw_stacked() {
@@ -22,11 +22,7 @@ async function draw_stacked() {
   const groups = dataset_stack.map((d) => d.group);
 
   // Add X axis
-  const x = d3
-    .scaleBand()
-    .domain(groups)
-    .range([0, width - 100])
-    .padding([0.1]);
+  const x = d3.scaleBand().domain(groups).range([0, width]).padding([0.1]);
   svgStacked
     .append("g")
     .attr("transform", `translate(0, ${height_sb})`)
@@ -49,10 +45,11 @@ async function draw_stacked() {
   // Create a tooltip
   // ----------------
   const tooltip = d3
-    .select("#stack_plot")
+    .select("#bubble_1")
     .append("div")
     .style("opacity", 0)
     .attr("class", "tooltip")
+    .attr("style", "position: absolute; opacity: 0;")
     .style("background-color", "#333333")
     .style("border", "solid")
     .style("border-width", "1px")
@@ -65,14 +62,13 @@ async function draw_stacked() {
     const subgroupValue = d.data[subgroupName];
 
     tooltip
+      .style("opacity", 1)
       .html("subgroup: " + subgroupName + "<br>" + "Value: " + subgroupValue)
-      .style("opacity", 1);
+      .style("left", event.x / 2 + "px")
+      .style("top", event.y / 2 + 30 + "px");
   };
   const mousemove = function (event, d) {
-    tooltip
-      .style("transform", "translateY(-100%)")
-      .style("left", event.x / 2 + "px")
-      .style("top", event.y / 2 - 30 + "px");
+    tooltip.style("left", event.x + "px").style("top", event.y + 300 + "px");
   };
   const mouseleave = function (event, d) {
     tooltip.style("opacity", 0);

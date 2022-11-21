@@ -1,82 +1,116 @@
-const margin_lc = { top: 10, right: 30, bottom: 30, left: 60 },
-  width_lc = 450 - margin_lc.left - margin_lc.right,
-  height_lc = 350 - margin_lc.top - margin_lc.bottom;
-
-// append the svg object to the body of the page
-const svg_lc = d3
+const svg = d3
   .select("#linegraph")
   .append("svg")
-  .attr("width", width_lc + margin_lc.left + margin_lc.right)
-  .attr("height", height_lc + margin_lc.top + margin_lc.bottom)
+  .attr("width", 500)
+  .attr("height", 500)
   .append("g")
-  .attr("transform", `translate(${margin_lc.left},${margin_lc.top})`);
+  .attr("transform", `translate(60,60)`);
 
-//Read the data
+// Parse the Data
 d3.csv(
-  "https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/5_OneCatSevNumOrdered.csv"
+  "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv"
 ).then(function (data) {
-  // group the data: I want to draw one line per group
-  const sumstat = d3.group(data, (d) => d.name); // nest function allows to group the calculation per level of a factor
-
-  // Add X axis --> it is a date format
-  const x = d3
-    .scaleLinear()
-    .domain(
-      d3.extent(data, function (d) {
-        return d.year;
-      })
-    )
-    .range([0, width_lc]);
-  svg_lc
-    .append("g")
-    .attr("transform", `translate(0, ${height_lc})`)
-    .call(d3.axisBottom(x).ticks(5));
-
-  // Add Y axis
-  const y = d3
-    .scaleLinear()
-    .domain([
-      0,
-      d3.max(data, function (d) {
-        return +d.n;
-      }),
-    ])
-    .range([height_lc, 0]);
-  svg_lc.append("g").call(d3.axisLeft(y));
-
-  // color palette
+  // Color scale: give me a specie name, I return a color
   const color = d3
     .scaleOrdinal()
-    .range([
-      "#e41a1c",
-      "#377eb8",
-      "#4daf4a",
-      "#984ea3",
-      "#ff7f00",
-      "#ffff33",
-      "#a65628",
-      "#f781bf",
-      "#999999",
-    ]);
+    .domain(["setosa", "versicolor", "virginica"])
+    .range(["#440154ff", "#21908dff", "#fde725ff"]);
 
-  // Draw the line
-  svg_lc
-    .selectAll(".line")
-    .data(sumstat)
+  // Here I set the list of dimension manually to control the order of axis:
+  dimensions = ["Petal_Length", "Petal_Width", "Sepal_Length", "Sepal_Width"];
+
+  // For each dimension, I build a linear scale. I store all in a y object
+  const y = {};
+  for (i in dimensions) {
+    name = dimensions[i];
+    y[name] = d3
+      .scaleLinear()
+      .domain([0, 8]) // --> Same axis range for each group
+      // --> different axis range for each group --> .domain( [d3.extent(data, function(d) { return +d[name]; })] )
+      .range([height, 0]);
+  }
+
+  // Build the X scale -> it find the best position for each Y axis
+  x = d3.scalePoint().range([0, width]).domain(dimensions);
+
+  // Highlight the specie that is hovered
+  const highlight = function (event, d) {
+    selected_specie = d.Species;
+
+    // first every group turns grey
+    d3.selectAll(".line")
+      .transition()
+      .duration(200)
+      .style("stroke", "lightgrey")
+      .style("opacity", "0.2");
+    // Second the hovered specie takes its color
+    d3.selectAll("." + selected_specie)
+      .transition()
+      .duration(200)
+      .style("stroke", color(selected_specie))
+      .style("opacity", "1");
+  };
+
+  // Unhighlight
+  const doNotHighlight = function (event, d) {
+    d3.selectAll(".line")
+      .transition()
+      .duration(200)
+      .delay(1000)
+      .style("stroke", function (d) {
+        return color(d.Species);
+      })
+      .style("opacity", "1");
+  };
+
+  // The path function take a row of the csv as input, and return x and y coordinates of the line to draw for this raw.
+  function path(d) {
+    return d3.line()(
+      dimensions.map(function (p) {
+        return [x(p), y[p](d[p])];
+      })
+    );
+  }
+
+  // Draw the lines
+  svg
+    .selectAll("myPath")
+    .data(data)
     .join("path")
-    .attr("fill", "none")
-    .attr("stroke", function (d) {
-      return color(d[0]);
+    .attr("class", function (d) {
+      return "line " + d.Species;
+    }) // 2 class for each line: 'line' and the group name
+    .attr("d", path)
+    .style("fill", "none")
+    .style("stroke", function (d) {
+      return color(d.Species);
     })
-    .attr("stroke-width", 1.5)
-    .attr("d", function (d) {
-      return d3
-        .line()
-        .x(function (d) {
-          return x(d.year);
-        })
-        .y(function (d) {
-          return y(+d.n);
-        })(d[1]);
-    });
+    .style("opacity", 0.5)
+    .on("mouseover", highlight)
+    .on("mouseleave", doNotHighlight);
+
+  // Draw the axis:
+  svg
+    .selectAll("myAxis")
+    // For each dimension of the dataset I add a 'g' element:
+    .data(dimensions)
+    .enter()
+    .append("g")
+    .attr("class", "axis")
+    // I translate this element to its right position on the x axis
+    .attr("transform", function (d) {
+      return `translate(${x(d)})`;
+    })
+    // And I build the axis with the call function
+    .each(function (d) {
+      d3.select(this).call(d3.axisLeft().ticks(5).scale(y[d]));
+    })
+    // Add axis title
+    .append("text")
+    .style("text-anchor", "middle")
+    .attr("y", -9)
+    .text(function (d) {
+      return d;
+    })
+    .style("fill", "black");
 });
