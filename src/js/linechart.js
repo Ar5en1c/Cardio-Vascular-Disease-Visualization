@@ -80,13 +80,8 @@ function draw_cood(data) {
     col = dimensions[i];
     y[col] = d3
       .scaleLinear()
-<<<<<<< HEAD
-      .domain([0, 2000]) //.domain( [d3.extent(data, function(d) { return +d[name]; })] ) //.domain([0, 8]) // --> Same axis range for each group
-      // --> different axis range for each group --> .domain( [d3.extent(data, function(d) { return +d[name]; })] )
-=======
       .domain([0, 2000]) //.domain( [d3.extent(data, function(d) { return +d[name]; })] ) 
       //.domain( [d3.extent(data, function(d) { return +d[col]; })] )
->>>>>>> f2631f9abc2e3f18a4a3f61458ed4c0647d40a54
       .range([height, 0]);
   }
   console.log('y: ', y)
