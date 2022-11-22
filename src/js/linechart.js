@@ -46,9 +46,10 @@
 //   line_svg.selectAll("*").remove();
 //   draw_cood(data);
 // }
-
+const line_svg = d3.select("#linegraph").append("svg");
 function draw_cood(data) {
   console.log('linechart')
+  line_svg.selectAll("*").remove();
   data = data.map(function(d) {
     return {
       cholesterol: d.cholesterol,
@@ -58,7 +59,7 @@ function draw_cood(data) {
       age_group: d.age_group
     }
   });
-  const line_svg = d3.select("#linegraph").append("svg");
+  
   line_svg.attr("width", 500)
   .attr("height", 500)
   .append("g")

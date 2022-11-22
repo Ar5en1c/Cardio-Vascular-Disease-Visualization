@@ -37,10 +37,10 @@
 //   bp_svg.selectAll("*").remove();
 //   draw(dataset);
 // }
-
+const bp_svg = d3.select("#blood_pressure").append("svg");
 function draw_bp(dataset) {
   console.log('blood')
-  const bp_svg = d3.select("#blood_pressure").append("svg");
+  bp_svg.selectAll("*").remove();
   const xAccessor = (d) => Number(d.systolic);
   const yAccessor = (d) => Number(d.diastolic);
 
