@@ -1,224 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <!-- Basic Page Needs
+  <head>
+    <!-- Basic Page Needs
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <meta charset="utf-8" />
-  <meta content="utf-8" http-equiv="encoding" />
-  <title>Cardiovascular Disease Visualization</title>
-  <meta name="description" content="Cardiovascular Disease Visualization" />
-  <meta name="author" content="Kuldeep Singh, Nikita Thakur and Aditya Ranganathan" />
+    <meta charset="utf-8" />
+    <meta content="utf-8" http-equiv="encoding" />
+    <title>Cardiovascular Disease Visualization</title>
+    <meta name="description" content="Cardiovascular Disease Visualization" />
+    <meta
+      name="author"
+      content="Kuldeep Singh, Nikita Thakur and Aditya Ranganathan"
+    />
 
-  <!-- <script type="text/javascript" src="./js/radar.js"></script> -->
+    <!-- <script type="text/javascript" src="./js/radar.js"></script> -->
 
-  <!-- Mobile Specific Metas
+    <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script src="https://d3js.org/d3.v7.min.js" charset="utf-8"></script>
-  <!-- <script src="https://d3js.org/d3.v4.js"></script> -->
-  <!-- <script src="https://d3js.org/d3.v7.min.js" charset="utf-8"></script> -->
-  <!-- <script src="https://d3js.org/d3.v4.js"></script> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://d3js.org/d3.v7.min.js" charset="utf-8"></script>
+    <!-- <script src="https://d3js.org/d3.v4.js"></script> -->
+    <!-- <script src="https://d3js.org/d3.v7.min.js" charset="utf-8"></script> -->
+    <!-- <script src="https://d3js.org/d3.v4.js"></script> -->
 
-  <!-- FONT
+    <!-- FONT
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css" />
+    <link
+      href="//fonts.googleapis.com/css?family=Raleway:400,300,600"
+      rel="stylesheet"
+      type="text/css"
+    />
 
-  <!-- CSS
+    <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/normalize.css" />
 
-  <!-- Favicon
+    <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <!--<link rel="icon" type="image/png" href="images/favicon.png" /> -->
-
-  <script>
-    var dataset;
-    async function load_data() {
-      dataset = await d3.csv("./data/final_data.csv");
-      draw_bp(dataset)
-      draw_cood(dataset)
-    }
-    load_data();
-    // filter values
-    var disease = 'select';
-    var gender = 'select';
-    var disease_code = 'select';
-
-    console.log(disease);
-
-    function filter_data(el) {
-      disease = document.getElementById("diseases").value;
-      gender = document.getElementById("gender").value;
-      disease_code = document.getElementById("disease_code").value;
-      var gender_val = gender;
-      var disease_val = disease;
-      var code_val = disease_code;
-      var data = dataset;
-      console.log('try', gender)
-      if (gender_val != "both" && gender_val != "select") {
-        gender_val = gender_val.toUpperCase();
-        data = data.filter(function (row) {
-          return row.SEX == gender_val;
-        });
-      }
-
-      if (disease_val != "both" && disease_val != "select") {
-        disease_val = disease_val.toUpperCase();
-        data = data.filter(function (row) {
-          return row.SEX == disease_val;
-        });
-      }
-
-      if (code_val != "both" && code_val != "select") {
-        code_val = code_val.toUpperCase();
-        data = data.filter(function (row) {
-          return row.Diagnosis_Code == code_val;
-        });
-      }
-
-      console.log("data", data);
-      draw_bp(data);
-      draw_cood(data);
-    }
-  </script>
-</head>
-
-<body>
-  <!-- Primary Page Layout
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <div class="header">
-    <p class="head">Cardiovascular Disease Visualization</p>
-  </div>
-  <div class="filter_area">
-    <label for="diseases">select a disease</label>
-    <select name="diseases" id="diseases" onchange="filter_data(this)">
-      <option value="select">Select</option>
-      <option value="hypertension">Hypertension</option>
-      <option value="diabetes">Diabetes</option>
-      <option value="obesity">Obesity</option>
-      <option value="arrhythmia">Arrhythmia</option>
-    </select>
-    <label for="gender">select a gender</label>
-    <select name="gender" id="gender" onchange="filter_data(this)">
-      <option value="select">Select</option>
-      <option value="male">Male</option>
-      <option value="female">Female</option>
-      <option value="both">Both</option>
-    </select>
-    <label for="disease">select a disease code</label>
-    <select name="disease" id="disease_code" onchange="filter_data(this)">
-      <option value="select">Select</option>
-      <option value="E100">E100</option>
-      <option value="I10X">I10X</option>
-      <option value="O102">O102</option>
-      <option value="D-124">D-124</option>
-    </select>
-  </div>
-  <script src="./js/radar.js"></script>
-  <div class="parent">
-    <div class="div1" id="linegraph">
-      <!-- <img src="images/stack_plot.png" /> -->
-      <div id="bubble_1"></div>
-    </div>
-    <div class="div2" id="blood_pressure"></div>
-    <div class="div3" id="radar_plot"></div>
+    <!--<link rel="icon" type="image/png" href="images/favicon.png" /> -->
 
     <script>
-      /* Radar chart design created by Nadieh Bremer - VisualCinnamon.com */
+      var dataset;
+      async function load_data() {
+        dataset = await d3.csv("./data/final_data.csv");
+        draw_bp(dataset);
+        draw_cood(dataset);
+      }
+      load_data();
+      // filter values
+      var disease = "select";
+      var gender = "select";
+      var disease_code = "select";
 
-      //////////////////////////////////////////////////////////////
-      //////////////////////// Set-Up //////////////////////////////
-      //////////////////////////////////////////////////////////////
+      console.log(disease);
 
-      var margin = { top: 10, right: 10, bottom: 10, left: 10 },
-        width =
-          Math.min(400, window.innerWidth - 10) - margin.left - margin.right,
-        height = Math.min(
-          width,
-          window.innerHeight - margin.top - margin.bottom - 20
-        );
+      function filter_data(el) {
+        disease = document.getElementById("diseases").value;
+        gender = document.getElementById("gender").value;
+        disease_code = document.getElementById("disease_code").value;
+        var gender_val = gender;
+        var disease_val = disease;
+        var code_val = disease_code;
+        var data = dataset;
+        console.log("try", gender);
+        if (gender_val != "both" && gender_val != "select") {
+          gender_val = gender_val.toUpperCase();
+          data = data.filter(function (row) {
+            return row.SEX == gender_val;
+          });
+        }
 
-      //////////////////////////////////////////////////////////////
-      ////////////////////////// Data //////////////////////////////
-      //////////////////////////////////////////////////////////////
+        if (disease_val != "both" && disease_val != "select") {
+          disease_val = disease_val.toUpperCase();
+          data = data.filter(function (row) {
+            return row.SEX == disease_val;
+          });
+        }
 
-      var data = [
-        [
-          //iPhone
-          { axis: "Battery Life", value: 0.22 },
-          { axis: "Brand", value: 0.28 },
-          { axis: "Contract Cost", value: 0.29 },
-          { axis: "Design And Quality", value: 0.17 },
-          { axis: "Have Internet Connectivity", value: 0.22 },
-          { axis: "Large Screen", value: 0.02 },
-          { axis: "Price Of Device", value: 0.21 },
-          { axis: "To Be A Smartphone", value: 0.5 },
-        ],
-        [
-          //Samsung
-          { axis: "Battery Life", value: 0.27 },
-          { axis: "Brand", value: 0.16 },
-          { axis: "Contract Cost", value: 0.35 },
-          { axis: "Design And Quality", value: 0.13 },
-          { axis: "Have Internet Connectivity", value: 0.2 },
-          { axis: "Large Screen", value: 0.13 },
-          { axis: "Price Of Device", value: 0.35 },
-          { axis: "To Be A Smartphone", value: 0.38 },
-        ],
-        [
-          //Nokia Smartphone
-          { axis: "Battery Life", value: 0.26 },
-          { axis: "Brand", value: 0.1 },
-          { axis: "Contract Cost", value: 0.3 },
-          { axis: "Design And Quality", value: 0.14 },
-          { axis: "Have Internet Connectivity", value: 0.22 },
-          { axis: "Large Screen", value: 0.04 },
-          { axis: "Price Of Device", value: 0.41 },
-          { axis: "To Be A Smartphone", value: 0.3 },
-        ],
-      ];
-      //////////////////////////////////////////////////////////////
-      //////////////////// Draw the Chart //////////////////////////
-      //////////////////////////////////////////////////////////////
+        if (code_val != "both" && code_val != "select") {
+          code_val = code_val.toUpperCase();
+          data = data.filter(function (row) {
+            return row.Diagnosis_Code == code_val;
+          });
+        }
 
-      var color = d3.scaleOrdinal().range(["#EDC951", "#CC333F", "#00A0B0"]);
-
-      var radarChartOptions = {
-        w: width,
-        h: height,
-        margin: margin,
-        maxValue: 0.5,
-        levels: 5,
-        roundStrokes: true,
-        color: color,
-      };
-      //Call function to draw the Radar chart
-      RadarChart("#radar_plot", data, radarChartOptions);
+        console.log("data", data);
+        draw_bp(data);
+        draw_cood(data);
+      }
     </script>
+  </head>
 
-    <div class="div4" id="scatter_matrix"></div>
-    <!-- <div class="div5" id="heat_map"></div> -->
-    <div class="div6" id="bubble">
-      <div id="bubble_1"></div>
-    </div>
-    <!-- <div class="div7" id="animated_barplot"></div> -->
-    <div class="div8" id="stack_plot"></div>
-  </div>
-  <!-- <script src="./js/new.js"></script> -->
-  <script type="text/javascript" src="./js/stacked.js"></script>
-  <script type="text/javascript" src="js/bubble.js"></script>
-  <script type="text/javascript" src="js/linechart.js"></script>
-  <script type="text/javascript" src="js/radar.js"></script>
-  <script type="text/javascript" src="./js/bloodpressure.js "></script>
-  <script src="./js/heatmap.js"></script>
-  <script src="./js/scatter.js"></script>
-  <!-- <script type='module' src="./js/filter.js"></script> -->
-
-  <!-- End Documents
+  <body>
+    <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <!-- <script src="./js/lib/d3.min.js"></script> -->
-  <!-- <script src="https://d3js.org/topojson.v2.min.js"></script> -->
-</body>
+    <div class="header">
+      <p class="head">Cardiovascular Disease Visualization</p>
+    </div>
+    <div class="filter_area">
+      <label for="diseases">select a disease</label>
+      <select name="diseases" id="diseases" onchange="filter_data(this)">
+        <option value="select">Select</option>
+        <option value="hypertension">Hypertension</option>
+        <option value="diabetes">Diabetes</option>
+        <option value="obesity">Obesity</option>
+        <option value="arrhythmia">Arrhythmia</option>
+      </select>
+      <label for="gender">select a gender</label>
+      <select name="gender" id="gender" onchange="filter_data(this)">
+        <option value="select">Select</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="both">Both</option>
+      </select>
+      <label for="disease">select a disease code</label>
+      <select name="disease" id="disease_code" onchange="filter_data(this)">
+        <option value="select">Select</option>
+        <option value="E100">E100</option>
+        <option value="I10X">I10X</option>
+        <option value="O102">O102</option>
+        <option value="D-124">D-124</option>
+      </select>
+    </div>
+    <script src="./js/radar.js"></script>
+    <div class="parent">
+      <div class="div1" id="linegraph">
+        <!-- <img src="images/stack_plot.png" /> -->
+        <div id="bubble_1"></div>
+      </div>
+      <div class="div2" id="blood_pressure"></div>
+      <div class="div3" id="radar_plot"></div>
 
+      <script>
+        /* Radar chart design created by Nadieh Bremer - VisualCinnamon.com */
+
+        //////////////////////////////////////////////////////////////
+        //////////////////////// Set-Up //////////////////////////////
+        //////////////////////////////////////////////////////////////
+
+        var margin = { top: 10, right: 10, bottom: 10, left: 10 },
+          width =
+            Math.min(400, window.innerWidth - 10) - margin.left - margin.right,
+          height = Math.min(
+            width,
+            window.innerHeight - margin.top - margin.bottom - 20
+          );
+
+        //////////////////////////////////////////////////////////////
+        ////////////////////////// Data //////////////////////////////
+        //////////////////////////////////////////////////////////////
+
+        var data = [
+          [
+            //iPhone
+            { axis: "Battery Life", value: 0.22 },
+            { axis: "Brand", value: 0.28 },
+            { axis: "Contract Cost", value: 0.29 },
+            { axis: "Design And Quality", value: 0.17 },
+            { axis: "Have Internet Connectivity", value: 0.22 },
+            { axis: "Large Screen", value: 0.02 },
+            { axis: "Price Of Device", value: 0.21 },
+            { axis: "To Be A Smartphone", value: 0.5 },
+          ],
+          [
+            //Samsung
+            { axis: "Battery Life", value: 0.27 },
+            { axis: "Brand", value: 0.16 },
+            { axis: "Contract Cost", value: 0.35 },
+            { axis: "Design And Quality", value: 0.13 },
+            { axis: "Have Internet Connectivity", value: 0.2 },
+            { axis: "Large Screen", value: 0.13 },
+            { axis: "Price Of Device", value: 0.35 },
+            { axis: "To Be A Smartphone", value: 0.38 },
+          ],
+          [
+            //Nokia Smartphone
+            { axis: "Battery Life", value: 0.26 },
+            { axis: "Brand", value: 0.1 },
+            { axis: "Contract Cost", value: 0.3 },
+            { axis: "Design And Quality", value: 0.14 },
+            { axis: "Have Internet Connectivity", value: 0.22 },
+            { axis: "Large Screen", value: 0.04 },
+            { axis: "Price Of Device", value: 0.41 },
+            { axis: "To Be A Smartphone", value: 0.3 },
+          ],
+        ];
+        //////////////////////////////////////////////////////////////
+        //////////////////// Draw the Chart //////////////////////////
+        //////////////////////////////////////////////////////////////
+
+        var color = d3.scaleOrdinal().range(["#EDC951", "#CC333F", "#00A0B0"]);
+
+        var radarChartOptions = {
+          w: width,
+          h: height,
+          margin: margin,
+          maxValue: 0.5,
+          levels: 5,
+          roundStrokes: true,
+          color: color,
+        };
+        //Call function to draw the Radar chart
+        RadarChart("#radar_plot", data, radarChartOptions);
+      </script>
+
+      <div class="div4" id="scatter_matrix"></div>
+      <!-- <div class="div5" id="heat_map"></div> -->
+      <div class="div6" id="bubble">
+        <div id="bubble_1"></div>
+      </div>
+      <!-- <div class="div7" id="animated_barplot"></div> -->
+      <div class="div8" id="stack_plot"></div>
+    </div>
+    <!-- <script src="./js/new.js"></script> -->
+    <script type="text/javascript" src="./js/stacked.js"></script>
+    <script type="text/javascript" src="js/bubble.js"></script>
+    <script type="text/javascript" src="js/linechart.js"></script>
+    <script type="text/javascript" src="js/radar.js"></script>
+    <script type="text/javascript" src="./js/bloodpressure.js "></script>
+    <script src="./js/heatmap.js"></script>
+    <script src="./js/scatter.js"></script>
+    <!-- <script type='module' src="./js/filter.js"></script> -->
+
+    <!-- End Documents
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <!-- <script src="./js/lib/d3.min.js"></script> -->
+    <!-- <script src="https://d3js.org/topojson.v2.min.js"></script> -->
+  </body>
 </html>

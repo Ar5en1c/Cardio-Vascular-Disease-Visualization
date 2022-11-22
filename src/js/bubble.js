@@ -1,3 +1,9 @@
+// set the dimensions and margins of the graph
+// const margin = { top: 10, right: 30, bottom: 30, left: 60 },
+//   width = 460 - margin.left - margin.right,
+//   height = 400 - margin.top - margin.bottom;
+
+// append the bubble_svg object to the body of the page
 const bubble_svg = d3
   .select("#bubble")
   .append("svg")
@@ -7,157 +13,102 @@ const bubble_svg = d3
   .attr("transform", `translate(50,50)`);
 
 //Read the data
-d3.csv(
-  "https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/3_TwoNumOrdered_comma.csv",
+d3.csv("./data/trend.csv").then(function (data) {
+  // group the data: I want to draw one line per group
+  const sumstat = d3.group(data, (d) => d.SEX); // nest function allows to group the calculation per level of a factor
 
-  // When reading the csv, I must format variables:
-  function (d) {
-    return { date: d3.timeParse("%Y-%m-%d")(d.date), value: d.value };
-  }
-).then(
-  // Now I can use this dataset:
-  function (data) {
-    // Add X axis --> it is a date format
-    const x = d3
-      .scaleTime()
-      .domain(
-        d3.extent(data, function (d) {
-          return d.date;
+  // Add X axis --> it is a date format
+  const x = d3
+    .scaleLinear()
+    .domain(
+      d3.extent(data, function (d) {
+        return String(d.year);
+      })
+    )
+    .range([0, width]);
+  bubble_svg
+    .append("g")
+    .attr("transform", `translate(0, ${height})`)
+    .call(d3.axisBottom(x).ticks(5));
+
+  // Add Y axis
+  const y = d3
+    .scaleLinear()
+    .domain([
+      0,
+      d3.max(data, function (d) {
+        return +d.count;
+      }),
+    ])
+    .range([height, 0]);
+  bubble_svg.append("g").call(d3.axisLeft(y));
+
+  // color palette
+  const color = d3.scaleOrdinal().range(["#FF50EC", "#3361FF"]);
+
+  // Create a tooltip
+  // ----------------
+  const tooltip = d3
+    .select("#stack_plot")
+    .append("div")
+    .style("opacity", 0)
+    .attr("class", "tooltip")
+    .attr("style", "position: absolute; opacity: 0;")
+    .style("background-color", "#333333")
+    .style("border", "solid")
+    .style("border-width", "1px")
+    .style("border-radius", "5px")
+    .style("padding", "10px");
+
+  // Three function that change the tooltip when user hover / move / leave a cell
+  const mouseover = function (event, d) {
+    // const subgroupName = d3.select(this.parentNode).datum().key;
+    const subgroupValue = d[0];
+    console.log("testing", subgroupValue);
+    tooltip.transition().duration(200);
+    tooltip
+      .style("opacity", 1)
+      .html("Gender: " + subgroupValue)
+      .style("left", event.x / 2 + "px")
+      .style("top", event.y / 2 + 30 + "px");
+  };
+  const mousemove = function (event, d) {
+    tooltip.style("left", event.x + "px").style("top", event.y + 300 + "px");
+  };
+  const mouseleave = function (event, d) {
+    tooltip.transition().duration(800).style("opacity", 0);
+  };
+
+  bubble_svg
+  .append("text")
+  .attr("x", width / 2)
+  .attr("y", margin.top - 55)
+  .attr("text-anchor", "middle")
+  .style("font-size", "16px")
+  .style("text-decoration", "underline")
+  .text("Number of Cases vs year");
+
+  // Draw the line
+  bubble_svg
+    .selectAll(".line")
+    .data(sumstat)
+    .join("path")
+    .attr("fill", "none")
+    .attr("stroke", function (d) {
+      return color(d[0]);
+    })
+    .attr("stroke-width", 1.5)
+    .attr("d", function (d) {
+      return d3
+        .line()
+        .x(function (d) {
+          return x(d.year);
         })
-      )
-      .range([0, width + 30]);
-    xAxis = bubble_svg
-      .append("g")
-      .attr("transform", `translate(0, ${width} )`)
-      .call(d3.axisBottom(x));
-
-    // Add Y axis
-    const y = d3
-      .scaleLinear()
-      .domain([
-        0,
-        d3.max(data, function (d) {
-          return +d.value;
-        }),
-      ])
-      .range([height, 0]);
-    yAxis = bubble_svg.append("g").call(d3.axisLeft(y));
-
-    // Add a clipPath: everything out of this area won't be drawn.
-    const clip = bubble_svg
-      .append("defs")
-      .append("svg:clipPath")
-      .attr("id", "clip")
-      .append("svg:rect")
-      .attr("width", width)
-      .attr("height", height)
-      .attr("x", 0)
-      .attr("y", 0);
-
-    // Add brushing
-    const brush = d3
-      .brushX() // Add the brush feature using the d3.brush function
-      .extent([
-        [0, 0],
-        [width, height],
-      ]) // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
-      .on("end", updateChart); // Each time the brush selection changes, trigger the 'updateChart' function
-
-    // Create the line variable: where both the line and the brush take place
-    const line = bubble_svg.append("g").attr("clip-path", "url(#clip)");
-
-    // Add the line
-    line
-      .append("path")
-      .datum(data)
-      .attr("class", "line") // I add the class line to be able to modify this line later on.
-      .attr("fill", "none")
-      .attr("stroke", "steelblue")
-      .attr("stroke-width", 1.5)
-      .attr(
-        "d",
-        d3
-          .line()
-          .x(function (d) {
-            return x(d.date);
-          })
-          .y(function (d) {
-            return y(d.value);
-          })
-      );
-
-    // Add the brushing
-    line.append("g").attr("class", "brush").call(brush);
-
-    // A function that set idleTimeOut to null
-    let idleTimeout;
-    function idled() {
-      idleTimeout = null;
-    }
-
-    // A function that update the chart for given boundaries
-    function updateChart(event, d) {
-      // What are the selected boundaries?
-      extent = event.selection;
-
-      // If no selection, back to initial coordinate. Otherwise, update X axis domain
-      if (!extent) {
-        if (!idleTimeout) return (idleTimeout = setTimeout(idled, 350)); // This allows to wait a little bit
-        x.domain([4, 8]);
-      } else {
-        x.domain([x.invert(extent[0]), x.invert(extent[1])]);
-        line.select(".brush").call(brush.move, null); // This remove the grey brush area as soon as the selection has been done
-      }
-
-      // Update axis and line position
-      xAxis.transition().duration(1000).call(d3.axisBottom(x));
-      line
-        .select(".line")
-        .transition()
-        .duration(1000)
-        .attr(
-          "d",
-          d3
-            .line()
-            .x(function (d) {
-              return x(d.date);
-            })
-            .y(function (d) {
-              return y(d.value);
-            })
-        );
-    }
-
-    bubble_svg.append("text")
-      .attr("x", (width / 2))
-      .attr("y", (margin.top) - 55)
-      .attr("text-anchor", "middle")
-      .style("font-size", "16px")
-      .style("text-decoration", "underline")
-      .text("Number of Cases vs Time");
-
-    // If user double click, reinitialize the chart
-    bubble_svg.on("dblclick", function () {
-      x.domain(
-        d3.extent(data, function (d) {
-          return d.date;
-        })
-      );
-      xAxis.transition().call(d3.axisBottom(x));
-      line
-        .select(".line")
-        .transition()
-        .attr(
-          "d",
-          d3
-            .line()
-            .x(function (d) {
-              return x(d.date);
-            })
-            .y(function (d) {
-              return y(d.value);
-            })
-        );
-    });
-  }
-);
+        .y(function (d) {
+          return y(+d.count);
+        })(d[1]);
+    })
+    .on("mouseover", mouseover)
+    .on("mousemove", mousemove)
+    .on("mouseleave", mouseleave);
+});
