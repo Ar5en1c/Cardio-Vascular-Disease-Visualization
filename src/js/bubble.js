@@ -1,9 +1,3 @@
-// set the dimensions and margins of the graph
-// const margin = { top: 10, right: 30, bottom: 30, left: 60 },
-//   width = 460 - margin.left - margin.right,
-//   height = 400 - margin.top - margin.bottom;
-
-// append the bubble_svg object to the body of the page
 const bubble_svg = d3
   .select("#bubble")
   .append("svg")
@@ -133,6 +127,14 @@ d3.csv(
             })
         );
     }
+
+    bubble_svg.append("text")
+      .attr("x", (width / 2))
+      .attr("y", (margin.top) - 55)
+      .attr("text-anchor", "middle")
+      .style("font-size", "16px")
+      .style("text-decoration", "underline")
+      .text("Number of Cases vs Time");
 
     // If user double click, reinitialize the chart
     bubble_svg.on("dblclick", function () {
