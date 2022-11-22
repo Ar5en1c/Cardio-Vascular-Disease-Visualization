@@ -1,7 +1,7 @@
 // load data
 var data;
 async function load_data() {
-  data = await d3.csv('./data/final_data.csv');
+  data = await d3.csv("./data/final_data.csv");
   draw(data);
 }
 const bp_svg = d3.select("#blood_pressure").append("svg");
@@ -19,26 +19,24 @@ function filter_data() {
   var code_val = disease_code.value;
   var dataset = data;
 
-  if (gender_val != 'both' && gender_val != 'select') {
+  if (gender_val != "both" && gender_val != "select") {
     gender_val = gender_val.toUpperCase();
     dataset = dataset.filter(function (row) {
       return row.SEX == gender_val;
     });
-  };
+  }
 
-  if (code_val != 'both' && code_val != 'select') {
+  if (code_val != "both" && code_val != "select") {
     code_val = code_val.toUpperCase();
     dataset = dataset.filter(function (row) {
       return row.Diagnosis_Code == code_val;
     });
-  };
+  }
 
-  console.log('dataset', dataset)
-  bp_svg.selectAll('*').remove();
+  console.log("dataset", dataset);
+  bp_svg.selectAll("*").remove();
   draw(dataset);
-
-
-};
+}
 
 function draw(dataset) {
   const xAccessor = (d) => Number(d.systolic);
@@ -60,9 +58,35 @@ function draw(dataset) {
   dimensions.containerHeight =
     dimensions.height - dimensions.margin.top - dimensions.margin.bottom;
 
+  // -1- Create a tooltip div that is hidden by default:
+  const tooltip = d3
+    .select("#blood_pressure")
+    .append("div")
+    .style("opacity", 0)
+    .attr("class", "tooltip")
+    .attr("style", "position: absolute; opacity: 0;")
+    .style("background-color", "black")
+    .style("border-radius", "5px")
+    .style("padding", "10px")
+    .style("color", "white");
 
-  bp_svg.attr("width", dimensions.width)
-    .attr("height", dimensions.height);
+  // -2- Create 3 functions to show / update (when mouse move but stay on same circle) / hide the tooltip
+  const showTooltip = function (event, d) {
+    tooltip.transition().duration(200);
+    tooltip
+      .style("opacity", 1)
+      .html("Systolic: " + d.systolic + "<br>" + "Diastolic: " + d.diastolic)
+      .style("left", event.x / 2 + "px")
+      .style("top", event.y / 2 + 30 + "px");
+  };
+  const moveTooltip = function (event, d) {
+    tooltip.style("left", event.x + "px").style("top", event.y + 10 + "px");
+  };
+  const hideTooltip = function (event, d) {
+    tooltip.transition().duration(200).style("opacity", 0);
+  };
+
+  bp_svg.attr("width", dimensions.width).attr("height", dimensions.height);
 
   const container = bp_svg
     .append("g")
@@ -90,7 +114,10 @@ function draw(dataset) {
     .attr("r", 5)
     .attr("fill", "red")
     .attr("cx", (d) => xScale(xAccessor(d)))
-    .attr("cy", (d) => yScale(yAccessor(d)));
+    .attr("cy", (d) => yScale(yAccessor(d)))
+    .on("mouseover", showTooltip)
+    .on("mousemove", moveTooltip)
+    .on("mouseleave", hideTooltip);
 
   // Axes
   const xAxis = d3.axisBottom(xScale);
@@ -122,12 +149,12 @@ function draw(dataset) {
     .style("transform", "rotate(270deg)")
     .style("text-anchor", "middle");
 
-  container.append("text")
-    .attr("x", (width / 2))
-    .attr("y", 0 - (margin.top * 3))
+  container
+    .append("text")
+    .attr("x", width / 2)
+    .attr("y", 0 - margin.top * 3)
     .attr("text-anchor", "middle")
     .style("font-size", "16px")
     .style("text-decoration", "underline")
     .text("Systolic vs Diastolic B.P.");
-};
-
+}
