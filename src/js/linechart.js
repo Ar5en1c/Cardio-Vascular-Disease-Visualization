@@ -8,16 +8,26 @@ const svg = d3
 
 // Parse the Data
 d3.csv(
-  "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv"
+  "./data/final_data.csv"
 ).then(function (data) {
+  data = data.map(function(d) {
+    return {
+      cholesterol: d.cholesterol,
+      creatinine: d.creatinine,
+      glycemia: d.glycemia,
+      triglycerides: d.triglycerides,
+      age_group: d.age_group
+    }
+  });
+  console.log('data', data)
   // Color scale: give me a specie name, I return a color
   const color = d3
     .scaleOrdinal()
-    .domain(["setosa", "versicolor", "virginica"])
+    .domain(["Juvenile", "Adult", "Elderly"])
     .range(["#440154ff", "#21908dff", "#fde725ff"]);
 
   // Here I set the list of dimension manually to control the order of axis:
-  dimensions = ["Petal_Length", "Petal_Width", "Sepal_Length", "Sepal_Width"];
+  dimensions = ["cholesterol", "creatinine", "glycemia", "triglycerides"];
 
   // For each dimension, I build a linear scale. I store all in a y object
   const y = {};
@@ -25,17 +35,17 @@ d3.csv(
     name = dimensions[i];
     y[name] = d3
       .scaleLinear()
-      .domain([0, 8]) // --> Same axis range for each group
+      .domain( [d3.extent(data, function(d) { return +d[name]; })] ) //.domain([0, 8]) // --> Same axis range for each group
       // --> different axis range for each group --> .domain( [d3.extent(data, function(d) { return +d[name]; })] )
       .range([height, 0]);
   }
-
+  console.log('y: ', y)
   // Build the X scale -> it find the best position for each Y axis
   x = d3.scalePoint().range([0, width]).domain(dimensions);
 
   // Highlight the specie that is hovered
   const highlight = function (event, d) {
-    selected_specie = d.Species;
+    selected_specie = d.age_group;
 
     // first every group turns grey
     d3.selectAll(".line")
@@ -58,7 +68,7 @@ d3.csv(
       .duration(200)
       .delay(1000)
       .style("stroke", function (d) {
-        return color(d.Species);
+        return color(d.age_group);
       })
       .style("opacity", "1");
   };
@@ -78,12 +88,12 @@ d3.csv(
     .data(data)
     .join("path")
     .attr("class", function (d) {
-      return "line " + d.Species;
+      return "line " + d.age_group;
     }) // 2 class for each line: 'line' and the group name
     .attr("d", path)
     .style("fill", "none")
     .style("stroke", function (d) {
-      return color(d.Species);
+      return color(d.age_group);
     })
     .style("opacity", 0.5)
     .on("mouseover", highlight)
