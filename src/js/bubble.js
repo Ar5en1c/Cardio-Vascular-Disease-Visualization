@@ -67,7 +67,7 @@ function draw_trend(data) {
     // const subgroupName = d3.select(this.parentNode).datum().key;
     const subgroupValue = d[0];
     console.log("testing", subgroupValue);
-    tooltip.transition().duration(200);
+    tooltip.transition().duration(100);
     tooltip
       .style("opacity", 1)
       .html("Gender: " + subgroupValue)

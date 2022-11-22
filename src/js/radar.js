@@ -37,16 +37,15 @@ function RadarChart(id, data, options) {
   );
 
   var allAxis = data[0].map(function (i, j) {
-    return i.axis;
-  }), //Names of each axis
+      return i.axis;
+    }), //Names of each axis
     total = allAxis.length, //The number of different axes
-    radius = Math.min(cfg.w / 2.2, cfg.h / 2.2), //Radius of the outermost circle
+    radius = Math.min(cfg.w / 2.3, cfg.h / 2.3), //Radius of the outermost circle
     Format = d3.format("%"), //Percentage formatting
     angleSlice = (Math.PI * 2) / total; //The width in radians of each "slice"
 
   //Scale for the radius
   var rScale = d3.scaleLinear().range([0, radius]).domain([0, maxValue]);
-
 
   //Remove whatever chart with the same id/class was present before
   // d3.select("#radar_plot").select("svg").remove();
@@ -64,31 +63,32 @@ function RadarChart(id, data, options) {
     .attr(
       "transform",
       "translate(" +
-      (cfg.w / 1.5 + cfg.margin.left) +
-      "," +
-      (cfg.h / 1.7 + cfg.margin.top) +
-      ")"
+        (cfg.w / 1.5 + cfg.margin.left) +
+        "," +
+        (cfg.h / 1.7 + cfg.margin.top) +
+        ")"
     );
 
   //title code
-  svg.append("text")
-    .attr("x", (width / 2))
-    .attr("y", (margin.top)*2)
+  svg
+    .append("text")
+    .attr("x", width / 2)
+    .attr("y", margin.top * 2)
     .attr("text-anchor", "middle")
-    .style("font-size", "16px")
+    // .style("font-size", "16px")
+    .attr("fill", "white")
     .style("text-decoration", "underline")
-    .text("Normal vs Selected Disease");
+    .text("Normal Readings vs Selected Disease Readings");
 
   //Filter for the outside glow
   var filter = g.append("defs").append("filter").attr("id", "glow"),
     feGaussianBlur = filter
       .append("feGaussianBlur")
-      .attr("stdDeviation", "2.5")
+      .attr("stdDeviation", "1.8")
       .attr("result", "coloredBlur"),
     feMerge = filter.append("feMerge"),
     feMergeNode_1 = feMerge.append("feMergeNode").attr("in", "coloredBlur"),
     feMergeNode_2 = feMerge.append("feMergeNode").attr("in", "SourceGraphic");
-
 
   //Wrapper for the grid & axes
   var axisGrid = g.append("g").attr("class", "axisWrapper");
@@ -103,7 +103,7 @@ function RadarChart(id, data, options) {
     .attr("r", function (d, i) {
       return (radius / cfg.levels) * d;
     })
-    .style("fill", "#CDCDCD")
+    .style("fill", "white")
     .style("stroke", "#CDCDCD")
     .style("fill-opacity", cfg.opacityCircles)
     .style("filter", "url(#glow)");
@@ -121,7 +121,7 @@ function RadarChart(id, data, options) {
     })
     .attr("dy", "0.4em")
     .style("font-size", "10px")
-    .attr("fill", "#737373")
+    .attr("fill", "white")
     .text(function (d, i) {
       return Format((maxValue * d) / cfg.levels);
     });
@@ -154,6 +154,7 @@ function RadarChart(id, data, options) {
     .attr("class", "legend")
     .style("font-size", "11px")
     .attr("text-anchor", "middle")
+    .attr("fill", "white")
     .attr("dy", "0.35em")
     .attr("x", function (d, i) {
       return (
