@@ -1,54 +1,54 @@
-var dataset;
-async function load_data() {
-  dataset = await d3.csv("./data/final_data.csv");
-  draw_cood(dataset);
-}
-const line_svg = d3.select("#linegraph").append("svg");
-load_data();
+// var dataset;
+// async function load_data() {
+//   dataset = await d3.csv("./data/final_data.csv");
+//   draw_cood(dataset);
+// }
+
+// load_data();
 
   
-// filter values
-var disease = document.getElementById("diseases");
-var gender = document.getElementById("gender");
-var disease_code = document.getElementById("disease_code");
-console.log(disease, gender)
+// // filter values
+// var disease = document.getElementById("diseases");
+// var gender = document.getElementById("gender");
+// var disease_code = document.getElementById("disease_code");
+// console.log(disease, gender)
 // console.log(disease_val, gender_val, code_val)
 // Parse the Data
 
-function filter_data() {
-  var gender_val = gender.value;
-  var disease_val = disease.value;
-  var code_val = disease_code.value;
-  var data = dataset;
-  console.log('try', data)
-  if (gender_val != "both" && gender_val != "select") {
-    gender_val = gender_val.toUpperCase();
-    data = data.filter(function (row) {
-      return row.SEX == gender_val;
-    });
-  }
+// function filter_data() {
+//   var gender_val = gender.value;
+//   var disease_val = disease.value;
+//   var code_val = disease_code.value;
+//   var data = dataset;
+//   console.log('try', data)
+//   if (gender_val != "both" && gender_val != "select") {
+//     gender_val = gender_val.toUpperCase();
+//     data = data.filter(function (row) {
+//       return row.SEX == gender_val;
+//     });
+//   }
 
-  if (disease_val != "both" && disease_val != "select") {
-    disease_val = disease_val.toUpperCase();
-    data = data.filter(function (row) {
-      return row.SEX == disease_val;
-    });
-  }
+//   if (disease_val != "both" && disease_val != "select") {
+//     disease_val = disease_val.toUpperCase();
+//     data = data.filter(function (row) {
+//       return row.SEX == disease_val;
+//     });
+//   }
 
-  if (code_val != "both" && code_val != "select") {
-    code_val = code_val.toUpperCase();
-    data = data.filter(function (row) {
-      return row.Diagnosis_Code == code_val;
-    });
-  }
+//   if (code_val != "both" && code_val != "select") {
+//     code_val = code_val.toUpperCase();
+//     data = data.filter(function (row) {
+//       return row.Diagnosis_Code == code_val;
+//     });
+//   }
 
-  console.log("data", data);
-  line_svg.selectAll("*").remove();
-  draw_cood(data);
-}
+//   console.log("data", data);
+//   line_svg.selectAll("*").remove();
+//   draw_cood(data);
+// }
 
 function draw_cood(data) {
-
+  console.log('linechart')
   data = data.map(function(d) {
     return {
       cholesterol: d.cholesterol,
@@ -58,13 +58,13 @@ function draw_cood(data) {
       age_group: d.age_group
     }
   });
-
+  const line_svg = d3.select("#linegraph").append("svg");
   line_svg.attr("width", 500)
   .attr("height", 500)
   .append("g")
   .attr("transform", `translate(60,60)`);
   
-  console.log('data', data)
+  // console.log('data', data)
   // Color scale: give me a specie name, I return a color
   const color = d3
     .scaleOrdinal()
@@ -84,9 +84,9 @@ function draw_cood(data) {
       //.domain( [d3.extent(data, function(d) { return +d[col]; })] )
       .range([height, 0]);
   }
-  console.log('y: ', y)
+  // console.log('y: ', y)
   // Build the X scale -> it find the best position for each Y axis
-  x = d3.scalePoint().range([0, width]).domain(dimensions);
+  const x = d3.scalePoint().range([0, width]).domain(dimensions);
 
   // Highlight the specie that is hovered
   const highlight = function (event, d) {
@@ -177,4 +177,3 @@ function draw_cood(data) {
     .style("text-decoration", "underline")
     .text("Protien Levels vs Age Group");
 };
-
