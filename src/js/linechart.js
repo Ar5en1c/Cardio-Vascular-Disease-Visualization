@@ -1,50 +1,3 @@
-// var dataset;
-// async function load_data() {
-//   dataset = await d3.csv("./data/final_data.csv");
-//   draw_cood(dataset);
-// }
-
-// load_data();
-
-// // filter values
-// var disease = document.getElementById("diseases");
-// var gender = document.getElementById("gender");
-// var disease_code = document.getElementById("disease_code");
-// console.log(disease, gender)
-// console.log(disease_val, gender_val, code_val)
-// Parse the Data
-
-// function filter_data() {
-//   var gender_val = gender.value;
-//   var disease_val = disease.value;
-//   var code_val = disease_code.value;
-//   var data = dataset;
-//   console.log('try', data)
-//   if (gender_val != "both" && gender_val != "select") {
-//     gender_val = gender_val.toUpperCase();
-//     data = data.filter(function (row) {
-//       return row.SEX == gender_val;
-//     });
-//   }
-
-//   if (disease_val != "both" && disease_val != "select") {
-//     disease_val = disease_val.toUpperCase();
-//     data = data.filter(function (row) {
-//       return row.SEX == disease_val;
-//     });
-//   }
-
-//   if (code_val != "both" && code_val != "select") {
-//     code_val = code_val.toUpperCase();
-//     data = data.filter(function (row) {
-//       return row.Diagnosis_Code == code_val;
-//     });
-//   }
-
-//   console.log("data", data);
-//   line_svg.selectAll("*").remove();
-//   draw_cood(data);
-// }
 const line_svg = d3.select("#linegraph").append("svg");
 function draw_cood(data) {
   console.log("linechart");
@@ -176,7 +129,7 @@ function draw_cood(data) {
   line_svg
     .append("text")
     .attr("x", width / 2)
-    .attr("y", 0 - margin.top * 4)
+    .attr("y", margin.top - 10)
     .attr("text-anchor", "middle")
     .style("font-size", "16px")
     .style("text-decoration", "underline")

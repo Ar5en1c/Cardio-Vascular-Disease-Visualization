@@ -1,42 +1,3 @@
-// load data
-// var data;
-// async function load_data() {
-//   data = await d3.csv("./data/final_data.csv");
-//   draw(data);
-// }
-
-//load_data();
-
-// // filter values
-// var disease = document.getElementById("diseases");
-// var gender = document.getElementById("gender");
-// var disease_code = document.getElementById("disease_code");
-// console.log(disease_val, gender_val, code_val)
-
-// function filter_data() {
-//   var gender_val = gender.value;
-//   var disease_val = disease.value;
-//   var code_val = disease_code.value;
-//   var dataset = data;
-
-//   if (gender_val != "both" && gender_val != "select") {
-//     gender_val = gender_val.toUpperCase();
-//     dataset = dataset.filter(function (row) {
-//       return row.SEX == gender_val;
-//     });
-//   }
-
-//   if (code_val != "both" && code_val != "select") {
-//     code_val = code_val.toUpperCase();
-//     dataset = dataset.filter(function (row) {
-//       return row.Diagnosis_Code == code_val;
-//     });
-//   }
-
-//   //'console.log("dataset", dataset);
-//   bp_svg.selectAll("*").remove();
-//   draw(dataset);
-// }
 const bp_svg = d3.select("#blood_pressure").append("svg");
 function draw_bp(dataset) {
   console.log("blood");
@@ -156,10 +117,10 @@ function draw_bp(dataset) {
     .style("transform", "rotate(270deg)")
     .style("text-anchor", "middle");
 
-  container
+    bp_svg
     .append("text")
     .attr("x", width / 2)
-    .attr("y", 0 - margin.top * 3)
+    .attr("y", margin.top - 8)
     .attr("text-anchor", "middle")
     .style("font-size", "16px")
     .style("text-decoration", "underline")

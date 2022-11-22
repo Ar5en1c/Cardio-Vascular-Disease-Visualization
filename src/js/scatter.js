@@ -12,11 +12,9 @@ const scatter = d3
   .attr("transform", `translate(${marginWhole.left},${marginWhole.top})`);
 
 async function drawscmat() {
-  const data = await d3.csv(
-    "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv"
-  );
+  const data = await d3.csv("./data/final_data.csv");
   // What are the numeric variables in this dataset? How many do I have
-  const allVar = ["Sepal_Length", "Sepal_Width", "Petal_Length", "Petal_Width"];
+  const allVar = ["HDL", "LDL", "triglycerides", "glycemia"];
   const numVar = allVar.length;
 
   // Now I can compute the size of a single chart
@@ -36,8 +34,8 @@ async function drawscmat() {
   // Color scale: give me a specie name, I return a color
   const color = d3
     .scaleOrdinal()
-    .domain(["setosa", "versicolor", "virginica"])
-    .range(["#402D54", "#D18975", "#8FD175"]);
+    .domain(["I10X", "E105", "E121"])
+    .range(["#1FE200", "#E24600", "#3279FF"]);
 
   // ------------------------------- //
   // Add charts
@@ -100,8 +98,9 @@ async function drawscmat() {
           return y(+d[var2]);
         })
         .attr("r", 3)
+        .attr("opacity", 0.6)
         .attr("fill", function (d) {
-          return color(d.Species);
+          return color(d.Diagnosis_Code);
         });
     }
   }

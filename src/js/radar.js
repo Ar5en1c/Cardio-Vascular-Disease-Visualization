@@ -47,10 +47,6 @@ function RadarChart(id, data, options) {
   //Scale for the radius
   var rScale = d3.scaleLinear().range([0, radius]).domain([0, maxValue]);
 
-  /////////////////////////////////////////////////////////
-  //////////// Create the container SVG and g /////////////
-  /////////////////////////////////////////////////////////
-
   //Remove whatever chart with the same id/class was present before
   // d3.select("#radar_plot").select("svg").remove();
 
@@ -83,9 +79,6 @@ function RadarChart(id, data, options) {
     .attr("fill", "white")
     .style("text-decoration", "underline")
     .text("Normal Readings vs Selected Disease Readings");
-  /////////////////////////////////////////////////////////
-  ////////// Glow filter for some extra pizzazz ///////////
-  /////////////////////////////////////////////////////////
 
   //Filter for the outside glow
   var filter = g.append("defs").append("filter").attr("id", "glow"),
@@ -96,10 +89,6 @@ function RadarChart(id, data, options) {
     feMerge = filter.append("feMerge"),
     feMergeNode_1 = feMerge.append("feMergeNode").attr("in", "coloredBlur"),
     feMergeNode_2 = feMerge.append("feMergeNode").attr("in", "SourceGraphic");
-
-  /////////////////////////////////////////////////////////
-  /////////////// Draw the Circular grid //////////////////
-  /////////////////////////////////////////////////////////
 
   //Wrapper for the grid & axes
   var axisGrid = g.append("g").attr("class", "axisWrapper");
@@ -136,10 +125,6 @@ function RadarChart(id, data, options) {
     .text(function (d, i) {
       return Format((maxValue * d) / cfg.levels);
     });
-
-  /////////////////////////////////////////////////////////
-  //////////////////// Draw the axes //////////////////////
-  /////////////////////////////////////////////////////////
 
   //Create the straight lines radiating outward from the center
   var axis = axisGrid
@@ -187,10 +172,6 @@ function RadarChart(id, data, options) {
       return d;
     })
     .call(wrap, cfg.wrapWidth);
-
-  /////////////////////////////////////////////////////////
-  ///////////// Draw the radar chart blobs ////////////////
-  /////////////////////////////////////////////////////////
 
   //The radial line function
   var radarLine = d3
@@ -278,10 +259,6 @@ function RadarChart(id, data, options) {
     })
     .style("fill-opacity", 0.8);
 
-  /////////////////////////////////////////////////////////
-  //////// Append invisible circles for tooltip ///////////
-  /////////////////////////////////////////////////////////
-
   //Wrapper for the invisible circles on top
   var blobCircleWrapper = g
     .selectAll(".radarCircleWrapper")
@@ -326,10 +303,6 @@ function RadarChart(id, data, options) {
 
   //Set up the small tooltip for when you hover over a circle
   var tooltip = g.append("text").attr("class", "tooltip").style("opacity", 0);
-
-  /////////////////////////////////////////////////////////
-  /////////////////// Helper Function /////////////////////
-  /////////////////////////////////////////////////////////
 
   //Taken from http://bl.ocks.org/mbostock/7555321
   //Wraps SVG text

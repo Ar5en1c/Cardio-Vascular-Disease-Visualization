@@ -79,6 +79,15 @@ d3.csv("./data/trend.csv").then(function (data) {
     tooltip.transition().duration(800).style("opacity", 0);
   };
 
+  bubble_svg
+  .append("text")
+  .attr("x", width / 2)
+  .attr("y", margin.top - 55)
+  .attr("text-anchor", "middle")
+  .style("font-size", "16px")
+  .style("text-decoration", "underline")
+  .text("Number of Cases vs year");
+
   // Draw the line
   bubble_svg
     .selectAll(".line")
