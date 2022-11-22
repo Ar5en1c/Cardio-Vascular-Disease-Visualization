@@ -1,44 +1,46 @@
 // load data
-var data;
-async function load_data() {
-  data = await d3.csv("./data/final_data.csv");
-  draw(data);
-}
-const bp_svg = d3.select("#blood_pressure").append("svg");
-load_data();
+// var data;
+// async function load_data() {
+//   data = await d3.csv("./data/final_data.csv");
+//   draw(data);
+// }
 
-// filter values
-var disease = document.getElementById("diseases");
-var gender = document.getElementById("gender");
-var disease_code = document.getElementById("disease_code");
+//load_data();
+
+// // filter values
+// var disease = document.getElementById("diseases");
+// var gender = document.getElementById("gender");
+// var disease_code = document.getElementById("disease_code");
 // console.log(disease_val, gender_val, code_val)
 
-function filter_data() {
-  var gender_val = gender.value;
-  var disease_val = disease.value;
-  var code_val = disease_code.value;
-  var dataset = data;
+// function filter_data() {
+//   var gender_val = gender.value;
+//   var disease_val = disease.value;
+//   var code_val = disease_code.value;
+//   var dataset = data;
 
-  if (gender_val != "both" && gender_val != "select") {
-    gender_val = gender_val.toUpperCase();
-    dataset = dataset.filter(function (row) {
-      return row.SEX == gender_val;
-    });
-  }
+//   if (gender_val != "both" && gender_val != "select") {
+//     gender_val = gender_val.toUpperCase();
+//     dataset = dataset.filter(function (row) {
+//       return row.SEX == gender_val;
+//     });
+//   }
 
-  if (code_val != "both" && code_val != "select") {
-    code_val = code_val.toUpperCase();
-    dataset = dataset.filter(function (row) {
-      return row.Diagnosis_Code == code_val;
-    });
-  }
+//   if (code_val != "both" && code_val != "select") {
+//     code_val = code_val.toUpperCase();
+//     dataset = dataset.filter(function (row) {
+//       return row.Diagnosis_Code == code_val;
+//     });
+//   }
 
-  //'console.log("dataset", dataset);
+//   //'console.log("dataset", dataset);
+//   bp_svg.selectAll("*").remove();
+//   draw(dataset);
+// }
+const bp_svg = d3.select("#blood_pressure").append("svg");
+function draw_bp(dataset) {
+  console.log('blood')
   bp_svg.selectAll("*").remove();
-  draw(dataset);
-}
-
-function draw(dataset) {
   const xAccessor = (d) => Number(d.systolic);
   const yAccessor = (d) => Number(d.diastolic);
 

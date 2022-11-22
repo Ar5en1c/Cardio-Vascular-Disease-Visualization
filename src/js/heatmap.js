@@ -69,7 +69,7 @@ const myColor = d3.scaleLinear()
 
   
   // add the squares
-  console.log(data)
+  // console.log(data)
   heat_svg.selectAll()
     .data(data, function(d) {return d.group+':'+d.variable;})
     .enter()
