@@ -159,12 +159,12 @@ function draw(dataset) {
     .text("Systolic vs Diastolic B.P.");
 
 
-  container.append('rect')
-    .attr('x', 20)
-    .attr('y', 20)
-    .attr('width', 600)
-    .attr('height', 40)
-    .attr('stroke', 'black')
-    .attr('fill', '#69a3b2')
+    // bp_svg.append('rect')
+    // .attr('x', 100)
+    // .attr('y', 200)
+    // .attr('width', 10)
+    // .attr('height', 40)
+    // .attr('stroke', 'black')
+    // .attr('fill', '#69a3b2')
 };
 
