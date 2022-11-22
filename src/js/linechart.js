@@ -35,7 +35,7 @@ d3.csv(
     name = dimensions[i];
     y[name] = d3
       .scaleLinear()
-      .domain([0, 300]) //.domain( [d3.extent(data, function(d) { return +d[name]; })] ) //.domain([0, 8]) // --> Same axis range for each group
+      .domain([0, 2000]) //.domain( [d3.extent(data, function(d) { return +d[name]; })] ) //.domain([0, 8]) // --> Same axis range for each group
       // --> different axis range for each group --> .domain( [d3.extent(data, function(d) { return +d[name]; })] )
       .range([height, 0]);
   }
