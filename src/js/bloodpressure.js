@@ -33,7 +33,7 @@ function filter_data() {
     });
   }
 
-  console.log("dataset", dataset);
+  //'console.log("dataset", dataset);
   bp_svg.selectAll("*").remove();
   draw(dataset);
 }
