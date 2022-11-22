@@ -132,8 +132,8 @@ function draw(dataset) {
 
 
   container.append('rect')
-    .attr('x', 10)
-    .attr('y', 120)
+    .attr('x', 20)
+    .attr('y', 20)
     .attr('width', 600)
     .attr('height', 40)
     .attr('stroke', 'black')
