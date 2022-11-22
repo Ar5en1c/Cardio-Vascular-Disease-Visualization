@@ -1,91 +1,161 @@
-const margin_bc = { top: 30, right: 30, bottom: 15, left: 50 },
-  width_bc = 500 - margin_bc.left - margin_bc.right,
-  height_bc = 490 - margin_bc.top - margin_bc.bottom;
+// set the dimensions and margins of the graph
+// const margin = { top: 10, right: 30, bottom: 30, left: 60 },
+//   width = 460 - margin.left - margin.right,
+//   height = 400 - margin.top - margin.bottom;
 
-// append the svg object to the body of the page
-const svg_bc = d3
+// append the bubble_svg object to the body of the page
+const bubble_svg = d3
   .select("#bubble")
   .append("svg")
-  .attr("width", width_bc + margin_bc.left + margin_bc.right)
-  .attr("height", height_bc + margin_bc.top + margin_bc.bottom)
+  .attr("width", 500)
+  .attr("height", 500)
   .append("g")
-  .attr("transform", `translate(${margin_bc.left},${margin_bc.top})`);
+  .attr("transform", `translate(50,50)`);
 
 //Read the data
 d3.csv(
-  "https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/4_ThreeNum.csv"
-).then(function (data) {
-  // Add X axis
-  const x = d3.scaleLinear().domain([0, 12000]).range([0, width_bc]);
-  svg_bc
-    .append("g")
-    .attr("transform", `translate(0, ${height_bc})`)
-    .call(d3.axisBottom(x));
+  "https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/3_TwoNumOrdered_comma.csv",
 
-  // Add Y axis
-  const y = d3.scaleLinear().domain([35, 90]).range([height_bc, 0]);
-  svg_bc.append("g").call(d3.axisLeft(y));
+  // When reading the csv, I must format variables:
+  function (d) {
+    return { date: d3.timeParse("%Y-%m-%d")(d.date), value: d.value };
+  }
+).then(
+  // Now I can use this dataset:
+  function (data) {
+    // Add X axis --> it is a date format
+    const x = d3
+      .scaleTime()
+      .domain(
+        d3.extent(data, function (d) {
+          return d.date;
+        })
+      )
+      .range([0, width + 30]);
+    xAxis = bubble_svg
+      .append("g")
+      .attr("transform", `translate(0, ${width} )`)
+      .call(d3.axisBottom(x));
 
-  // Add a scale for bubble size
-  const z = d3.scaleLinear().domain([200000, 1310000000]).range([4, 40]);
+    // Add Y axis
+    const y = d3
+      .scaleLinear()
+      .domain([
+        0,
+        d3.max(data, function (d) {
+          return +d.value;
+        }),
+      ])
+      .range([height, 0]);
+    yAxis = bubble_svg.append("g").call(d3.axisLeft(y));
 
-  // Add a scale for bubble color
-  const myColor = d3
-    .scaleOrdinal()
-    .domain(["Asia", "Europe", "Americas", "Africa", "Oceania"])
-    .range(d3.schemeSet2);
+    // Add a clipPath: everything out of this area won't be drawn.
+    const clip = bubble_svg
+      .append("defs")
+      .append("svg:clipPath")
+      .attr("id", "clip")
+      .append("svg:rect")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("x", 0)
+      .attr("y", 0);
 
-  // -1- Create a tooltip div that is hidden by default:
-  const tooltip = d3
-    .select("#bubble")
-    .append("div")
-    .style("opacity", 0)
-    .attr("class", "tooltip")
-    .attr("style", "position: absolute; opacity: 0;")
-    .style("background-color", "black")
-    .style("border-radius", "5px")
-    .style("padding", "10px")
-    .style("color", "white");
+    // Add brushing
+    const brush = d3
+      .brushX() // Add the brush feature using the d3.brush function
+      .extent([
+        [0, 0],
+        [width, height],
+      ]) // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
+      .on("end", updateChart); // Each time the brush selection changes, trigger the 'updateChart' function
 
-  // -2- Create 3 functions to show / update (when mouse move but stay on same circle) / hide the tooltip
-  const showTooltip = function (event, d) {
-    tooltip.transition().duration(200);
-    tooltip
-      .style("opacity", 1)
-      .html("Country: " + d.country)
-      .style("left", event.x / 2 + "px")
-      .style("top", event.y / 2 + 30 + "px");
-  };
-  const moveTooltip = function (event, d) {
-    tooltip
-      .style("left", event.x / 3.5 + "px")
-      .style("top", event.y / 2 + 10 + "px");
-  };
-  const hideTooltip = function (event, d) {
-    tooltip.transition().duration(200).style("opacity", 0);
-  };
+    // Create the line variable: where both the line and the brush take place
+    const line = bubble_svg.append("g").attr("clip-path", "url(#clip)");
 
-  // Add dots
-  svg_bc
-    .append("g")
-    .selectAll("dot")
-    .data(data)
-    .join("circle")
-    .attr("class", "bubbles")
-    .attr("cx", (d) => x(d.gdpPercap))
-    .attr("cy", (d) => y(d.lifeExp))
-    .attr("r", (d) => z(d.pop))
-    .style("fill", (d) => myColor(d.continent))
-    // -3- Trigger the functions
-    .on("mouseover", showTooltip)
-    .on("mousemove", moveTooltip)
-    .on("mouseleave", hideTooltip);
+    // Add the line
+    line
+      .append("path")
+      .datum(data)
+      .attr("class", "line") // I add the class line to be able to modify this line later on.
+      .attr("fill", "none")
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 1.5)
+      .attr(
+        "d",
+        d3
+          .line()
+          .x(function (d) {
+            return x(d.date);
+          })
+          .y(function (d) {
+            return y(d.value);
+          })
+      );
 
-    svg_bc.append("text")
-    .attr("x", (width / 2))
-    .attr("y", 0 - (margin.top))
-    .attr("text-anchor", "middle")
-    .style("font-size", "16px")
-    .style("text-decoration", "underline")
-    .text("Co-occurring Diseases");
-});
+    // Add the brushing
+    line.append("g").attr("class", "brush").call(brush);
+
+    // A function that set idleTimeOut to null
+    let idleTimeout;
+    function idled() {
+      idleTimeout = null;
+    }
+
+    // A function that update the chart for given boundaries
+    function updateChart(event, d) {
+      // What are the selected boundaries?
+      extent = event.selection;
+
+      // If no selection, back to initial coordinate. Otherwise, update X axis domain
+      if (!extent) {
+        if (!idleTimeout) return (idleTimeout = setTimeout(idled, 350)); // This allows to wait a little bit
+        x.domain([4, 8]);
+      } else {
+        x.domain([x.invert(extent[0]), x.invert(extent[1])]);
+        line.select(".brush").call(brush.move, null); // This remove the grey brush area as soon as the selection has been done
+      }
+
+      // Update axis and line position
+      xAxis.transition().duration(1000).call(d3.axisBottom(x));
+      line
+        .select(".line")
+        .transition()
+        .duration(1000)
+        .attr(
+          "d",
+          d3
+            .line()
+            .x(function (d) {
+              return x(d.date);
+            })
+            .y(function (d) {
+              return y(d.value);
+            })
+        );
+    }
+
+    // If user double click, reinitialize the chart
+    bubble_svg.on("dblclick", function () {
+      x.domain(
+        d3.extent(data, function (d) {
+          return d.date;
+        })
+      );
+      xAxis.transition().call(d3.axisBottom(x));
+      line
+        .select(".line")
+        .transition()
+        .attr(
+          "d",
+          d3
+            .line()
+            .x(function (d) {
+              return x(d.date);
+            })
+            .y(function (d) {
+              return y(d.value);
+            })
+        );
+    });
+  }
+);

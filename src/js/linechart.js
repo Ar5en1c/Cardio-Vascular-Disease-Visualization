@@ -56,8 +56,8 @@ function draw_cood(data) {
       creatinine: d.creatinine,
       glycemia: d.glycemia,
       triglycerides: d.triglycerides,
-      age_group: d.age_group
-    }
+      age_group: d.age_group,
+    };
   });
   
   line_svg.attr("width", 500)
@@ -81,9 +81,9 @@ function draw_cood(data) {
     col = dimensions[i];
     y[col] = d3
       .scaleLinear()
-      .domain([0, 2000]) //.domain( [d3.extent(data, function(d) { return +d[name]; })] ) 
+      .domain([0, 2000]) //.domain( [d3.extent(data, function(d) { return +d[name]; })] )
       //.domain( [d3.extent(data, function(d) { return +d[col]; })] )
-      .range([height, 0]);
+      .range([460, 50]);
   }
   // console.log('y: ', y)
   // Build the X scale -> it find the best position for each Y axis
@@ -170,9 +170,10 @@ function draw_cood(data) {
     })
     .style("fill", "black");
 
-  line_svg.append("text")
-    .attr("x", (width / 2))
-    .attr("y", 0 - (margin.top*4))
+  line_svg
+    .append("text")
+    .attr("x", width / 2)
+    .attr("y", 0 - margin.top * 4)
     .attr("text-anchor", "middle")
     .style("font-size", "16px")
     .style("text-decoration", "underline")

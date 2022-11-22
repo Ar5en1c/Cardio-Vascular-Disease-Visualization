@@ -99,22 +99,26 @@ function draw_bp(dataset) {
 
   const xScale = d3
     .scaleLinear()
-    .domain(d3.extent(dataset, xAccessor))
+    .domain([0, 230])
     .clamp(true)
     .range([0, dimensions.containerWidth]);
 
   const yScale = d3
     .scaleLinear()
-    .domain(d3.extent(dataset, yAccessor))
+    .domain([0, 180])
     .clamp(true)
     .range([dimensions.containerHeight, 0]);
+
+  var colorRange = d3.scaleLinear().domain([50, 180])
+    .range(["green", "red"])
 
   container
     .selectAll("circle")
     .data(dataset)
     .join("circle")
     .attr("r", 5)
-    .attr("fill", "red")
+    .attr("fill", function(d){return colorRange(Number(d.systolic)) })
+    .attr("opacity", 0.3)
     .attr("cx", (d) => xScale(xAccessor(d)))
     .attr("cy", (d) => yScale(yAccessor(d)))
     .on("mouseover", showTooltip)
@@ -159,4 +163,14 @@ function draw_bp(dataset) {
     .style("font-size", "16px")
     .style("text-decoration", "underline")
     .text("Systolic vs Diastolic B.P.");
-}
+
+
+  // container.append('rect')
+  //   .attr('x', 0 + dimensions.margin.left - 15)
+  //   .attr('y', 10 + dimensions.containerHeight - dimensions.margin.bottom + 10 )
+  //   .attr('width', 100)
+  //   .attr('height', 100)
+  //   .attr('stroke', 'black')
+  //   .attr('fill', '#blue')
+};
+
