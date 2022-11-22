@@ -1,44 +1,46 @@
 // load data
-var data;
-async function load_data() {
-  data = await d3.csv("./data/final_data.csv");
-  draw(data);
-}
-const bp_svg = d3.select("#blood_pressure").append("svg");
-load_data();
+// var data;
+// async function load_data() {
+//   data = await d3.csv("./data/final_data.csv");
+//   draw(data);
+// }
 
-// filter values
-var disease = document.getElementById("diseases");
-var gender = document.getElementById("gender");
-var disease_code = document.getElementById("disease_code");
+//load_data();
+
+// // filter values
+// var disease = document.getElementById("diseases");
+// var gender = document.getElementById("gender");
+// var disease_code = document.getElementById("disease_code");
 // console.log(disease_val, gender_val, code_val)
 
-function filter_data() {
-  var gender_val = gender.value;
-  var disease_val = disease.value;
-  var code_val = disease_code.value;
-  var dataset = data;
+// function filter_data() {
+//   var gender_val = gender.value;
+//   var disease_val = disease.value;
+//   var code_val = disease_code.value;
+//   var dataset = data;
 
-  if (gender_val != "both" && gender_val != "select") {
-    gender_val = gender_val.toUpperCase();
-    dataset = dataset.filter(function (row) {
-      return row.SEX == gender_val;
-    });
-  }
+//   if (gender_val != "both" && gender_val != "select") {
+//     gender_val = gender_val.toUpperCase();
+//     dataset = dataset.filter(function (row) {
+//       return row.SEX == gender_val;
+//     });
+//   }
 
-  if (code_val != "both" && code_val != "select") {
-    code_val = code_val.toUpperCase();
-    dataset = dataset.filter(function (row) {
-      return row.Diagnosis_Code == code_val;
-    });
-  }
+//   if (code_val != "both" && code_val != "select") {
+//     code_val = code_val.toUpperCase();
+//     dataset = dataset.filter(function (row) {
+//       return row.Diagnosis_Code == code_val;
+//     });
+//   }
 
-  //'console.log("dataset", dataset);
+//   //'console.log("dataset", dataset);
+//   bp_svg.selectAll("*").remove();
+//   draw(dataset);
+// }
+const bp_svg = d3.select("#blood_pressure").append("svg");
+function draw_bp(dataset) {
+  console.log('blood')
   bp_svg.selectAll("*").remove();
-  draw(dataset);
-}
-
-function draw(dataset) {
   const xAccessor = (d) => Number(d.systolic);
   const yAccessor = (d) => Number(d.diastolic);
 
@@ -97,22 +99,26 @@ function draw(dataset) {
 
   const xScale = d3
     .scaleLinear()
-    .domain(d3.extent(dataset, xAccessor))
+    .domain([0, 230])
     .clamp(true)
     .range([0, dimensions.containerWidth]);
 
   const yScale = d3
     .scaleLinear()
-    .domain(d3.extent(dataset, yAccessor))
+    .domain([0, 180])
     .clamp(true)
     .range([dimensions.containerHeight, 0]);
+
+  var colorRange = d3.scaleLinear().domain([50, 180])
+    .range(["green", "red"])
 
   container
     .selectAll("circle")
     .data(dataset)
     .join("circle")
     .attr("r", 5)
-    .attr("fill", "red")
+    .attr("fill", function(d){return colorRange(Number(d.systolic)) })
+    .attr("opacity", 0.3)
     .attr("cx", (d) => xScale(xAccessor(d)))
     .attr("cy", (d) => yScale(yAccessor(d)))
     .on("mouseover", showTooltip)
@@ -157,4 +163,14 @@ function draw(dataset) {
     .style("font-size", "16px")
     .style("text-decoration", "underline")
     .text("Systolic vs Diastolic B.P.");
-}
+
+
+  // container.append('rect')
+  //   .attr('x', 0 + dimensions.margin.left - 15)
+  //   .attr('y', 10 + dimensions.containerHeight - dimensions.margin.bottom + 10 )
+  //   .attr('width', 100)
+  //   .attr('height', 100)
+  //   .attr('stroke', 'black')
+  //   .attr('fill', '#blue')
+};
+
