@@ -13,10 +13,10 @@ const scatter = d3
 
 async function drawscmat() {
   const data = await d3.csv(
-    "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv"
+    "./data/final_data.csv"
   );
   // What are the numeric variables in this dataset? How many do I have
-  const allVar = ["Sepal_Length", "Sepal_Width", "Petal_Length", "Petal_Width"];
+  const allVar = ["HDL", "LDL", "triglycerides", "glycemia"];
   const numVar = allVar.length;
 
   // Now I can compute the size of a single chart

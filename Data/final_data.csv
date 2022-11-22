@@ -1,4 +1,4 @@
-PK_PATIENT,microalbuminuria,systolic,diastolic,cholesterol,creatinine,creatinine_clearance,BIRTH_DATE,DEATH_DATE,AGE,SEX,CENTER_ID,Diagnosis_Code,Diagnosis_Date,glycemia,HDL_high-density_lipoprotein,height,glycated_hemoglobin,LDL_low-density_lipoprotein,triglycerides,weight,BMI,year,age_group
+PK_PATIENT,microalbuminuria,systolic,diastolic,cholesterol,creatinine,creatinine_clearance,BIRTH_DATE,DEATH_DATE,AGE,SEX,CENTER_ID,Diagnosis_Code,Diagnosis_Date,glycemia,HDL,height,glycated_hemoglobin,LDL,triglycerides,weight,BMI,year,age_group
 0,4.96,120.0,80.0,239.0,0.92,1.97,2020/11/28,1900/01/01,1,FEMALE,325,I10X,2005-07-03 20:14:07,85.0,51.0,-1,6.9,73.0,219.0,80,80.0,2005,Juvenile
 10,5.37,120.0,80.0,148.0,1.01,7.14,1950/05/17,1900/01/01,72,MALE,92,E105,2018-05-19 09:50:26,97.0,34.0,175,6.6,89.0,180.0,-1,-3.265306122448979e-05,2018,Elderly
 12,9.35,110.0,70.0,127.0,0.59,8.43,1951/07/26,1900/01/01,71,FEMALE,92,E121,2015-09-02 10:05:24,112.0,46.0,-1,7.3,68.0,140.0,-1,-1.0,2015,Elderly
