@@ -39,7 +39,7 @@
 // }
 const bp_svg = d3.select("#blood_pressure").append("svg");
 function draw_bp(dataset) {
-  console.log('blood')
+  console.log("blood");
   bp_svg.selectAll("*").remove();
   const xAccessor = (d) => Number(d.systolic);
   const yAccessor = (d) => Number(d.diastolic);
@@ -109,15 +109,16 @@ function draw_bp(dataset) {
     .clamp(true)
     .range([dimensions.containerHeight, 0]);
 
-  var colorRange = d3.scaleLinear().domain([50, 180])
-    .range(["green", "red"])
+  var colorRange = d3.scaleLinear().domain([50, 180]).range(["green", "red"]);
 
   container
     .selectAll("circle")
     .data(dataset)
     .join("circle")
     .attr("r", 5)
-    .attr("fill", function(d){return colorRange(Number(d.systolic)) })
+    .attr("fill", function (d) {
+      return colorRange(Number(d.systolic));
+    })
     .attr("opacity", 0.3)
     .attr("cx", (d) => xScale(xAccessor(d)))
     .attr("cy", (d) => yScale(yAccessor(d)))
@@ -139,7 +140,7 @@ function draw_bp(dataset) {
     .append("text")
     .attr("x", dimensions.containerWidth / 2)
     .attr("y", dimensions.margin.bottom - 10)
-    .attr("fill", "black")
+    .attr("fill", "white")
     .text("Systolic (mmHg)");
 
   const yAxis = d3.axisLeft(yScale);
@@ -150,7 +151,7 @@ function draw_bp(dataset) {
     .append("text")
     .attr("x", -dimensions.containerHeight / 2)
     .attr("y", -dimensions.margin.left + 15)
-    .attr("fill", "black")
+    .attr("fill", "white")
     .html("Diastolic (mmHg)")
     .style("transform", "rotate(270deg)")
     .style("text-anchor", "middle");
@@ -164,7 +165,6 @@ function draw_bp(dataset) {
     .style("text-decoration", "underline")
     .text("Systolic vs Diastolic B.P.");
 
-
   // container.append('rect')
   //   .attr('x', 0 + dimensions.margin.left - 15)
   //   .attr('y', 10 + dimensions.containerHeight - dimensions.margin.bottom + 10 )
@@ -172,5 +172,4 @@ function draw_bp(dataset) {
   //   .attr('height', 100)
   //   .attr('stroke', 'black')
   //   .attr('fill', '#blue')
-};
-
+}

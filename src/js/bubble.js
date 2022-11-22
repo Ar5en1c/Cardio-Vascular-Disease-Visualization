@@ -65,7 +65,7 @@ d3.csv("./data/trend.csv").then(function (data) {
     // const subgroupName = d3.select(this.parentNode).datum().key;
     const subgroupValue = d[0];
     console.log("testing", subgroupValue);
-    tooltip.transition().duration(200);
+    tooltip.transition().duration(100);
     tooltip
       .style("opacity", 1)
       .html("Gender: " + subgroupValue)

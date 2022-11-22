@@ -6,7 +6,6 @@
 
 // load_data();
 
-  
 // // filter values
 // var disease = document.getElementById("diseases");
 // var gender = document.getElementById("gender");
@@ -48,9 +47,9 @@
 // }
 const line_svg = d3.select("#linegraph").append("svg");
 function draw_cood(data) {
-  console.log('linechart')
+  console.log("linechart");
   line_svg.selectAll("*").remove();
-  data = data.map(function(d) {
+  data = data.map(function (d) {
     return {
       cholesterol: d.cholesterol,
       creatinine: d.creatinine,
@@ -59,12 +58,13 @@ function draw_cood(data) {
       age_group: d.age_group,
     };
   });
-  
-  line_svg.attr("width", 500)
-  .attr("height", 500)
-  .append("g")
-  .attr("transform", `translate(60,60)`);
-  
+
+  line_svg
+    .attr("width", 500)
+    .attr("height", 500)
+    .append("g")
+    .attr("transform", `translate(60,60)`);
+
   // console.log('data', data)
   // Color scale: give me a specie name, I return a color
   const color = d3
@@ -87,7 +87,10 @@ function draw_cood(data) {
   }
   // console.log('y: ', y)
   // Build the X scale -> it find the best position for each Y axis
-  const x = d3.scalePoint().range([0, width]).domain(dimensions);
+  const x = d3
+    .scalePoint()
+    .range([50, width + 50])
+    .domain(dimensions);
 
   // Highlight the specie that is hovered
   const highlight = function (event, d) {
@@ -178,4 +181,4 @@ function draw_cood(data) {
     .style("font-size", "16px")
     .style("text-decoration", "underline")
     .text("Protien Levels vs Age Group");
-};
+}
