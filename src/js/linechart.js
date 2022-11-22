@@ -1,15 +1,54 @@
-const svg = d3
-  .select("#linegraph")
-  .append("svg")
-  .attr("width", 500)
-  .attr("height", 500)
-  .append("g")
-  .attr("transform", `translate(60,60)`);
+var dataset;
+async function load_data() {
+  dataset = await d3.csv("./data/final_data.csv");
+  draw_cood(dataset);
+}
+const line_svg = d3.select("#linegraph").append("svg");
+load_data();
 
+  
+// filter values
+var disease = document.getElementById("diseases");
+var gender = document.getElementById("gender");
+var disease_code = document.getElementById("disease_code");
+console.log(disease, gender)
+// console.log(disease_val, gender_val, code_val)
 // Parse the Data
-d3.csv(
-  "./data/final_data.csv"
-).then(function (data) {
+
+function filter_data() {
+  var gender_val = gender.value;
+  var disease_val = disease.value;
+  var code_val = disease_code.value;
+  var data = dataset;
+  console.log('try', data)
+  if (gender_val != "both" && gender_val != "select") {
+    gender_val = gender_val.toUpperCase();
+    data = data.filter(function (row) {
+      return row.SEX == gender_val;
+    });
+  }
+
+  if (disease_val != "both" && disease_val != "select") {
+    disease_val = disease_val.toUpperCase();
+    data = data.filter(function (row) {
+      return row.SEX == disease_val;
+    });
+  }
+
+  if (code_val != "both" && code_val != "select") {
+    code_val = code_val.toUpperCase();
+    data = data.filter(function (row) {
+      return row.Diagnosis_Code == code_val;
+    });
+  }
+
+  console.log("data", data);
+  line_svg.selectAll("*").remove();
+  draw_cood(data);
+}
+
+function draw_cood(data) {
+
   data = data.map(function(d) {
     return {
       cholesterol: d.cholesterol,
@@ -19,6 +58,12 @@ d3.csv(
       age_group: d.age_group
     }
   });
+
+  line_svg.attr("width", 500)
+  .attr("height", 500)
+  .append("g")
+  .attr("transform", `translate(60,60)`);
+  
   console.log('data', data)
   // Color scale: give me a specie name, I return a color
   const color = d3
@@ -32,11 +77,11 @@ d3.csv(
   // For each dimension, I build a linear scale. I store all in a y object
   const y = {};
   for (i in dimensions) {
-    name = dimensions[i];
-    y[name] = d3
+    col = dimensions[i];
+    y[col] = d3
       .scaleLinear()
-      .domain([0, 300]) //.domain( [d3.extent(data, function(d) { return +d[name]; })] ) //.domain([0, 8]) // --> Same axis range for each group
-      // --> different axis range for each group --> .domain( [d3.extent(data, function(d) { return +d[name]; })] )
+      .domain([0, 2000]) //.domain( [d3.extent(data, function(d) { return +d[name]; })] ) 
+      //.domain( [d3.extent(data, function(d) { return +d[col]; })] )
       .range([height, 0]);
   }
   console.log('y: ', y)
@@ -83,7 +128,7 @@ d3.csv(
   }
 
   // Draw the lines
-  svg
+  line_svg
     .selectAll("myPath")
     .data(data)
     .join("path")
@@ -100,7 +145,7 @@ d3.csv(
     .on("mouseleave", doNotHighlight);
 
   // Draw the axis:
-  svg
+  line_svg
     .selectAll("myAxis")
     // For each dimension of the dataset I add a 'g' element:
     .data(dimensions)
@@ -124,12 +169,12 @@ d3.csv(
     })
     .style("fill", "black");
 
-  svg.append("text")
+  line_svg.append("text")
     .attr("x", (width / 2))
     .attr("y", 0 - (margin.top*4))
     .attr("text-anchor", "middle")
     .style("font-size", "16px")
     .style("text-decoration", "underline")
     .text("Protien Levels vs Age Group");
-});
+};
 
