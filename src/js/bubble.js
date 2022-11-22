@@ -6,17 +6,19 @@
 // append the bubble_svg object to the body of the page
 const bubble_svg = d3
   .select("#bubble")
-  .append("svg")
-  .attr("width", 500)
-  .attr("height", 500)
-  .append("g")
-  .attr("transform", `translate(50,50)`);
+  .append("svg");
+  
 
 //Read the data
-d3.csv("./data/trend.csv").then(function (data) {
+function draw_trend(data) {
+  bubble_svg.selectAll("*").remove();
   // group the data: I want to draw one line per group
   const sumstat = d3.group(data, (d) => d.SEX); // nest function allows to group the calculation per level of a factor
 
+  bubble_svg.attr("width", 500)
+  .attr("height", 500)
+  .append("g")
+  .attr("transform", `translate(50,50)`);
   // Add X axis --> it is a date format
   const x = d3
     .scaleLinear()
@@ -102,4 +104,4 @@ d3.csv("./data/trend.csv").then(function (data) {
     .on("mouseover", mouseover)
     .on("mousemove", mousemove)
     .on("mouseleave", mouseleave);
-});
+};
