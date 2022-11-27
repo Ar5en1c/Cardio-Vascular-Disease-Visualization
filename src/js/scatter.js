@@ -1,5 +1,5 @@
 // Dimension of the whole chart. Only one size since it has to be square
-const marginWhole = { top: 10, right: 10, bottom: 10, left: 10 },
+const marginWhole = { top: 50, right: 50, bottom: 50, left: 50 },
   sizeWhole = 500 - marginWhole.left - marginWhole.right;
 
 // Create the svg area
@@ -7,7 +7,7 @@ const scatter = d3
   .select("#scatter_matrix")
   .append("svg")
   .attr("width", sizeWhole + marginWhole.left + marginWhole.right)
-  .attr("height", sizeWhole + marginWhole.top + marginWhole.bottom)
+  .attr("height", 300)
   .append("g")
   .attr("transform", `translate(${marginWhole.left},${marginWhole.top})`);
 
@@ -124,6 +124,7 @@ async function drawscmat() {
         .attr("x", size / 2)
         .attr("y", size / 2)
         .text(var1)
+        .attr("fill", "white")
         .attr("text-anchor", "middle");
     }
   }
