@@ -1,16 +1,16 @@
 const bp_svg = d3.select("#blood_pressure").append("svg");
 function draw_bp(dataset) {
-  console.log("blood");
+  // console.log("blood");
   bp_svg.selectAll("*").remove();
   const xAccessor = (d) => Number(d.systolic);
   const yAccessor = (d) => Number(d.diastolic);
 
   let dimensions = {
     width: 500,
-    height: 500,
+    height: 300,
     margin: {
       top: 50,
-      bottom: 50,
+      bottom: 40,
       left: 50,
       right: 50,
     },
@@ -21,8 +21,8 @@ function draw_bp(dataset) {
   dimensions.containerHeight =
     dimensions.height - dimensions.margin.top - dimensions.margin.bottom;
 
-  // -1- Create a tooltip div that is hidden by default:
-  const tooltip = d3
+  // -1- Create a bld_tooltip div that is hidden by default:
+  const bld_tooltip = d3
     .select("#blood_pressure")
     .append("div")
     .style("opacity", 0)
@@ -33,20 +33,20 @@ function draw_bp(dataset) {
     .style("padding", "10px")
     .style("color", "white");
 
-  // -2- Create 3 functions to show / update (when mouse move but stay on same circle) / hide the tooltip
-  const showTooltip = function (event, d) {
-    tooltip.transition().duration(200);
-    tooltip
+  // -2- Create 3 functions to show / update (when mouse move but stay on same circle) / hide the bld_tooltip
+  const showbld_tooltip = function (event, d) {
+    bld_tooltip.transition().duration(200);
+    bld_tooltip
       .style("opacity", 1)
       .html("Systolic: " + d.systolic + "<br>" + "Diastolic: " + d.diastolic)
       .style("left", event.x / 2 + "px")
       .style("top", event.y / 2 + 30 + "px");
   };
-  const moveTooltip = function (event, d) {
-    tooltip.style("left", event.x + "px").style("top", event.y + 10 + "px");
+  const movebld_tooltip = function (event, d) {
+    bld_tooltip.style("left", event.x + "px").style("top", event.y + 10 + "px");
   };
-  const hideTooltip = function (event, d) {
-    tooltip.transition().duration(200).style("opacity", 0);
+  const hidebld_tooltip = function (event, d) {
+    bld_tooltip.transition().duration(200).style("opacity", 0);
   };
 
   bp_svg.attr("width", dimensions.width).attr("height", dimensions.height);
@@ -83,9 +83,9 @@ function draw_bp(dataset) {
     .attr("opacity", 0.3)
     .attr("cx", (d) => xScale(xAccessor(d)))
     .attr("cy", (d) => yScale(yAccessor(d)))
-    .on("mouseover", showTooltip)
-    .on("mousemove", moveTooltip)
-    .on("mouseleave", hideTooltip);
+    .on("mouseover", showbld_tooltip)
+    .on("mousemove", movebld_tooltip)
+    .on("mouseleave", hidebld_tooltip);
 
   // Axes
   const xAxis = d3.axisBottom(xScale);
@@ -117,11 +117,12 @@ function draw_bp(dataset) {
     .style("transform", "rotate(270deg)")
     .style("text-anchor", "middle");
 
-    bp_svg
+  bp_svg
     .append("text")
-    .attr("x", width / 2)
-    .attr("y", margin.top - 8)
+    .attr("x", dimensions.width / 2)
+    .attr("y", dimensions.margin.top - 30)
     .attr("text-anchor", "middle")
+    .attr("fill", "white")
     .style("font-size", "16px")
     .style("text-decoration", "underline")
     .text("Systolic vs Diastolic B.P.");
