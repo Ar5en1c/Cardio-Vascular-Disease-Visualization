@@ -2,7 +2,7 @@ function RadarChart(id, data, options) {
   var cfg = {
     w: 500, //Width of the circle
     h: 320, //Height of the circle
-    margin: { top: 50, right: 50, bottom: 40, left: 50 }, //The margins of the SVG
+    margin: { top: 50, right: 50, bottom: 40, left: 50 }, //The margins of the rdr_svg
     levels: 3, //How many levels or inner circles should there be drawn
     maxValue: 0, //What is the value that the biggest circle will represent
     labelFactor: 1.25, //How much farther than the radius of the outer circle should the labels be placed
@@ -48,17 +48,17 @@ function RadarChart(id, data, options) {
   var rScale = d3.scaleLinear().range([0, radius]).domain([0, maxValue]);
 
   //Remove whatever chart with the same id/class was present before
-  // d3.select("#radar_plot").select("svg").remove();
+  // d3.select("#radar_plot").select("rdr_svg").remove();
 
-  //Initiate the radar chart SVG
-  var svg = d3
+  //Initiate the radar chart rdr_svg
+  var rdr_svg = d3
     .select("#radar_plot")
     .append("svg")
     .attr("width", 500)
     .attr("height", 320)
     .attr("class", "radar" + id);
   //Append a g element
-  var g = svg
+  var g = rdr_svg
     .append("g")
     .attr(
       "transform",
@@ -66,7 +66,7 @@ function RadarChart(id, data, options) {
     );
 
   //title code
-  svg
+  rdr_svg
     .append("text")
     .attr("x", 500 / 2)
     .attr("y", 20)
@@ -304,7 +304,7 @@ function RadarChart(id, data, options) {
     .style("opacity", 0);
 
   //Taken from http://bl.ocks.org/mbostock/7555321
-  //Wraps SVG text
+  //Wraps rdr_svg text
   function wrap(text, width) {
     text.each(function () {
       var text = d3.select(this),

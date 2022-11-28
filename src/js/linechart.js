@@ -56,7 +56,7 @@ function draw_cood(data) {
       .style("stroke", "lightgrey")
       .style("opacity", "0.2");
     // Second the hovered specie takes its line_color
-    d3.selectAll("." + selected_specie)
+    d3.selectAll("" + selected_specie)
       .transition()
       .duration(200)
       .style("stroke", line_color(selected_specie))

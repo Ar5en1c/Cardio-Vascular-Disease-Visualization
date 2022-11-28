@@ -29,7 +29,7 @@ async function draw_stacked() {
     .call(d3.axisBottom(x).tickSizeOuter(-1));
 
   // Add Y axis
-  const y = d3.scaleLinear().domain([0, 60]).range([height_sb, 0]);
+  const y = d3.scaleLinear().domain([0, 60]).range([height_sb, 15]);
   svgStacked.append("g").call(d3.axisLeft(y));
 
   // color palette = one color per subgroup
@@ -100,7 +100,7 @@ async function draw_stacked() {
   svgStacked
     .append("text")
     .attr("x", width_sb / 2)
-    .attr("y", -40)
+    .attr("y", -50)
     .attr("text-anchor", "middle")
     .style("font-size", "16px")
     .attr("fill", "white")
