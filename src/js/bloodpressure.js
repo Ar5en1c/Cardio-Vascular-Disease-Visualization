@@ -7,7 +7,7 @@ function draw_bp(dataset) {
 
   let dimensions = {
     width: 500,
-    height: 300,
+    height: 320,
     margin: {
       top: 50,
       bottom: 40,

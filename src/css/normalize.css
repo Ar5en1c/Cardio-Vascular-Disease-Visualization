@@ -28,38 +28,47 @@ body {
 .header {
   height: 30px;
   width: auto;
-  /* display: block; */
+  display: flex;
   top: 0%;
-  background: #333;
-  text-align: center;
-  align-items: center;
-  align-content: center;
-  text-align: center;
-  /* position: sticky; */
+  background: black;
+  text-align: justify;
+  justify-items: stretch;
+  justify-content: space-between;
+  padding: 10px;
 }
 
 .head {
   height: 30px;
-  /* display: block; */
-  position: relative;
+  display: flex;
+  /* position: relative; */
   color: bisque;
   align-items: center;
   align-content: center;
   text-align: center;
+  /* border: 5px; */
+  border-radius: 10px;
+  background-color: cadetblue;
+  padding-right: 10px;
+  padding-left: 10px;
 }
 
 .filter_area {
   height: 30px;
-  width: auto;
-  display: block;
+  width: 800px;
+  display: flex;
+  /* position: relative; */
   top: 0%;
   background: black;
-  text-align: center;
+  /* text-align: center; */
+  text-align: justify;
+  justify-items: stretch;
+  justify-content: space-between;
+  justify-self: stretch;
 }
 
 .parent {
   display: grid;
-  height: 90vh;
+  height: 92vh;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr);
   grid-column-gap: 2px;

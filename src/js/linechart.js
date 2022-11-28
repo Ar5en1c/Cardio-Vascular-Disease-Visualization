@@ -14,7 +14,7 @@ function draw_cood(data) {
 
   line_svg
     .attr("width", 500)
-    .attr("height", 300)
+    .attr("height", 320)
     .append("g")
     .attr("transform", `translate(60,60)`);
 
@@ -36,7 +36,7 @@ function draw_cood(data) {
       .scaleLinear()
       .domain([0, 2000]) //.domain( [d3.extent(data, function(d) { return +d[name]; })] )
       //.domain( [d3.extent(data, function(d) { return +d[col]; })] )
-      .range([260, 50]);
+      .range([300, 50]);
   }
   // console.log('y: ', y)
   // Build the X scale -> it find the best position for each Y axis
