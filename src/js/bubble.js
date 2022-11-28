@@ -5,8 +5,8 @@
 
 // append the bubble_svg object to the body of the page
 const bubble_svg = d3
-  .select("#bubble")
-  .append("svg");
+  .select("#bubble").append("svg");
+  
   
 
 //Read the data
@@ -15,7 +15,8 @@ function draw_trend(data) {
   // group the data: I want to draw one line per group
   const sumstat = d3.group(data, (d) => d.SEX); // nest function allows to group the calculation per level of a factor
 
-  bubble_svg.attr("width", 500)
+  bubble_svg
+  .attr("width", 500)
   .attr("height", 500)
   .append("g")
   .attr("transform", `translate(50,50)`);
