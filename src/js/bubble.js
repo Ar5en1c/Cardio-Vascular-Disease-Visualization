@@ -123,6 +123,16 @@ d3.csv(
           return y(d[1]);
         })
     );
+
+  bbl_svg
+    .append("text")
+    .attr("x", (bbl_width - bbl_margin.right) / 2)
+    .attr("y", -40)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .attr("fill", "white")
+    .style("text-decoration", "underline")
+    .text("CVD Diseases Distribution vs centers");
 });
 
 // This is what I need to compute kernel density estimation
