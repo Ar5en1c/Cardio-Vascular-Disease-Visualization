@@ -1,7 +1,7 @@
 function RadarChart(id, data, options) {
   var cfg = {
     w: 500, //Width of the circle
-    h: 300, //Height of the circle
+    h: 320, //Height of the circle
     margin: { top: 50, right: 50, bottom: 40, left: 50 }, //The margins of the SVG
     levels: 3, //How many levels or inner circles should there be drawn
     maxValue: 0, //What is the value that the biggest circle will represent
@@ -40,8 +40,8 @@ function RadarChart(id, data, options) {
       return i.axis;
     }), //Names of each axis
     total = allAxis.length, //The number of different axes
-    radius = Math.min(cfg.w / 3, cfg.h / 3), //Radius of the outermost circle
-    Format = d3.format("%"), //Percentage formatting
+    radius = Math.min(cfg.w / 3, cfg.h / 2.8), //Radius of the outermost circle
+    Format = d3.format(""), //Percentage formatting
     angleSlice = (Math.PI * 2) / total; //The width in radians of each "slice"
 
   //Scale for the radius
@@ -55,7 +55,7 @@ function RadarChart(id, data, options) {
     .select("#radar_plot")
     .append("svg")
     .attr("width", 500)
-    .attr("height", 300)
+    .attr("height", 320)
     .attr("class", "radar" + id);
   //Append a g element
   var g = svg
@@ -151,7 +151,7 @@ function RadarChart(id, data, options) {
     .style("font-size", "11px")
     .attr("text-anchor", "middle")
     .attr("fill", "white")
-    .attr("dy", "0.35em")
+    .attr("dy", "1px")
     .attr("x", function (d, i) {
       return (
         rScale(maxValue * cfg.labelFactor) *
