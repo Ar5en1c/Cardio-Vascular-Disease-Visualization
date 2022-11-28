@@ -1,115 +1,145 @@
-// set the dimensions and margins of the graph
-// const margin = { top: 10, right: 30, bottom: 30, left: 60 },
-//   width = 460 - margin.left - margin.right,
-//   height = 400 - margin.top - margin.bottom;
+// set the dimensions and bbl_margins of the graph
+const bbl_margin = { top: 50, right: 50, bottom: 50, left: 50 },
+  bbl_width = 500 - bbl_margin.left - bbl_margin.right,
+  bbl_height = 320 - bbl_margin.top - bbl_margin.bottom;
 
-// append the bubble_svg object to the body of the page
-const bubble_svg = d3
+// append the bbl_svg object to the body of the page
+const bbl_svg = d3
   .select("#bubble")
   .append("svg")
-  .attr("width", 500)
-  .attr("height", 300)
+  .attr("width", bbl_width + bbl_margin.left + bbl_margin.right)
+  .attr("height", bbl_height + bbl_margin.top + bbl_margin.bottom)
   .append("g")
-  .attr("transform", `translate(50,50)`);
+  .attr("transform", `translate(80, 60)`);
 
-//Read the data
-d3.csv("./data/trend.csv").then(function (data) {
-  // group the data: I want to draw one line per group
-  const sumstat = d3.group(data, (d) => d.SEX); // nest function allows to group the calculation per level of a factor
+//read data
+d3.csv(
+  "https://raw.githubusercontent.com/zonination/perceptions/master/probly.csv"
+).then(function (data) {
+  // Get the different categories and count them
+  const categories = [
+    "Almost Certainly",
+    "Very Good Chance",
+    "We Believe",
+    "Likely",
+    "About Even",
+  ];
+  const n = categories.length;
 
-  // Add X axis --> it is a date format
-  const x = d3
-    .scaleLinear()
-    .domain(
-      d3.extent(data, function (d) {
-        return String(d.year);
-      })
-    )
-    .range([0, width]);
-  bubble_svg
+  // Compute the mean of each group
+  allMeans = [];
+  for (i in categories) {
+    currentGroup = categories[i];
+    mean = d3.mean(data, function (d) {
+      return +d[currentGroup];
+    });
+    allMeans.push(mean);
+  }
+
+  // Create a color scale using these means.
+  const myColor = d3
+    .scaleSequential()
+    .domain([0, 100])
+    .interpolator(d3.interpolateViridis);
+
+  // Add X axis
+  const x = d3.scaleLinear().domain([-10, 120]).range([0, bbl_width]);
+  bbl_svg
     .append("g")
-    .attr("transform", `translate(0,200)`)
-    .call(d3.axisBottom(x).ticks(5));
+    .attr("class", "xAxis")
+    .attr("transform", "translate(0," + bbl_height + ")")
+    .call(
+      d3.axisBottom(x).tickValues([0, 25, 50, 75, 100]).tickSize(-bbl_height)
+    )
+    .select(".domain")
+    .remove();
 
-  // Add Y axis
-  const y = d3
-    .scaleLinear()
-    .domain([
-      0,
-      d3.max(data, function (d) {
-        return +d.count;
-      }),
-    ])
-    .range([200, 0]);
-  bubble_svg.append("g").call(d3.axisLeft(y));
-
-  // color palette
-  const color = d3.scaleOrdinal().range(["#FF50EC", "#3361FF"]);
-
-  // Create a bbl_tooltip
-  // ----------------
-  const bbl_tooltip = d3
-    .select("#stack_plot")
-    .append("div")
-    .style("opacity", 0)
-    .attr("class", "tooltip")
-    .attr("style", "position: absolute; opacity: 0;")
-    .style("background-color", "#333333")
-    .style("border", "solid")
-    .style("border-width", "1px")
-    .style("border-radius", "5px")
-    .style("padding", "10px");
-
-  // Three function that change the bbl_tooltip when user hover / move / leave a cell
-  const mouseover_bbl = function (event, d) {
-    // const subgroupName = d3.select(this.parentNode).datum().key;
-    const subgroupValue = d[0];
-    // console.log("testing", subgroupValue);
-    bbl_tooltip.transition().duration(100);
-    bbl_tooltip
-      .style("opacity", 1)
-      .html("Gender: " + subgroupValue)
-      .style("left", event.x / 2 + "px")
-      .style("top", event.y / 2 + 30 + "px");
-  };
-  const mousemove_bbl = function (event, d) {
-    bbl_tooltip.style("left", event.x + "px").style("top", event.y + 10 + "px");
-  };
-  const mouseleave_bbl = function (event, d) {
-    bbl_tooltip.transition().duration(800).style("opacity", 0);
-  };
-
-  bubble_svg
+  // Add X axis label:
+  bbl_svg
     .append("text")
-    .attr("x", width / 2)
-    .attr("y", -20)
-    .attr("text-anchor", "middle")
-    .style("font-size", "16px")
-    .attr("fill", "white")
-    .style("text-decoration", "underline")
-    .text("Number of Cases vs year");
+    .attr("text-anchor", "end")
+    .attr("x", bbl_width)
+    .attr("y", bbl_height + 40)
+    .text("Probability (%)")
+    .attr("fill", "white");
 
-  // Draw the line
-  bubble_svg
-    .selectAll(".line")
-    .data(sumstat)
+  // Create a Y scale for densities
+  const y = d3.scaleLinear().domain([0, 0.25]).range([bbl_height, 0]);
+
+  // Create the Y axis for names
+  const yName = d3
+    .scaleBand()
+    .domain(categories)
+    .range([0, bbl_height])
+    .paddingInner(1);
+  bbl_svg
+    .append("g")
+    .call(d3.axisLeft(yName).tickSize(0))
+    .select(".domain")
+    .remove();
+
+  // Compute kernel density estimation for each column:
+  const kde = kernelDensityEstimator(kernelEpanechnikov(7), x.ticks(40)); // increase this 40 for more accurate density.
+  const allDensity = [];
+  for (i = 0; i < n; i++) {
+    key = categories[i];
+    density = kde(
+      data.map(function (d) {
+        return d[key];
+      })
+    );
+    allDensity.push({ key: key, density: density });
+  }
+
+  // Add areas
+  bbl_svg
+    .selectAll("areas")
+    .data(allDensity)
     .join("path")
-    .attr("fill", "none")
-    .attr("stroke", function (d) {
-      return color(d[0]);
+    .attr("transform", function (d) {
+      return `translate(0, ${yName(d.key) - bbl_height})`;
     })
-    .attr("stroke-width", 1.5)
-    .attr("d", function (d) {
-      return d3
+    .attr("fill", function (d) {
+      grp = d.key;
+      index = categories.indexOf(grp);
+      value = allMeans[index];
+      return myColor(value);
+    })
+    .datum(function (d) {
+      return d.density;
+    })
+    .attr("opacity", 0.7)
+    .attr("stroke", "#000")
+    .attr("stroke-width", 0.1)
+    .attr(
+      "d",
+      d3
         .line()
+        .curve(d3.curveBasis)
         .x(function (d) {
-          return x(d.year);
+          return x(d[0]);
         })
         .y(function (d) {
-          return y(+d.count);
-        })(d[1]);
-    })
-    .on("mouseover", mouseover_bbl)
-    .on("mousemove", mousemove_bbl)
-    .on("mouseleave", mouseleave_bbl);
+          return y(d[1]);
+        })
+    );
 });
+
+// This is what I need to compute kernel density estimation
+function kernelDensityEstimator(kernel, X) {
+  return function (V) {
+    return X.map(function (x) {
+      return [
+        x,
+        d3.mean(V, function (v) {
+          return kernel(x - v);
+        }),
+      ];
+    });
+  };
+}
+function kernelEpanechnikov(k) {
+  return function (v) {
+    return Math.abs((v /= k)) <= 1 ? (0.75 * (1 - v * v)) / k : 0;
+  };
+}

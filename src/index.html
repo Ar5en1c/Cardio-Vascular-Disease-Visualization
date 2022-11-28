@@ -95,32 +95,39 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
     <div class="header">
       <div class="head">Cardiovascular Disease Visualization</div>
+      <div class="filter_area">
+        <div>
+          <label for="diseases">select a disease</label>
+          <select name="diseases" id="diseases" onchange="filter_data(this)">
+            <option value="select">Select</option>
+            <option value="hypertension">Hypertension</option>
+            <option value="diabetes">Diabetes</option>
+            <option value="obesity">Obesity</option>
+            <option value="arrhythmia">Arrhythmia</option>
+          </select>
+        </div>
+        <div>
+          <label for="gender">select a gender</label>
+          <select name="gender" id="gender" onchange="filter_data(this)">
+            <option value="select">Select</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="both">Both</option>
+          </select>
+        </div>
+        <div>
+          <label for="disease">select a disease code</label>
+          <select name="disease" id="disease_code" onchange="filter_data(this)">
+            <option value="select">Select</option>
+            <option value="E100">E100</option>
+            <option value="I10X">I10X</option>
+            <option value="O102">O102</option>
+            <option value="D-124">D-124</option>
+          </select>
+        </div>
+      </div>
     </div>
-    <div class="filter_area">
-      <label for="diseases">select a disease</label>
-      <select name="diseases" id="diseases" onchange="filter_data(this)">
-        <option value="select">Select</option>
-        <option value="hypertension">Hypertension</option>
-        <option value="diabetes">Diabetes</option>
-        <option value="obesity">Obesity</option>
-        <option value="arrhythmia">Arrhythmia</option>
-      </select>
-      <label for="gender">select a gender</label>
-      <select name="gender" id="gender" onchange="filter_data(this)">
-        <option value="select">Select</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="both">Both</option>
-      </select>
-      <label for="disease">select a disease code</label>
-      <select name="disease" id="disease_code" onchange="filter_data(this)">
-        <option value="select">Select</option>
-        <option value="E100">E100</option>
-        <option value="I10X">I10X</option>
-        <option value="O102">O102</option>
-        <option value="D-124">D-124</option>
-      </select>
-    </div>
+
     <script src="./js/radar.js"></script>
     <div class="parent">
       <div class="div1" id="linegraph">
