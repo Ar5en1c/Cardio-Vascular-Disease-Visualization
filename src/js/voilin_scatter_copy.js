@@ -1,6 +1,6 @@
-var margin = { top: 50, right: 50, bottom: 40, left: 50 },
-    width = 500 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+// var margin = { top: 10, right: 50, bottom: 40, left: 50 },
+//     width = 500 - margin.left - margin.right,
+//     height = 400 - margin.top - margin.bottom;
 
     const n = 200;
     const labels = ["A", "B", "C", "D"];
@@ -20,8 +20,8 @@ var margin = { top: 50, right: 50, bottom: 40, left: 50 },
     const svg = d3
       .select("#scatter_matrix")
       .select("svg")
-      .attr("width", width + margin.right + margin.left)
-      .attr("height", height + margin.top + margin.bottom)
+      .attr("width", 500)
+      .attr("height", 320)
       .attr("transform", "translate(" + margin.left + ", " + margin.bottom + ")")
       .attr("class", "violin");
   
