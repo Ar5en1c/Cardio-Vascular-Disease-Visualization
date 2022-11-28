@@ -51,7 +51,7 @@
       var gender = "select";
       var disease_code = "select";
 
-      console.log(disease);
+      // console.log(disease);
 
       function filter_data(el) {
         disease = document.getElementById("diseases").value;
@@ -61,7 +61,7 @@
         var disease_val = disease;
         var code_val = disease_code;
         var data = dataset;
-        console.log("try", gender);
+        // console.log("try", gender);
         if (gender_val != "both" && gender_val != "select") {
           gender_val = gender_val.toUpperCase();
           data = data.filter(function (row) {
@@ -83,7 +83,7 @@
           });
         }
 
-        console.log("data", data);
+        // console.log("data", data);
         draw_bp(data);
         draw_cood(data);
       }
@@ -94,7 +94,7 @@
     <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
     <div class="header">
-      <p class="head">Cardiovascular Disease Visualization</p>
+      <div class="head">Cardiovascular Disease Visualization</div>
     </div>
     <div class="filter_area">
       <label for="diseases">select a disease</label>
@@ -135,13 +135,9 @@
         //////////////////////// Set-Up //////////////////////////////
         //////////////////////////////////////////////////////////////
 
-        var margin = { top: 10, right: 10, bottom: 10, left: 10 },
-          width =
-            Math.min(400, window.innerWidth - 10) - margin.left - margin.right,
-          height = Math.min(
-            width,
-            window.innerHeight - margin.top - margin.bottom - 20
-          );
+        var margin = { top: 50, right: 50, bottom: 40, left: 50 },
+          width = 400,
+          height = 300;
 
         //////////////////////////////////////////////////////////////
         ////////////////////////// Data //////////////////////////////
@@ -202,10 +198,10 @@
     <script type="text/javascript" src="./js/stacked.js"></script>
     <script type="text/javascript" src="js/bubble.js"></script>
     <script type="text/javascript" src="js/linechart.js"></script>
-    <script type="text/javascript" src="js/radar.js"></script>
+    <!-- <script type="text/javascript" src="js/radar.js"></script> -->
     <script type="text/javascript" src="./js/bloodpressure.js "></script>
-    <script src="./js/heatmap.js"></script>
-    <script src="./js/scatter.js"></script>
+    <!-- <script src="./js/heatmap.js"></script> -->
+    <!-- <script src="./js/scatter.js"></script> -->
     <!-- <script type='module' src="./js/filter.js"></script> -->
 
     <!-- End Documents

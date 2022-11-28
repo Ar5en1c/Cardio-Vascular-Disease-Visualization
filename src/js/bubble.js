@@ -8,7 +8,7 @@ const bubble_svg = d3
   .select("#bubble")
   .append("svg")
   .attr("width", 500)
-  .attr("height", 500)
+  .attr("height", 300)
   .append("g")
   .attr("transform", `translate(50,50)`);
 
@@ -28,7 +28,7 @@ d3.csv("./data/trend.csv").then(function (data) {
     .range([0, width]);
   bubble_svg
     .append("g")
-    .attr("transform", `translate(0, ${height})`)
+    .attr("transform", `translate(0,200)`)
     .call(d3.axisBottom(x).ticks(5));
 
   // Add Y axis
@@ -40,15 +40,15 @@ d3.csv("./data/trend.csv").then(function (data) {
         return +d.count;
       }),
     ])
-    .range([height, 0]);
+    .range([200, 0]);
   bubble_svg.append("g").call(d3.axisLeft(y));
 
   // color palette
   const color = d3.scaleOrdinal().range(["#FF50EC", "#3361FF"]);
 
-  // Create a tooltip
+  // Create a bbl_tooltip
   // ----------------
-  const tooltip = d3
+  const bbl_tooltip = d3
     .select("#stack_plot")
     .append("div")
     .style("opacity", 0)
@@ -60,33 +60,34 @@ d3.csv("./data/trend.csv").then(function (data) {
     .style("border-radius", "5px")
     .style("padding", "10px");
 
-  // Three function that change the tooltip when user hover / move / leave a cell
-  const mouseover = function (event, d) {
+  // Three function that change the bbl_tooltip when user hover / move / leave a cell
+  const mouseover_bbl = function (event, d) {
     // const subgroupName = d3.select(this.parentNode).datum().key;
     const subgroupValue = d[0];
-    console.log("testing", subgroupValue);
-    tooltip.transition().duration(100);
-    tooltip
+    // console.log("testing", subgroupValue);
+    bbl_tooltip.transition().duration(100);
+    bbl_tooltip
       .style("opacity", 1)
       .html("Gender: " + subgroupValue)
       .style("left", event.x / 2 + "px")
       .style("top", event.y / 2 + 30 + "px");
   };
-  const mousemove = function (event, d) {
-    tooltip.style("left", event.x + "px").style("top", event.y + 300 + "px");
+  const mousemove_bbl = function (event, d) {
+    bbl_tooltip.style("left", event.x + "px").style("top", event.y + 10 + "px");
   };
-  const mouseleave = function (event, d) {
-    tooltip.transition().duration(800).style("opacity", 0);
+  const mouseleave_bbl = function (event, d) {
+    bbl_tooltip.transition().duration(800).style("opacity", 0);
   };
 
   bubble_svg
-  .append("text")
-  .attr("x", width / 2)
-  .attr("y", margin.top - 55)
-  .attr("text-anchor", "middle")
-  .style("font-size", "16px")
-  .style("text-decoration", "underline")
-  .text("Number of Cases vs year");
+    .append("text")
+    .attr("x", width / 2)
+    .attr("y", -20)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .attr("fill", "white")
+    .style("text-decoration", "underline")
+    .text("Number of Cases vs year");
 
   // Draw the line
   bubble_svg
@@ -108,7 +109,7 @@ d3.csv("./data/trend.csv").then(function (data) {
           return y(+d.count);
         })(d[1]);
     })
-    .on("mouseover", mouseover)
-    .on("mousemove", mousemove)
-    .on("mouseleave", mouseleave);
+    .on("mouseover", mouseover_bbl)
+    .on("mousemove", mousemove_bbl)
+    .on("mouseleave", mouseleave_bbl);
 });

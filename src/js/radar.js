@@ -1,8 +1,8 @@
 function RadarChart(id, data, options) {
   var cfg = {
     w: 500, //Width of the circle
-    h: 490, //Height of the circle
-    margin: { top: 30, right: 30, bottom: 15, left: 50 }, //The margins of the SVG
+    h: 300, //Height of the circle
+    margin: { top: 50, right: 50, bottom: 40, left: 50 }, //The margins of the SVG
     levels: 3, //How many levels or inner circles should there be drawn
     maxValue: 0, //What is the value that the biggest circle will represent
     labelFactor: 1.25, //How much farther than the radius of the outer circle should the labels be placed
@@ -40,7 +40,7 @@ function RadarChart(id, data, options) {
       return i.axis;
     }), //Names of each axis
     total = allAxis.length, //The number of different axes
-    radius = Math.min(cfg.w / 2.3, cfg.h / 2.3), //Radius of the outermost circle
+    radius = Math.min(cfg.w / 3, cfg.h / 3), //Radius of the outermost circle
     Format = d3.format("%"), //Percentage formatting
     angleSlice = (Math.PI * 2) / total; //The width in radians of each "slice"
 
@@ -55,27 +55,23 @@ function RadarChart(id, data, options) {
     .select("#radar_plot")
     .append("svg")
     .attr("width", 500)
-    .attr("height", 500)
+    .attr("height", 300)
     .attr("class", "radar" + id);
   //Append a g element
   var g = svg
     .append("g")
     .attr(
       "transform",
-      "translate(" +
-        (cfg.w / 1.5 + cfg.margin.left) +
-        "," +
-        (cfg.h / 1.7 + cfg.margin.top) +
-        ")"
+      "translate(" + (cfg.w / 2 + cfg.margin.left) + "," + cfg.h / 1.9 + ")"
     );
 
   //title code
   svg
     .append("text")
-    .attr("x", width / 2)
-    .attr("y", margin.top * 2)
+    .attr("x", 500 / 2)
+    .attr("y", 20)
     .attr("text-anchor", "middle")
-    // .style("font-size", "16px")
+    .style("font-size", "16px")
     .attr("fill", "white")
     .style("text-decoration", "underline")
     .text("Normal Readings vs Selected Disease Readings");
@@ -289,7 +285,7 @@ function RadarChart(id, data, options) {
       newX = parseFloat(d3.select(this).attr("cx")) - 10;
       newY = parseFloat(d3.select(this).attr("cy")) - 10;
 
-      tooltip
+      rdr_tooltip
         .attr("x", newX)
         .attr("y", newY)
         .text(Format(d.value))
@@ -298,11 +294,14 @@ function RadarChart(id, data, options) {
         .style("opacity", 1);
     })
     .on("mouseout", function () {
-      tooltip.transition().duration(200).style("opacity", 0);
+      rdr_tooltip.transition().duration(200).style("opacity", 0);
     });
 
-  //Set up the small tooltip for when you hover over a circle
-  var tooltip = g.append("text").attr("class", "tooltip").style("opacity", 0);
+  //Set up the small rdr_tooltip for when you hover over a circle
+  var rdr_tooltip = g
+    .append("text")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
 
   //Taken from http://bl.ocks.org/mbostock/7555321
   //Wraps SVG text

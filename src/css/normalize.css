@@ -22,26 +22,34 @@ body {
   line-height: 1.42857143;
   color: white;
   background-color: black;
+  overflow: hidden;
 }
 
 .header {
-  height: 40px;
+  height: 30px;
   width: auto;
-  display: block;
+  /* display: block; */
   top: 0%;
   background: #333;
+  text-align: center;
+  align-items: center;
+  align-content: center;
   text-align: center;
   /* position: sticky; */
 }
 
 .head {
-  display: inline-block;
+  height: 30px;
+  /* display: block; */
   position: relative;
   color: bisque;
+  align-items: center;
+  align-content: center;
+  text-align: center;
 }
 
 .filter_area {
-  height: 40px;
+  height: 30px;
   width: auto;
   display: block;
   top: 0%;
@@ -51,7 +59,7 @@ body {
 
 .parent {
   display: grid;
-  height: auto;
+  height: 90vh;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr);
   grid-column-gap: 2px;
@@ -60,19 +68,34 @@ body {
 
 .div1 {
   background-color: #333;
+  align-items: center;
+  align-content: center;
+  text-align: center;
 }
 .div2 {
   background-color: #333;
+  align-items: center;
+  align-content: center;
+  text-align: center;
 }
 .div3 {
   background-color: #333;
+  align-items: center;
+  align-content: center;
+  text-align: center;
 }
 .div4 {
   background-color: #333;
+  align-items: center;
+  align-content: center;
+  text-align: center;
 }
 .div6 {
   background-color: #333;
-  position: relative;
+  /* position: relative; */
+  align-items: center;
+  align-content: center;
+  text-align: center;
 }
 /* 
 #bubble_1 {
@@ -84,6 +107,9 @@ body {
 
 .div8 {
   background-color: #333;
+  align-items: center;
+  align-content: center;
+  text-align: center;
 }
 
 .axis {
