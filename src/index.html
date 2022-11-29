@@ -42,8 +42,11 @@
       var dataset;
       async function load_data() {
         dataset = await d3.csv("./data/final_data.csv");
+        trend_data = await d3.csv("./data/trend.csv");
+        default_trend = await d3.csv("./data/default_trend.csv");
         draw_bp(dataset);
         draw_cood(dataset);
+        draw_trend(default_trend)
       }
       load_data();
       // filter values
@@ -62,6 +65,8 @@
         var code_val = disease_code;
         var data = dataset;
         // console.log("try", gender);
+        var bubble_data = trend_data;
+        //console.log("try", gender);
         if (gender_val != "both" && gender_val != "select") {
           gender_val = gender_val.toUpperCase();
           data = data.filter(function (row) {
@@ -81,11 +86,15 @@
           data = data.filter(function (row) {
             return row.Diagnosis_Code == code_val;
           });
+          bubble_data = bubble_data.filter(function (row) {
+            return row.Diagnosis_Code == code_val;
+          });
         }
 
         // console.log("data", data);
         draw_bp(data);
         draw_cood(data);
+        draw_trend(bubble_data);
       }
     </script>
   </head>

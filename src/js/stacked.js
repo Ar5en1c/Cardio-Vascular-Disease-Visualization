@@ -15,11 +15,11 @@ const svgStacked = d3
 // Parse the Data
 async function draw_stacked() {
   // List of subgroups = header of the csv files = soil condition here
-  dataset_stack = await d3.csv("./js/stack.csv");
-  var subgroups = ["Nitrogen", "normal", "stress"];
+  dataset_stack = await d3.csv("./data/stacked_data.csv");
+  var subgroups = ["Juvenile", "Adult", "Elderly"];
 
   // List of groups = species here = value of the first column called group -> I show them on the X axis
-  const groups = dataset_stack.map((d) => d.group);
+  const groups = dataset_stack.map((d) => d.CENTER_ID);
 
   // Add X axis
   const x = d3.scaleBand().domain(groups).range([0, width]).padding([0.1]);
@@ -88,7 +88,7 @@ async function draw_stacked() {
     // enter a second time = loop subgroup per subgroup to add all rectangles
     .data((d) => d)
     .join("rect")
-    .attr("x", (d) => x(d.data.group))
+    .attr("x", (d) => x(d.data.CENTER_ID))
     .attr("y", (d) => y(d[1]))
     .attr("height", (d) => y(d[0]) - y(d[1]))
     .attr("width", x.bandwidth())
