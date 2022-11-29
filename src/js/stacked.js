@@ -1,7 +1,7 @@
 // set the dimensions and margins of the graph
-const margin_sb = { top: 30, right: 30, bottom: 15, left: 50 },
+const margin_sb = { top: 50, right: 50, bottom: 40, left: 50 },
   width_sb = 500 - margin_sb.left - margin_sb.right,
-  height_sb = 490 - margin_sb.top - margin_sb.bottom;
+  height_sb = 300 - margin_sb.top - margin_sb.bottom;
 
 // append the svg object to the body of the page
 const svgStacked = d3
@@ -42,9 +42,9 @@ async function draw_stacked() {
   const stackedData = d3.stack().keys(subgroups)(dataset_stack);
 
   // ----------------
-  // Create a tooltip
+  // Create a stkd_tooltip
   // ----------------
-  const tooltip = d3
+  const stkd_tooltip = d3
     .select("#stack_plot")
     .append("div")
     .style("opacity", 0)
@@ -56,22 +56,24 @@ async function draw_stacked() {
     .style("border-radius", "5px")
     .style("padding", "10px");
 
-  // Three function that change the tooltip when user hover / move / leave a cell
-  const mouseover = function (event, d) {
+  // Three function that change the stkd_tooltip when user hover / move / leave a cell
+  const mouseover_stkd = function (event, d) {
     const subgroupName = d3.select(this.parentNode).datum().key;
     const subgroupValue = d.data[subgroupName];
 
-    tooltip
+    stkd_tooltip
       .style("opacity", 1)
       .html("subgroup: " + subgroupName + "<br>" + "Value: " + subgroupValue)
       .style("left", event.x / 2 + "px")
-      .style("top", event.y / 2 + 30 + "px");
+      .style("top", event.y / 1.8 + "px");
   };
-  const mousemove = function (event, d) {
-    tooltip.style("left", event.x + "px").style("top", event.y + 300 + "px");
+  const mousemove_stkd = function (event, d) {
+    stkd_tooltip
+      .style("left", event.x + "px")
+      .style("top", event.y + 10 + "px");
   };
-  const mouseleave = function (event, d) {
-    tooltip.style("opacity", 0);
+  const mouseleave_stkd = function (event, d) {
+    stkd_tooltip.style("opacity", 0);
   };
 
   // Show the bars
@@ -91,15 +93,17 @@ async function draw_stacked() {
     .attr("height", (d) => y(d[0]) - y(d[1]))
     .attr("width", x.bandwidth())
     .attr("stroke", "grey")
-    .on("mouseover", mouseover)
-    .on("mousemove", mousemove)
-    .on("mouseleave", mouseleave);
+    .on("mouseover", mouseover_stkd)
+    .on("mousemove", mousemove_stkd)
+    .on("mouseleave", mouseleave_stkd);
 
-  svgStacked.append("text")
-    .attr("x", (width / 2))
-    .attr("y", (margin.top) - 30)
+  svgStacked
+    .append("text")
+    .attr("x", width_sb / 2)
+    .attr("y", -20)
     .attr("text-anchor", "middle")
     .style("font-size", "16px")
+    .attr("fill", "white")
     .style("text-decoration", "underline")
     .text("CVD Diseases Distribution vs centers");
 }

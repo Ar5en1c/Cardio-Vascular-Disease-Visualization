@@ -1,6 +1,6 @@
 const line_svg = d3.select("#linegraph").append("svg");
 function draw_cood(data) {
-  console.log("linechart");
+  // console.log("linechart");
   line_svg.selectAll("*").remove();
   data = data.map(function (d) {
     return {
@@ -14,13 +14,13 @@ function draw_cood(data) {
 
   line_svg
     .attr("width", 500)
-    .attr("height", 500)
+    .attr("height", 300)
     .append("g")
     .attr("transform", `translate(60,60)`);
 
   // console.log('data', data)
-  // Color scale: give me a specie name, I return a color
-  const color = d3
+  // line_color scale: give me a specie name, I return a line_color
+  const line_color = d3
     .scaleOrdinal()
     .domain(["Juvenile", "Adult", "Elderly"])
     .range(["#440154ff", "#21908dff", "#fde725ff"]);
@@ -36,7 +36,7 @@ function draw_cood(data) {
       .scaleLinear()
       .domain([0, 2000]) //.domain( [d3.extent(data, function(d) { return +d[name]; })] )
       //.domain( [d3.extent(data, function(d) { return +d[col]; })] )
-      .range([460, 50]);
+      .range([260, 50]);
   }
   // console.log('y: ', y)
   // Build the X scale -> it find the best position for each Y axis
@@ -55,11 +55,11 @@ function draw_cood(data) {
       .duration(200)
       .style("stroke", "lightgrey")
       .style("opacity", "0.2");
-    // Second the hovered specie takes its color
+    // Second the hovered specie takes its line_color
     d3.selectAll("." + selected_specie)
       .transition()
       .duration(200)
-      .style("stroke", color(selected_specie))
+      .style("stroke", line_color(selected_specie))
       .style("opacity", "1");
   };
 
@@ -70,7 +70,7 @@ function draw_cood(data) {
       .duration(200)
       .delay(1000)
       .style("stroke", function (d) {
-        return color(d.age_group);
+        return line_color(d.age_group);
       })
       .style("opacity", "1");
   };
@@ -95,7 +95,7 @@ function draw_cood(data) {
     .attr("d", path)
     .style("fill", "none")
     .style("stroke", function (d) {
-      return color(d.age_group);
+      return line_color(d.age_group);
     })
     .style("opacity", 0.5)
     .on("mouseover", highlight)
@@ -128,10 +128,11 @@ function draw_cood(data) {
 
   line_svg
     .append("text")
-    .attr("x", width / 2)
-    .attr("y", margin.top - 10)
+    .attr("x", 500 / 2)
+    .attr("y", 20)
     .attr("text-anchor", "middle")
     .style("font-size", "16px")
     .style("text-decoration", "underline")
+    .attr("fill", "white")
     .text("Protien Levels vs Age Group");
 }
