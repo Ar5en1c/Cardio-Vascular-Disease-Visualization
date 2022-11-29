@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -356,4 +356,164 @@
       });
     </script>
   </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <meta charset="utf-8"/>
+    <title>D3 Violin</title>
+  </head>
+  <body>
+    <div id="violin_div">
+      <svg id="violin"></svg>
+    </div>
+  </body>
 </html>
+
+<style>
+</style>
+
+<script>
+  const width = 800;
+  const height = 800;
+  const margin = {top: 50, right: 50, bottom: 50, left: 50};
+
+  // sample size
+  const n = 200;
+  const labels = ["A", "B", "C", "D"];
+  let data = new Array(n);
+  for (let i = 0; i < n; i++) {
+    data[i] = {
+      "value": d3.randomNormal(2, 5)(),
+      "label": labels[Math.floor(Math.random() * labels.length)]
+    };
+  }
+  
+  const minVal = d3.min(data, (d) => d["value"]);
+  const maxVal = d3.max(data, (d) => d["value"]);
+  const meanVal = d3.mean(data, (d) => d["value"]);
+  const jitterWidth = 50;
+
+  // SVG要素を追加
+  const svg = d3
+    .select("#violin_div")
+    .select("svg")
+    .attr("width", width + margin.right + margin.left)
+    .attr("height", height + margin.top + margin.bottom)
+    .attr("transform", "translate(" + margin.left + ", " + margin.bottom + ")")
+    .attr("class", "violin");
+
+  let yScale = d3.scaleLinear()
+    .domain([ minVal, maxVal ])
+    .range([ height, margin.bottom]);
+
+  let xScale = d3.scaleBand()
+    .range([ 0, width ])
+    .domain(labels)
+    .padding(0.05);
+
+  svg.append("g")
+    .attr("transform", "translate(0," + (height) + ")")
+    .call(d3.axisBottom(xScale));
+
+  svg.append("g")
+    .attr("transform", "translate(25," + 0 + ")")
+    .call(d3.axisLeft(yScale));
+
+  let histogram = d3.histogram()
+    .domain(yScale.domain())
+    .thresholds(yScale.ticks(20))
+    .value(d => d);
+
+  let sumstat = d3.rollup(data,
+      v => {
+        let input = v.map(g => g["value"]);
+        return histogram(input);
+      },
+      d => d["label"]
+    );
+
+  console.log(sumstat);
+  const maxNum = Array.from(sumstat.values())
+    .map((value, key) => d3.max(value.map(d => d.length)))
+    .reduce((a, b) => a > b? a: b);
+
+  let xNumScale = d3.scaleLinear()
+    .range([xScale.bandwidth()/2, xScale.bandwidth()])
+    .domain([0, maxNum]);
+
+  svg.append("linearGradient")
+    .attr("id", "violinGradient")
+    .attr("x1", 0)
+    .attr("y1", "0%")
+    .attr("x2", 0)
+    .attr("y1", "100%")
+    .selectAll("stop")
+    .data([
+      {
+        offset: "0%",
+        color: "#dc143c"
+      },
+      {
+        offset: 1 - (maxVal - meanVal) / (maxVal - minVal),
+        color: "#faebd7"
+      },
+      {
+        offset: "100%",
+        color: "#1872cc"
+      }
+    ])
+    .enter().append("stop")
+    .attr("offset", function(d) {
+      return d.offset;
+    })
+    .attr("stop-color", function(d) {
+      return d.color;
+    });
+
+  svg
+    .selectAll("violinBands")
+    .data(sumstat)
+    .enter()
+    .append("g")
+      .attr("transform", function(d){
+        return("translate(" + (xScale(d[0]) ) + ", " + 0 + ")")
+      })
+    .append("path")
+        .datum(function(d){
+          return(d[1])
+        })
+        .style("stroke", "none")
+        .attr("fill", "url(#violinGradient)")
+    .attr("d", d3.area()
+      .x0( xNumScale(0) )
+      .x1(function(d){
+        return(xNumScale(d.length));
+      })
+      .y(function(d){ return(yScale(d.x0)) } )
+      .curve(d3.curveCatmullRom)
+     );
+
+  svg
+    .selectAll("violinPoints")
+    .data(data)
+    .enter()
+    .append("circle")
+      .attr("cx", function(d){
+        return(
+          xScale(d["label"])
+            + xScale.bandwidth() / 2 - Math.random() * jitterWidth
+        )})
+      .attr("cy", function(d){
+        return yScale(d["value"]);
+      })
+      .attr("r", 5)
+      .style("fill", function(d){
+        return (d3.interpolateRdBu( 1 -
+          (maxVal - parseInt(d["value"],10)) / (maxVal - minVal)
+        ))})
+      .attr("stroke", "white");
+
+</script>

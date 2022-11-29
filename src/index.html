@@ -103,35 +103,48 @@
     <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
     <div class="header">
-      <p class="head">Cardiovascular Disease Visualization</p>
+      <div class="head">Cardiovascular Disease Visualization</div>
+      <div class="filter_area">
+        <div>
+          <label for="diseases">select a disease</label>
+          <select name="diseases" id="diseases" onchange="filter_data(this)">
+            <option value="select">Select</option>
+            <option value="hypertension">Hypertension</option>
+            <option value="diabetes">Diabetes</option>
+            <option value="obesity">Obesity</option>
+            <option value="arrhythmia">Arrhythmia</option>
+          </select>
+        </div>
+        <div>
+          <label for="gender">select a gender</label>
+          <select name="gender" id="gender" onchange="filter_data(this)">
+            <option value="select">Select</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="both">Both</option>
+          </select>
+        </div>
+        <div>
+          <label for="disease">select a disease code</label>
+          <select name="disease" id="disease_code" onchange="filter_data(this)">
+            <option value="select">Select</option>
+            <option value="E100">E100</option>
+            <option value="I10X">I10X</option>
+            <option value="O102">O102</option>
+            <option value="D-124">D-124</option>
+          </select>
+        </div>
+      </div>
     </div>
-    <div class="filter_area">
-      <label for="diseases">select a disease</label>
-      <select name="diseases" id="diseases" onchange="filter_data(this)">
-        <option value="select">Select</option>
-        <option value="hypertension">Hypertension</option>
-        <option value="diabetes">Diabetes</option>
-        <option value="obesity">Obesity</option>
-        <option value="arrhythmia">Arrhythmia</option>
-      </select>
-      <label for="gender">select a gender</label>
-      <select name="gender" id="gender" onchange="filter_data(this)">
-        <option value="select">Select</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="both">Both</option>
-      </select>
-      <label for="disease">select a disease code</label>
-      <select name="disease" id="disease_code" onchange="filter_data(this)">
-        <option value="select">Select</option>
-        <option value="E100">E100</option>
-        <option value="I10X">I10X</option>
-        <option value="O102">O102</option>
-        <option value="D-124">D-124</option>
-      </select>
-    </div>
-    <div class="div2" id="blood_pressure"></div>
-    <div class="div3" id="radar_plot"></div>
+
+    <script src="./js/radar.js"></script>
+    <div class="parent">
+      <div class="div1" id="linegraph">
+        <!-- <img src="images/stack_plot.png" /> -->
+        <div id="bubble_1"></div>
+      </div>
+      <div class="div2" id="blood_pressure"></div>
+      <div class="div3" id="radar_plot"></div>
 
       <script>
         //////////////////////////////////////////////////////////////
@@ -174,7 +187,9 @@
         //////////////////// Draw the Chart //////////////////////////
         //////////////////////////////////////////////////////////////
 
-        var color = d3.scaleOrdinal().range(["#EDC951", "#CC333F", "#00A0B0"]);
+        var radar_color = d3
+          .scaleOrdinal()
+          .range(["#EDC951", "#CC333F", "#00A0B0"]);
 
         var radarChartOptions = {
           w: width,
@@ -183,13 +198,15 @@
           maxValue: 0.5,
           levels: 5,
           roundStrokes: true,
-          color: color,
+          color: radar_color,
         };
         //Call function to draw the Radar chart
         RadarChart("#radar_plot", data, radarChartOptions);
       </script>
 
-      <div class="div4" id="scatter_matrix"></div>
+      <div class="div4" id="scatter_matrix">
+        <svg id="violin"></svg>
+      </div>
       <!-- <div class="div5" id="heat_map"></div> -->
       <div class="div6" id="bubble">
         <div id="bubble_1"></div>
@@ -201,6 +218,7 @@
     <script type="text/javascript" src="./js/stacked.js"></script>
     <script type="text/javascript" src="js/bubble.js"></script>
     <script type="text/javascript" src="js/linechart.js"></script>
+    <script type="text/javascript" src="js/voilin_scatter_copy.js"></script>
     <!-- <script type="text/javascript" src="js/radar.js"></script> -->
     <script type="text/javascript" src="./js/bloodpressure.js "></script>
     <!-- <script src="./js/heatmap.js"></script> -->

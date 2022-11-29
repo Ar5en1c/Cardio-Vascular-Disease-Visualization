@@ -1,7 +1,7 @@
 // set the dimensions and margins of the graph
 const margin_sb = { top: 50, right: 50, bottom: 40, left: 50 },
   width_sb = 500 - margin_sb.left - margin_sb.right,
-  height_sb = 300 - margin_sb.top - margin_sb.bottom;
+  height_sb = 320 - margin_sb.top - margin_sb.bottom;
 
 // append the svg object to the body of the page
 const svgStacked = d3
@@ -10,7 +10,7 @@ const svgStacked = d3
   .attr("width", width_sb + margin_sb.left + margin_sb.right)
   .attr("height", height_sb + margin_sb.top + margin_sb.bottom)
   .append("g")
-  .attr("transform", `translate(${margin_sb.left},${margin_sb.top})`);
+  .attr("transform", `translate(70,70)`);
 
 // Parse the Data
 async function draw_stacked() {
@@ -29,7 +29,7 @@ async function draw_stacked() {
     .call(d3.axisBottom(x).tickSizeOuter(-1));
 
   // Add Y axis
-  const y = d3.scaleLinear().domain([0, 9000]).range([height_sb, 0]);
+  const y = d3.scaleLinear().domain([0, 60]).range([height_sb, 15]);
   svgStacked.append("g").call(d3.axisLeft(y));
 
   // color palette = one color per subgroup
@@ -100,7 +100,7 @@ async function draw_stacked() {
   svgStacked
     .append("text")
     .attr("x", width_sb / 2)
-    .attr("y", -20)
+    .attr("y", -50)
     .attr("text-anchor", "middle")
     .style("font-size", "16px")
     .attr("fill", "white")
