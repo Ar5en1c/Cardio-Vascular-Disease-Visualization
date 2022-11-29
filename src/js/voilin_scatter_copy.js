@@ -12,6 +12,7 @@
       };
     }
     
+
     const minVal = d3.min(data_violin, (d) => d["value"]);
     const maxVal = d3.max(data_violin, (d) => d["value"]);
     const meanVal = d3.mean(data_violin, (d) => d["value"]);
@@ -134,3 +135,5 @@
             (maxVal - parseInt(d["value"],10)) / (maxVal - minVal)
           ))})
         .attr("stroke", "white");
+
+        console.log(data_violin);
