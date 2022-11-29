@@ -46,7 +46,7 @@
         default_trend = await d3.csv("./data/default_trend.csv");
         draw_bp(dataset);
         draw_cood(dataset);
-        draw_trend(default_trend)
+        // draw_trend(default_trend)
       }
       load_data();
       // filter values
@@ -77,7 +77,7 @@
         if (disease_val != "both" && disease_val != "select") {
           disease_val = disease_val.toUpperCase();
           data = data.filter(function (row) {
-            return row.SEX == disease_val;
+            return row.disease_cat == disease_val;
           });
         }
 
@@ -112,7 +112,7 @@
             <option value="hypertension">Hypertension</option>
             <option value="diabetes">Diabetes</option>
             <option value="obesity">Obesity</option>
-            <option value="arrhythmia">Arrhythmia</option>
+            <option value="high cholesterol">High cholesterol</option>
           </select>
         </div>
         <div>
