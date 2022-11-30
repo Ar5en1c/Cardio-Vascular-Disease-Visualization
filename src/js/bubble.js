@@ -14,15 +14,11 @@ const bbl_svg = d3
 
 //read data
 d3.csv(
-  "https://raw.githubusercontent.com/zonination/perceptions/master/probly.csv"
+  "./data/dist_data.csv"
 ).then(function (data) {
   // Get the different categories and count them
   const categories = [
-    "Almost Certainly",
-    "Very Good Chance",
-    "We Believe",
-    "Likely",
-    "About Even",
+    'E780', 'E660', 'E785', 'E116', 'I10X'
   ];
   const n = categories.length;
 
@@ -39,7 +35,7 @@ d3.csv(
   // Create a color scale using these means.
   const myColor = d3
     .scaleSequential()
-    .domain([0, 100])
+    .domain([0, 4])
     .interpolator(d3.interpolateViridis);
 
   // Add X axis
@@ -57,10 +53,22 @@ d3.csv(
   // Add X axis label:
   bbl_svg
     .append("text")
+    .attr("class", "x label")
     .attr("text-anchor", "end")
-    .attr("x", bbl_width)
-    .attr("y", bbl_height + 40)
-    .text("Probability (%)")
+    .attr("x", bbl_width - 200)
+    .attr("y", bbl_height + 30)
+    .text("Age")
+    .attr("fill", "white");
+
+  bbl_svg
+    .append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("y", -60)
+    .attr("x", -70)
+    .attr("dy", ".75em")
+    .attr("transform", "rotate(-90)")
+    .text("Diagnosis Codes")
     .attr("fill", "white");
 
   // Create a Y scale for densities
@@ -90,7 +98,7 @@ d3.csv(
     );
     allDensity.push({ key: key, density: density });
   }
-
+  console.log(allMeans)
   // Add areas
   bbl_svg
     .selectAll("areas")
@@ -103,7 +111,7 @@ d3.csv(
       grp = d.key;
       index = categories.indexOf(grp);
       value = allMeans[index];
-      return myColor(value);
+      return myColor(index);
     })
     .datum(function (d) {
       return d.density;
@@ -132,7 +140,7 @@ d3.csv(
     .style("font-size", "16px")
     .attr("fill", "white")
     .style("text-decoration", "underline")
-    .text("CVD Diseases Distribution vs centers");
+    .text("CVD Diseases Distribution vs Age");
 });
 
 // This is what I need to compute kernel density estimation
