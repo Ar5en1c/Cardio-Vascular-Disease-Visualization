@@ -46,6 +46,7 @@
         default_trend = await d3.csv("./data/default_trend.csv");
         // draw_bp(dataset);
         draw_cood(dataset);
+        RadarChart("#radar_plot", dataset);
         // draw_trend(default_trend)
       }
       load_data();
@@ -94,6 +95,7 @@
         // console.log("data", data);
         //draw_bp(data);
         draw_cood(data);
+        //RadarChart("#radar_plot", data);
         // draw_trend(bubble_data);
       }
     </script>
@@ -151,57 +153,20 @@
         //////////////////////// Set-Up //////////////////////////////
         //////////////////////////////////////////////////////////////
 
-        var margin = { top: 50, right: 50, bottom: 40, left: 50 },
-          width = 400,
-          height = 300;
+        
 
         //////////////////////////////////////////////////////////////
         ////////////////////////// Data //////////////////////////////
         //////////////////////////////////////////////////////////////
 
-        var data = [
-          [
-            //Samsung
-            { axis: "Albumin", value: 0.29 },
-            { axis: "creatinine", value: 0.18 },
-            { axis: "Hemoglobin", value: 0.22 },
-            { axis: "Cholestrol", value: 0.12 },
-            { axis: "BMI", value: 0.18 },
-            { axis: "Glycemia", value: 0.05 },
-            { axis: "Triglycerides", value: 0.25 },
-            { axis: "HDL", value: 0.4 },
-          ],
-          [
-            //Nokia Smartphone
-            { axis: "Albumin", value: 0.2 },
-            { axis: "creatinine", value: 0.22 },
-            { axis: "Hemoglobin", value: 0.2 },
-            { axis: "Cholestrol", value: 0.1 },
-            { axis: "BMI", value: 0.14 },
-            { axis: "Glycemia", value: 0.07 },
-            { axis: "Triglycerides", value: 0.15 },
-            { axis: "HDL", value: 0.2 },
-          ],
-        ];
+        
         //////////////////////////////////////////////////////////////
         //////////////////// Draw the Chart //////////////////////////
         //////////////////////////////////////////////////////////////
 
-        var radar_color = d3
-          .scaleOrdinal()
-          .range(["#EDC951", "#CC333F", "#00A0B0"]);
-
-        var radarChartOptions = {
-          w: width,
-          h: height,
-          margin: margin,
-          maxValue: 0.5,
-          levels: 5,
-          roundStrokes: true,
-          color: radar_color,
-        };
+        
         //Call function to draw the Radar chart
-        RadarChart("#radar_plot", data, radarChartOptions);
+        
       </script>
 
       <div class="div4" id="lipo">

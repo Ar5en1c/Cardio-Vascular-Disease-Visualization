@@ -42,7 +42,7 @@ async function draw_stacked() {
   const groups = dataset_stack.map((d) => d.CENTER_ID);
 
   // Add X axis
-  const x = d3.scaleBand().domain(groups).range([0, width]).padding([0.1]);
+  const x = d3.scaleBand().domain(groups).range([0, width_sb]).padding([0.1]);
   svgStacked
     .append("g")
     .attr("transform", `translate(0, ${height_sb})`)

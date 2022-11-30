@@ -1,3 +1,6 @@
+var line_margin = { top: 50, right: 50, bottom: 40, left: 50 },
+          line_width = 400,
+          line_height = 300;
 const line_svg = d3.select("#linegraph").append("svg");
 function draw_cood(data) {
   line_svg.selectAll("*").remove();
@@ -51,7 +54,7 @@ function draw_cood(data) {
   // Build the X scale -> it find the best position for each Y axis
   const x = d3
     .scalePoint()
-    .range([50, width + 50])
+    .range([50, line_width + 50])
     .domain(dimensions);
 
   // Highlight the specie that is hovered

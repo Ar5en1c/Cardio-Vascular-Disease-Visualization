@@ -1,4 +1,52 @@
-function RadarChart(id, data, options) {
+var radar_margin = { top: 50, right: 50, bottom: 40, left: 50 },
+          radar_width = 400,
+          radar_height = 300;
+
+
+function RadarChart(id, dataset) {
+  const rdr_svg = d3.select("#radar_plot").append("svg").attr("width", 500)
+.attr("height", 320)
+.attr("class", "radar" + '#radar_plot');
+  //console.log('data', d3.mean(dataset, d => d.systolic))
+  var data = [
+    [
+      //Samsun
+      { axis: "Albumin", value: d3.mean(dataset, d => d.microalbuminuria)},
+      { axis: "creatinine", value: d3.mean(dataset, d => d.creatinine) },
+      { axis: "Hemoglobin", value: d3.mean(dataset, d => d.glycated_hemoglobin) },
+      { axis: "Cholestrol", value: d3.mean(dataset, d => d.cholesterol) },
+      { axis: "BMI", value: d3.mean(dataset, d => d.BMI) },
+      { axis: "Glycemia", value: d3.mean(dataset, d => d.glycemia) },
+      { axis: "Triglycerides", value: d3.mean(dataset, d => d.triglycerides) },
+      { axis: "HDL", value: d3.mean(dataset, d => d.HDL) },
+    ],
+    [
+      //Nokia Smartphone
+      { axis: "Albumin", value: 100 },
+      { axis: "creatinine", value: 100 },
+      { axis: "Hemoglobin", value: 100 },
+      { axis: "Cholestrol", value: 100 },
+      { axis: "BMI", value: 100 },
+      { axis: "Glycemia", value: 100 },
+      { axis: "Triglycerides", value: 100 },
+      { axis: "HDL", value: 100 },
+    ],
+  ];
+
+  var radar_color = d3
+          .scaleOrdinal()
+          .range(["#EDC951", "#CC333F", "#00A0B0"]);
+
+        var options = {
+          w: radar_width,
+          h: radar_height,
+          margin: radar_margin,
+          maxValue: 0.5,
+          levels: 5,
+          roundStrokes: true,
+          color: radar_color,
+        };
+
   var cfg = {
     w: 500, //Width of the circle
     h: 320, //Height of the circle
@@ -43,7 +91,7 @@ function RadarChart(id, data, options) {
     radius = Math.min(cfg.w / 3, cfg.h / 2.8), //Radius of the outermost circle
     Format = d3.format(""), //Percentage formatting
     angleSlice = (Math.PI * 2) / total; //The width in radians of each "slice"
-
+  console.log('max', maxValue)
   //Scale for the radius
   var rScale = d3.scaleLinear().range([0, radius]).domain([0, maxValue]);
 
@@ -51,12 +99,9 @@ function RadarChart(id, data, options) {
   // d3.select("#radar_plot").select("rdr_svg").remove();
 
   //Initiate the radar chart rdr_svg
-  var rdr_svg = d3
-    .select("#radar_plot")
-    .append("svg")
-    .attr("width", 500)
-    .attr("height", 320)
-    .attr("class", "radar" + id);
+  // rdr_svg.attr("width", 500)
+  //   .attr("height", 320)
+  //   .attr("class", "radar" + id);
   //Append a g element
   var g = rdr_svg
     .append("g")
@@ -121,7 +166,7 @@ function RadarChart(id, data, options) {
     .text(function (d, i) {
       return Format((maxValue * d) / cfg.levels);
     });
-
+    console.log('ax',allAxis)
   //Create the straight lines radiating outward from the center
   var axis = axisGrid
     .selectAll(".axis")
@@ -130,6 +175,7 @@ function RadarChart(id, data, options) {
     .append("g")
     .attr("class", "axis");
   //Append the lines
+    
   axis
     .append("line")
     .attr("x1", 0)
@@ -143,7 +189,82 @@ function RadarChart(id, data, options) {
     .attr("class", "line")
     .style("stroke", "white")
     .style("stroke-width", "2px");
+ 
+  // axis
+  //   .append("line")
+  //   .attr("x1", 0)
+  //   .attr("y1", 0)
+  //   .attr("x2", rScale(d3.mean(dataset, d => d.microalbuminuria) * 1.1) * Math.cos(angleSlice * 0 - Math.PI / 2))
+  //   .attr("y2", rScale(d3.mean(dataset, d => d.microalbuminuria) * 1.1) * Math.cos(angleSlice * 0 - Math.PI / 2))
+  //   .attr("class", "line")
+  //   .style("stroke", "white")
+  //   .style("stroke-width", "2px");
+  // axis
+  //   .append("line")
+  //   .attr("x1", 0)
+  //   .attr("y1", 0)
+  //   .attr("x2", rScale(d3.mean(dataset, d => d.creatinine) * 1.1) * Math.cos(angleSlice * 1 - Math.PI / 2))
+  //   .attr("y2", rScale(d3.mean(dataset, d => d.creatinine) * 1.1) * Math.cos(angleSlice * 1 - Math.PI / 2))
+  //   .attr("class", "line")
+  //   .style("stroke", "white")
+  //   .style("stroke-width", "2px");
 
+  // axis
+  //   .append("line")
+  //   .attr("x1", 0)
+  //   .attr("y1", 0)
+  //   .attr("x2", rScale(d3.mean(dataset, d => d.glycated_hemoglobin) * 1.1) * Math.cos(angleSlice * 2 - Math.PI / 2))
+  //   .attr("y2", rScale(d3.mean(dataset, d => d.glycated_hemoglobin) * 1.1) * Math.cos(angleSlice * 2 - Math.PI / 2))
+  //   .attr("class", "line")
+  //   .style("stroke", "white")
+  //   .style("stroke-width", "2px");
+
+  // axis
+  //   .append("line")
+  //   .attr("x1", 0)
+  //   .attr("y1", 0)
+  //   .attr("x2", rScale(d3.mean(dataset, d => d.cholesterol) * 1.1) * Math.cos(angleSlice * 3 - Math.PI / 2))
+  //   .attr("y2", rScale(d3.mean(dataset, d => d.cholesterol) * 1.1) * Math.cos(angleSlice * 3 - Math.PI / 2))
+  //   .attr("class", "line")
+  //   .style("stroke", "white")
+  //   .style("stroke-width", "2px");
+  //   axis
+  //   .append("line")
+  //   .attr("x1", 0)
+  //   .attr("y1", 0)
+  //   .attr("x2", rScale(d3.mean(dataset, d => d.BMI) * 1.1) * Math.cos(angleSlice * 4 - Math.PI / 2))
+  //   .attr("y2", rScale(d3.mean(dataset, d => d.BMI) * 1.1) * Math.cos(angleSlice * 4 - Math.PI / 2))
+  //   .attr("class", "line")
+  //   .style("stroke", "white")
+  //   .style("stroke-width", "2px");
+  //   axis
+  //   .append("line")
+  //   .attr("x1", 0)
+  //   .attr("y1", 0)
+  //   .attr("x2", rScale(d3.mean(dataset, d => d.glycemia) * 1.1) * Math.cos(angleSlice * 5 - Math.PI / 2))
+  //   .attr("y2", rScale(d3.mean(dataset, d => d.glycemia) * 1.1) * Math.cos(angleSlice * 5 - Math.PI / 2))
+  //   .attr("class", "line")
+  //   .style("stroke", "white")
+  //   .style("stroke-width", "2px");
+
+  //   axis
+  //   .append("line")
+  //   .attr("x1", 0)
+  //   .attr("y1", 0)
+  //   .attr("x2", rScale(d3.mean(dataset, d => d.triglycerides) * 1.1) * Math.cos(angleSlice * 6 - Math.PI / 2))
+  //   .attr("y2", rScale(d3.mean(dataset, d => d.triglycerides) * 1.1) * Math.cos(angleSlice * 6 - Math.PI / 2))
+  //   .attr("class", "line")
+  //   .style("stroke", "white")
+  //   .style("stroke-width", "2px");
+  //   axis
+  //   .append("line")
+  //   .attr("x1", 0)
+  //   .attr("y1", 0)
+  //   .attr("x2", rScale(d3.mean(dataset, d => d.HDL) * 1.1) * Math.cos(angleSlice * 7 - Math.PI / 2))
+  //   .attr("y2", rScale(d3.mean(dataset, d => d.HDL) * 1.1) * Math.cos(angleSlice * 7 - Math.PI / 2))
+  //   .attr("class", "line")
+  //   .style("stroke", "white")
+  //   .style("stroke-width", "2px");
   //Append the labels at each axis
   axis
     .append("text")
@@ -168,7 +289,7 @@ function RadarChart(id, data, options) {
       return d;
     })
     .call(wrap, cfg.wrapWidth);
-
+  
   //The radial line function
   var radarLine = d3
     .lineRadial()

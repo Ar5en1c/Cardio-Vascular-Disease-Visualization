@@ -1,5 +1,5 @@
 // set the dimensions and bbl_margins of the graph
-const bbl_margin = { top: 50, right: 50, bottom: 50, left: 50 },
+const bbl_margin = { top: 50, right: 50, bottom: 50, left: 50},
   bbl_width = 500 - bbl_margin.left - bbl_margin.right,
   bbl_height = 320 - bbl_margin.top - bbl_margin.bottom;
 
@@ -14,11 +14,11 @@ const bbl_svg = d3
 
 //read data
 d3.csv(
-  "./data/dist_data.csv"
+  "./data/dis_data.csv"
 ).then(function (data) {
   // Get the different categories and count them
   const categories = [
-    'E780', 'E660', 'E785', 'E116', 'I10X'
+    'HYPERTENSION',	'DIABETES',	'HIGH CHOLESTEROL',	'OBESITY',	'RENAL'
   ];
   const n = categories.length;
 
@@ -68,7 +68,7 @@ d3.csv(
     .attr("x", -70)
     .attr("dy", ".75em")
     .attr("transform", "rotate(-90)")
-    .text("Diagnosis Codes")
+    .text("Disease Categories")
     .attr("fill", "white");
 
   // Create a Y scale for densities
@@ -98,7 +98,7 @@ d3.csv(
     );
     allDensity.push({ key: key, density: density });
   }
-  console.log(allMeans)
+  //console.log(allMeans)
   // Add areas
   bbl_svg
     .selectAll("areas")
