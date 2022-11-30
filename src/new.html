@@ -435,7 +435,6 @@
       d => d["label"]
     );
 
-  console.log(sumstat);
   const maxNum = Array.from(sumstat.values())
     .map((value, key) => d3.max(value.map(d => d.length)))
     .reduce((a, b) => a > b? a: b);
