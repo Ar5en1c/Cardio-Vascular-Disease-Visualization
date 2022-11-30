@@ -20,7 +20,7 @@ function draw_cood(data) {
   const line_color = d3
     .scaleOrdinal()
     .domain(["Juvenile", "Adult", "Elderly"])
-    .range(["#440154ff", "#21908dff", "#fde725ff"]);
+    .range(["#e8486d", "#43c1cc", "#ff6536"]);
 
   // Here I set the list of dimension manually to control the order of axis:
   dimensions = ["albumin", "creatinine", "hemoglobin", "triglycerides"];

@@ -14,7 +14,7 @@ const bld_svg = d3
 
 function draw_bp(data) {
   // Add X axis
-  bld_svg.selectAll("*").remove()
+  bld_svg.selectAll("*").remove();
   data = data.map(function (d) {
     return {
       systolic: d.systolic,
@@ -36,20 +36,26 @@ function draw_bp(data) {
   // Color scale: give me a specie name, I return a color
   const color = d3
     .scaleOrdinal()
-    .domain(["Normal", "pre-hypertension", "hypertension grade 1","hypertension grade 2","hypertension grade 3"])
+    .domain([
+      "Normal",
+      "pre-hypertension",
+      "hypertension grade 1",
+      "hypertension grade 2",
+      "hypertension grade 3",
+    ])
     .range(["#39e75f", "#FFF200", "#FFA500", "#ee2400", "#900000"]);
 
   // highlit the specie that is hovered
   const highlit = function (event, d) {
     selected_group = d.BP_Severity;
 
-    d3.selectAll(".dot")
+    d3.selectAll("_dot")
       .transition()
       .duration(200)
       .style("fill", "lightgrey")
       .attr("r", 3);
 
-    d3.selectAll("." + selected_group)
+    d3.selectAll("_" + selected_group)
       .transition()
       .duration(200)
       .style("fill", color(selected_group))
@@ -58,7 +64,7 @@ function draw_bp(data) {
 
   // highlit the specie that is hovered
   const doNothighlit = function (event, d) {
-    d3.selectAll(".dot")
+    d3.selectAll("_dot")
       .transition()
       .duration(200)
       .style("fill", (d) => color(d.BP_Severity))
@@ -87,4 +93,4 @@ function draw_bp(data) {
     })
     .on("mouseover", highlit)
     .on("mouseleave", doNothighlit);
-};
+}
