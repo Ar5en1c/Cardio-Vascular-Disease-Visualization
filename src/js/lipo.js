@@ -13,29 +13,37 @@ const lipo_svg = d3
   .attr("transform", `translate(${lipo_margin.left}, ${lipo_margin.top})`);
 
 //Read the data
-d3.csv(
-  "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv"
-).then(function (data) {
+function draw_lipo(data) {
   // Add X axis
-  const lipo_x = d3.scaleLinear().domain([4, 8]).range([0, lipo_width]);
+  lipo_svg.selectAll("*").remove()
+
+  data = data.map(function (d) {
+    return {
+      TC_HDL: d.TC_HDL,
+      LDL_HDL: d.LDL_HDL,
+      Lipoprotein_Risk: d.Lipoprotein_Risk,
+    };
+  });
+
+  const lipo_x = d3.scaleLinear().domain([0, 10]).range([0, lipo_width]);
   lipo_svg
     .append("g")
     .attr("transform", `translate(0, ${lipo_height})`)
     .call(d3.axisBottom(lipo_x));
 
   // Add Y axis
-  const lipo_y = d3.scaleLinear().domain([0, 9]).range([lipo_height, 0]);
+  const lipo_y = d3.scaleLinear().domain([0, 10]).range([lipo_height, 0]);
   lipo_svg.append("g").call(d3.axisLeft(lipo_y));
 
   // Color scale: give me a specie name, I return a color
   const color = d3
     .scaleOrdinal()
-    .domain(["setosa", "versicolor", "virginica"])
-    .range(["#440154ff", "#21908dff", "#fde725ff"]);
+    .domain(['LOW', 'MODERATE', 'HIGH', 'VERY HIGH', 'SEVERE'])
+    .range(["#39e75f", "#FFF200", "#FFA500", "#ee2400", "#900000"]);
 
   // highlight_lipo the specie that is hovered
   const highlight_lipo = function (event, d) {
-    selected_specie = d.Species;
+    s_group = d.Lipoprotein_Risk;
 
     d3.selectAll(".dot_lipo")
       .transition()
@@ -43,10 +51,10 @@ d3.csv(
       .style("fill", "lightgrey")
       .attr("r", 3);
 
-    d3.selectAll("." + selected_specie)
+    d3.selectAll("." + s_group)
       .transition()
       .duration(200)
-      .style("fill", color(selected_specie))
+      .style("fill", color(s_group))
       .attr("r", 7);
   };
 
@@ -55,7 +63,7 @@ d3.csv(
     d3.selectAll(".dot_lipo")
       .transition()
       .duration(200)
-      .style("fill", (d) => color(d.Species))
+      .style("fill", (d) => color(d.Lipoprotein_Risk))
       .attr("r", 5);
   };
 
@@ -67,18 +75,18 @@ d3.csv(
     .enter()
     .append("circle")
     .attr("class", function (d) {
-      return "dot_lipo " + d.Species;
+      return "dot_lipo " + d.Lipoprotein_Risk;
     })
     .attr("cx", function (d) {
-      return lipo_x(d.Sepal_Length);
+      return lipo_x(d.TC_HDL);
     })
     .attr("cy", function (d) {
-      return lipo_y(d.Petal_Length);
+      return lipo_y(d.LDL_HDL);
     })
     .attr("r", 5)
     .style("fill", function (d) {
-      return color(d.Species);
+      return color(d.Lipoprotein_Risk);
     })
     .on("mouseover", highlight_lipo)
     .on("mouseleave", doNothighlight_lipo);
-});
+};

@@ -23,7 +23,7 @@ function draw_cood(data) {
   const line_color = d3
     .scaleOrdinal()
     .domain(["Juvenile", "Adult", "Elderly"])
-    .range(["#440154ff", "#21908dff", "#fde725ff"]);
+    .range(["#e8486d", "#43c1cc", "#ff6536"]);
 
   // Here I set the list of dimension manually to control the order of axis:
   dimensions = ["albumin", "creatinine", "hemoglobin", "triglycerides"];
@@ -31,25 +31,13 @@ function draw_cood(data) {
   // For each dimension, I build a linear scale. I store all in a y object
   const y = {};
 
-  y['albumin'] = d3
-  .scaleLinear()
-  .domain([0,850])
-  .range([300, 50]);
+  y["albumin"] = d3.scaleLinear().domain([0, 850]).range([300, 50]);
 
-  y['creatinine'] = d3
-  .scaleLinear()
-  .domain([0,5])
-  .range([300, 50]);
+  y["creatinine"] = d3.scaleLinear().domain([0, 5]).range([300, 50]);
 
-  y['hemoglobin'] = d3
-  .scaleLinear()
-  .domain([0,700])
-  .range([300, 50]);
+  y["hemoglobin"] = d3.scaleLinear().domain([0, 700]).range([300, 50]);
 
-  y['triglycerides'] = d3
-  .scaleLinear()
-  .domain([0,1300])
-  .range([300, 50]);
+  y["triglycerides"] = d3.scaleLinear().domain([0, 1300]).range([300, 50]);
 
   // Build the X scale -> it find the best position for each Y axis
   const x = d3
@@ -58,34 +46,6 @@ function draw_cood(data) {
     .domain(dimensions);
 
   // Highlight the specie that is hovered
-  const highlight = function (event, d) {
-    selected_specie = d.age_group;
-
-    // first every group turns grey
-    d3.selectAll(".line")
-      .transition()
-      .duration(200)
-      .style("stroke", "lightgrey")
-      .style("opacity", "0.2");
-    // Second the hovered specie takes its line_color
-    d3.selectAll("" + selected_specie)
-      .transition()
-      .duration(200)
-      .style("stroke", line_color(selected_specie))
-      .style("opacity", "1");
-  };
-
-  // Unhighlight
-  const doNotHighlight = function (event, d) {
-    d3.selectAll(".line")
-      .transition()
-      .duration(200)
-      .delay(1000)
-      .style("stroke", function (d) {
-        return line_color(d.age_group);
-      })
-      .style("opacity", "1");
-  };
 
   // The path function take a row of the csv as input, and return x and y coordinates of the line to draw for this raw.
   function path(d) {
@@ -109,9 +69,9 @@ function draw_cood(data) {
     .style("stroke", function (d) {
       return line_color(d.age_group);
     })
-    .style("opacity", 0.5)
-    .on("mouseover", highlight)
-    .on("mouseleave", doNotHighlight);
+    .style("opacity", 0.5);
+  // .on("mouseover", highlight)
+  // .on("mouseleave", doNotHighlight);
 
   // Draw the axis:
   line_svg
