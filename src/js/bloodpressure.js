@@ -12,30 +12,36 @@ const bld_svg = d3
   .append("g")
   .attr("transform", `translate(${bld_margin.left}, ${bld_margin.top})`);
 
-//Read the data
-d3.csv(
-  "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv"
-).then(function (data) {
+function draw_bp(data) {
   // Add X axis
-  const x = d3.scaleLinear().domain([4, 8]).range([0, bld_width]);
+  bld_svg.selectAll("*").remove()
+  data = data.map(function (d) {
+    return {
+      systolic: d.systolic,
+      diastolic: d.diastolic,
+      BP_Severity: d.BP_Severity,
+    };
+  });
+
+  const x = d3.scaleLinear().domain([60, 230]).range([0, bld_width]);
   bld_svg
     .append("g")
     .attr("transform", `translate(0, ${bld_height})`)
     .call(d3.axisBottom(x));
 
   // Add Y axis
-  const y = d3.scaleLinear().domain([0, 9]).range([bld_height, 0]);
+  const y = d3.scaleLinear().domain([0, 220]).range([bld_height, 0]);
   bld_svg.append("g").call(d3.axisLeft(y));
 
   // Color scale: give me a specie name, I return a color
   const color = d3
     .scaleOrdinal()
-    .domain(["setosa", "versicolor", "virginica"])
-    .range(["#440154ff", "#21908dff", "#fde725ff"]);
+    .domain(["Normal", "pre-hypertension", "hypertension grade 1","hypertension grade 2","hypertension grade 3"])
+    .range(["#39e75f", "#FFF200", "#FFA500", "#ee2400", "#900000"]);
 
   // highlit the specie that is hovered
   const highlit = function (event, d) {
-    selected_specie = d.Species;
+    selected_group = d.BP_Severity;
 
     d3.selectAll(".dot")
       .transition()
@@ -43,10 +49,10 @@ d3.csv(
       .style("fill", "lightgrey")
       .attr("r", 3);
 
-    d3.selectAll("." + selected_specie)
+    d3.selectAll("." + selected_group)
       .transition()
       .duration(200)
-      .style("fill", color(selected_specie))
+      .style("fill", color(selected_group))
       .attr("r", 7);
   };
 
@@ -55,7 +61,7 @@ d3.csv(
     d3.selectAll(".dot")
       .transition()
       .duration(200)
-      .style("fill", (d) => color(d.Species))
+      .style("fill", (d) => color(d.BP_Severity))
       .attr("r", 5);
   };
 
@@ -67,18 +73,18 @@ d3.csv(
     .enter()
     .append("circle")
     .attr("class", function (d) {
-      return "dot " + d.Species;
+      return "dot " + d.BP_Severity;
     })
     .attr("cx", function (d) {
-      return x(d.Sepal_Length);
+      return x(d.systolic);
     })
     .attr("cy", function (d) {
-      return y(d.Petal_Length);
+      return y(d.diastolic);
     })
     .attr("r", 5)
     .style("fill", function (d) {
-      return color(d.Species);
+      return color(d.BP_Severity);
     })
     .on("mouseover", highlit)
     .on("mouseleave", doNothighlit);
-});
+};
