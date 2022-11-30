@@ -20,7 +20,7 @@ export default function filter_data(el) {
     var disease_val = disease.value;
     var code_val = disease_code.value;
     var data = dataset;
-    console.log('try', data)
+    // console.log('try', data)
     if (gender_val != "both" && gender_val != "select") {
         gender_val = gender_val.toUpperCase();
         data = data.filter(function (row) {
@@ -42,7 +42,7 @@ export default function filter_data(el) {
         });
     }
 
-    console.log("data", data);
+    // console.log("data", data);
     draw_bp(data);
     draw_cood(data);
 }
