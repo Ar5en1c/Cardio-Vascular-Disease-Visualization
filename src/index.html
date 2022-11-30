@@ -44,8 +44,9 @@
         dataset = await d3.csv("./data/final_data.csv");
         trend_data = await d3.csv("./data/trend.csv");
         default_trend = await d3.csv("./data/default_trend.csv");
-        // draw_bp(dataset);
+        draw_bp(dataset);
         draw_cood(dataset);
+        draw_lipo(dataset);
         // draw_trend(default_trend)
       }
       load_data();
@@ -94,6 +95,7 @@
         // console.log("data", data);
         draw_bp(data);
         draw_cood(data);
+        draw_lipo(data);
         // draw_trend(bubble_data);
       }
     </script>
