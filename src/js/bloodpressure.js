@@ -19,7 +19,7 @@ function draw_bp(data) {
     return {
       systolic: d.systolic,
       diastolic: d.diastolic,
-      BP_Severity: d.BP_Severity,
+      BP_Risk: d.BP_Risk,
     };
   });
 
@@ -41,7 +41,7 @@ function draw_bp(data) {
 
   // highlit the specie that is hovered
   const highlit = function (event, d) {
-    selected_group = d.BP_Severity;
+    selected_group = d.BP_Risk;
 
     d3.selectAll(".dot")
       .transition()
@@ -61,7 +61,7 @@ function draw_bp(data) {
     d3.selectAll(".dot")
       .transition()
       .duration(200)
-      .style("fill", (d) => color(d.BP_Severity))
+      .style("fill", (d) => color(d.BP_Risk))
       .attr("r", 5);
   };
 
@@ -73,7 +73,7 @@ function draw_bp(data) {
     .enter()
     .append("circle")
     .attr("class", function (d) {
-      return "dot " + d.BP_Severity;
+      return "dot " + d.BP_Risk;
     })
     .attr("cx", function (d) {
       return x(d.systolic);
@@ -83,7 +83,7 @@ function draw_bp(data) {
     })
     .attr("r", 5)
     .style("fill", function (d) {
-      return color(d.BP_Severity);
+      return color(d.BP_Risk);
     })
     .on("mouseover", highlit)
     .on("mouseleave", doNothighlit);
