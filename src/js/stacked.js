@@ -1,5 +1,5 @@
 // set the dimensions and margins of the graph
-const margin_sb = { top: 50, right: 50, bottom: 40, left: 50 },
+const margin_sb = { top: 50, right: 50, bottom: 60, left: 50 },
   width_sb = 500 - margin_sb.left - margin_sb.right,
   height_sb = 320 - margin_sb.top - margin_sb.bottom;
 
@@ -11,6 +11,26 @@ const svgStacked = d3
   .attr("height", height_sb + margin_sb.top + margin_sb.bottom)
   .append("g")
   .attr("transform", `translate(70,70)`);
+
+svgStacked
+  .append("text")
+  .attr("class", "x label")
+  .attr("text-anchor", "end")
+  .attr("x", width_sb - 180)
+  .attr("y", height_sb + 35)
+  .text("Centers")
+  .attr("fill", "white");
+
+svgStacked
+  .append("text")
+  .attr("class", "y label")
+  .attr("text-anchor", "end")
+  .attr("y", -60)
+  .attr("x", -70)
+  .attr("dy", ".75em")
+  .attr("transform", "rotate(-90)")
+  .text("Count")
+  .attr("fill", "white");
 
 // Parse the Data
 async function draw_stacked() {
