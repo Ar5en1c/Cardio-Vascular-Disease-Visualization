@@ -53,10 +53,22 @@ d3.csv(
   // Add X axis label:
   bbl_svg
     .append("text")
+    .attr("class", "x label")
     .attr("text-anchor", "end")
     .attr("x", bbl_width - 200)
     .attr("y", bbl_height + 30)
     .text("Age")
+    .attr("fill", "white");
+
+  bbl_svg
+    .append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("y", -60)
+    .attr("x", -70)
+    .attr("dy", ".75em")
+    .attr("transform", "rotate(-90)")
+    .text("Diagnosis Codes")
     .attr("fill", "white");
 
   // Create a Y scale for densities
