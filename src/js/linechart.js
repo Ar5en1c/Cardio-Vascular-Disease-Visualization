@@ -129,11 +129,11 @@ function draw_cood(data) {
     // Add axis title
     .append("text")
     .style("text-anchor", "middle")
-    .attr("y", -9)
+    .attr("y", 40)
     .text(function (d) {
       return d;
     })
-    .style("fill", "black");
+    .style("fill", "white");
 
   line_svg
     .append("text")
