@@ -1,137 +1,84 @@
-const bp_svg = d3.select("#blood_pressure").append("svg");
-function draw_bp(dataset) {
-  // console.log("blood");
-  bp_svg.selectAll("*").remove();
-  const xAccessor = (d) => Number(d.systolic);
-  const yAccessor = (d) => Number(d.diastolic);
+// set the dimensions and bld_margins of the graph
+const bld_margin = { top: 50, right: 50, bottom: 40, left: 50 },
+  bld_width = 500 - bld_margin.left - bld_margin.right,
+  bld_height = 320 - bld_margin.top - bld_margin.bottom;
 
-  let dimensions = {
-    width: 500,
-    height: 320,
-    margin: {
-      top: 50,
-      bottom: 40,
-      left: 50,
-      right: 50,
-    },
-  };
+// append the bld_svg object to the body of the page
+const bld_svg = d3
+  .select("#blood_pressure")
+  .append("svg")
+  .attr("width", bld_width + bld_margin.left + bld_margin.right)
+  .attr("height", bld_height + bld_margin.top + bld_margin.bottom)
+  .append("g")
+  .attr("transform", `translate(${bld_margin.left}, ${bld_margin.top})`);
 
-  dimensions.containerWidth =
-    dimensions.width - dimensions.margin.left - dimensions.margin.right;
-  dimensions.containerHeight =
-    dimensions.height - dimensions.margin.top - dimensions.margin.bottom;
-
-  // -1- Create a bld_tooltip div that is hidden by default:
-  const bld_tooltip = d3
-    .select("#blood_pressure")
-    .append("div")
-    .style("opacity", 0)
-    .attr("class", "tooltip")
-    .attr("style", "position: absolute; opacity: 0;")
-    .style("background-color", "black")
-    .style("border-radius", "5px")
-    .style("padding", "10px")
-    .style("color", "white");
-
-  // -2- Create 3 functions to show / update (when mouse move but stay on same circle) / hide the bld_tooltip
-  const showbld_tooltip = function (event, d) {
-    bld_tooltip.transition().duration(200);
-    bld_tooltip
-      .style("opacity", 1)
-      .html("Systolic: " + d.systolic + "<br>" + "Diastolic: " + d.diastolic)
-      .style("left", event.x / 2 + "px")
-      .style("top", event.y / 2 + 30 + "px");
-  };
-  const movebld_tooltip = function (event, d) {
-    bld_tooltip.style("left", event.x + "px").style("top", event.y + 10 + "px");
-  };
-  const hidebld_tooltip = function (event, d) {
-    bld_tooltip.transition().duration(200).style("opacity", 0);
-  };
-
-  bp_svg.attr("width", dimensions.width).attr("height", dimensions.height);
-
-  const container = bp_svg
+//Read the data
+d3.csv(
+  "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv"
+).then(function (data) {
+  // Add X axis
+  const x = d3.scaleLinear().domain([4, 8]).range([0, bld_width]);
+  bld_svg
     .append("g")
-    .attr(
-      "transform",
-      `translate(${dimensions.margin.left}, ${dimensions.margin.top})`
-    );
+    .attr("transform", `translate(0, ${bld_height})`)
+    .call(d3.axisBottom(x));
 
-  const xScale = d3
-    .scaleLinear()
-    .domain([0, 230])
-    .clamp(true)
-    .range([0, dimensions.containerWidth]);
+  // Add Y axis
+  const y = d3.scaleLinear().domain([0, 9]).range([bld_height, 0]);
+  bld_svg.append("g").call(d3.axisLeft(y));
 
-  const yScale = d3
-    .scaleLinear()
-    .domain([0, 180])
-    .clamp(true)
-    .range([dimensions.containerHeight, 0]);
+  // Color scale: give me a specie name, I return a color
+  const color = d3
+    .scaleOrdinal()
+    .domain(["setosa", "versicolor", "virginica"])
+    .range(["#440154ff", "#21908dff", "#fde725ff"]);
 
-  var colorRange = d3.scaleLinear().domain([50, 180]).range(["green", "red"]);
+  // highlit the specie that is hovered
+  const highlit = function (event, d) {
+    selected_specie = d.Species;
 
-  container
-    .selectAll("circle")
-    .data(dataset)
-    .join("circle")
-    .attr("r", 5)
-    .attr("fill", function (d) {
-      return colorRange(Number(d.systolic));
+    d3.selectAll(".dot")
+      .transition()
+      .duration(200)
+      .style("fill", "lightgrey")
+      .attr("r", 3);
+
+    d3.selectAll("." + selected_specie)
+      .transition()
+      .duration(200)
+      .style("fill", color(selected_specie))
+      .attr("r", 7);
+  };
+
+  // highlit the specie that is hovered
+  const doNothighlit = function (event, d) {
+    d3.selectAll(".dot")
+      .transition()
+      .duration(200)
+      .style("fill", (d) => color(d.Species))
+      .attr("r", 5);
+  };
+
+  // Add dots
+  bld_svg
+    .append("g")
+    .selectAll("dot")
+    .data(data)
+    .enter()
+    .append("circle")
+    .attr("class", function (d) {
+      return "dot " + d.Species;
     })
-    .attr("opacity", 0.3)
-    .attr("cx", (d) => xScale(xAccessor(d)))
-    .attr("cy", (d) => yScale(yAccessor(d)))
-    .on("mouseover", showbld_tooltip)
-    .on("mousemove", movebld_tooltip)
-    .on("mouseleave", hidebld_tooltip);
-
-  // Axes
-  const xAxis = d3.axisBottom(xScale);
-
-  const xAxisGroup = container
-    .append("g")
-    .call(xAxis)
-    .style("transform", `translateY(${dimensions.containerHeight}px)`)
-    .classed("axis", true);
-
-  // already positioned at bottom
-  xAxisGroup
-    .append("text")
-    .attr("x", dimensions.containerWidth / 2)
-    .attr("y", dimensions.margin.bottom - 10)
-    .attr("fill", "white")
-    .text("Systolic (mmHg)");
-
-  const yAxis = d3.axisLeft(yScale);
-
-  const yAxisGroup = container.append("g").call(yAxis).classed("axis", true);
-
-  yAxisGroup
-    .append("text")
-    .attr("x", -dimensions.containerHeight / 2)
-    .attr("y", -dimensions.margin.left + 15)
-    .attr("fill", "white")
-    .html("Diastolic (mmHg)")
-    .style("transform", "rotate(270deg)")
-    .style("text-anchor", "middle");
-
-  bp_svg
-    .append("text")
-    .attr("x", dimensions.width / 2)
-    .attr("y", dimensions.margin.top - 30)
-    .attr("text-anchor", "middle")
-    .attr("fill", "white")
-    .style("font-size", "16px")
-    .style("text-decoration", "underline")
-    .text("Systolic vs Diastolic B.P.");
-
-  // container.append('rect')
-  //   .attr('x', 0 + dimensions.margin.left - 15)
-  //   .attr('y', 10 + dimensions.containerHeight - dimensions.margin.bottom + 10 )
-  //   .attr('width', 100)
-  //   .attr('height', 100)
-  //   .attr('stroke', 'black')
-  //   .attr('fill', '#blue')
-}
+    .attr("cx", function (d) {
+      return x(d.Sepal_Length);
+    })
+    .attr("cy", function (d) {
+      return y(d.Petal_Length);
+    })
+    .attr("r", 5)
+    .style("fill", function (d) {
+      return color(d.Species);
+    })
+    .on("mouseover", highlit)
+    .on("mouseleave", doNothighlit);
+});

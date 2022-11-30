@@ -44,7 +44,7 @@
         dataset = await d3.csv("./data/final_data.csv");
         trend_data = await d3.csv("./data/trend.csv");
         default_trend = await d3.csv("./data/default_trend.csv");
-        draw_bp(dataset);
+        // draw_bp(dataset);
         draw_cood(dataset);
         // draw_trend(default_trend)
       }
@@ -204,8 +204,8 @@
         RadarChart("#radar_plot", data, radarChartOptions);
       </script>
 
-      <div class="div4" id="scatter_matrix">
-        <svg id="violin"></svg>
+      <div class="div4" id="lipo">
+        <!-- <svg id="violin"></svg> -->
       </div>
       <!-- <div class="div5" id="heat_map"></div> -->
       <div class="div6" id="bubble">
@@ -214,11 +214,11 @@
       <!-- <div class="div7" id="animated_barplot"></div> -->
       <div class="div8" id="stack_plot"></div>
     </div>
-    <!-- <script src="./js/new.js"></script> -->
+    <script src="./js/lipo.js"></script>
     <script type="text/javascript" src="./js/stacked.js"></script>
     <script type="text/javascript" src="js/bubble.js"></script>
     <script type="text/javascript" src="js/linechart.js"></script>
-    <script type="text/javascript" src="js/voilin_scatter_copy.js"></script>
+    <!-- <script type="text/javascript" src="js/voilin_scatter_copy.js"></script> -->
     <!-- <script type="text/javascript" src="js/radar.js"></script> -->
     <script type="text/javascript" src="./js/bloodpressure.js "></script>
     <!-- <script src="./js/heatmap.js"></script> -->
