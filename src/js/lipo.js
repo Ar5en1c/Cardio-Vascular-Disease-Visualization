@@ -15,7 +15,7 @@ const lipo_svg = d3
 //Read the data
 function draw_lipo(data) {
   // Add X axis
-  lipo_svg.selectAll("*").remove()
+  lipo_svg.selectAll("*").remove();
 
   data = data.map(function (d) {
     return {
@@ -38,8 +38,8 @@ function draw_lipo(data) {
   // Color scale: give me a specie name, I return a color
   const color = d3
     .scaleOrdinal()
-    .domain(['LOW', 'MODERATE', 'HIGH', 'VERY HIGH', 'SEVERE'])
-    .range(["#39e75f", "#FFF200", "#FFA500", "#ee2400", "#900000"]);
+    .domain(["LOW", "MODERATE", "HIGH", "VERY HIGH", "SEVERE"])
+    .range(["#ea698b", "#c05299", "#973aa8", "#6d23b6", "#571089"]);
 
   // highlight_lipo the specie that is hovered
   const highlight_lipo = function (event, d) {
@@ -89,4 +89,79 @@ function draw_lipo(data) {
     })
     .on("mouseover", highlight_lipo)
     .on("mouseleave", doNothighlight_lipo);
-};
+
+  lipo_svg
+    .append("circle")
+    .attr("cx", 350)
+    .attr("cy", 15)
+    .attr("r", 7)
+    .style("fill", "#900000");
+  lipo_svg
+    .append("text")
+    .attr("x", 365)
+    .attr("y", 15)
+    .text("SEVERE")
+    .attr("fill", "white")
+    .style("font-size", "12px")
+    .attr("alignment-baseline", "middle");
+
+  lipo_svg
+    .append("circle")
+    .attr("cx", 350)
+    .attr("cy", 30)
+    .attr("r", 7)
+    .style("fill", "#ee2400");
+  lipo_svg
+    .append("text")
+    .attr("x", 365)
+    .attr("y", 30)
+    .text("VERY HIGH")
+    .attr("fill", "white")
+    .style("font-size", "12px")
+    .attr("alignment-baseline", "middle");
+
+  lipo_svg
+    .append("circle")
+    .attr("cx", 350)
+    .attr("cy", 45)
+    .attr("r", 7)
+    .style("fill", "#FFA500");
+  lipo_svg
+    .append("text")
+    .attr("x", 365)
+    .attr("y", 45)
+    .text("HIGH")
+    .attr("fill", "white")
+    .style("font-size", "12px")
+    .attr("alignment-baseline", "middle");
+
+  lipo_svg
+    .append("circle")
+    .attr("cx", 350)
+    .attr("cy", 60)
+    .attr("r", 7)
+    .style("fill", "#FFF200");
+  lipo_svg
+    .append("text")
+    .attr("x", 365)
+    .attr("y", 60)
+    .text("MODERATE")
+    .attr("fill", "white")
+    .style("font-size", "12px")
+    .attr("alignment-baseline", "middle");
+
+  lipo_svg
+    .append("circle")
+    .attr("cx", 350)
+    .attr("cy", 75)
+    .attr("r", 7)
+    .style("fill", "#39e75f");
+  lipo_svg
+    .append("text")
+    .attr("x", 365)
+    .attr("y", 75)
+    .text("LOW")
+    .attr("fill", "white")
+    .style("font-size", "12px")
+    .attr("alignment-baseline", "middle");
+}

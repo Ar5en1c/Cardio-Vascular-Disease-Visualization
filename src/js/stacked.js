@@ -131,21 +131,21 @@ async function draw_stacked() {
   svgStacked
     .append("rect")
     .attr("x", 350)
-    .attr("y", 20)
+    .attr("y", 10)
     .attr("width", 10)
     .attr("height", 10)
     .style("fill", "#ff6536");
   svgStacked
     .append("rect")
     .attr("x", 350)
-    .attr("y", 50)
+    .attr("y", 30)
     .attr("width", 10)
     .attr("height", 10)
     .style("fill", "#43c1cc");
   svgStacked
     .append("text")
     .attr("x", 370)
-    .attr("y", 25)
+    .attr("y", 15)
     .attr("fill", "white")
     .text("Elderly")
     .style("font-size", "15px")
@@ -153,7 +153,7 @@ async function draw_stacked() {
   svgStacked
     .append("text")
     .attr("x", 370)
-    .attr("y", 55)
+    .attr("y", 35)
     .text("Adult")
     .attr("fill", "white")
     .style("font-size", "15px")
@@ -162,14 +162,14 @@ async function draw_stacked() {
   svgStacked
     .append("rect")
     .attr("x", 350)
-    .attr("y", 80)
+    .attr("y", 50)
     .attr("width", 10)
     .attr("height", 10)
     .style("fill", "#e8486d");
   svgStacked
     .append("text")
     .attr("x", 370)
-    .attr("y", 85)
+    .attr("y", 55)
     .text("Juvenile")
     .attr("fill", "white")
     .style("font-size", "15px")
