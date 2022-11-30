@@ -21,7 +21,7 @@ function draw_lipo(data) {
     return {
       TC_HDL: d.TC_HDL,
       LDL_HDL: d.LDL_HDL,
-      RISK_TC_HDL: d.RISK_TC_HDL,
+      Lipoprotein_Risk: d.Lipoprotein_Risk,
     };
   });
 
@@ -43,7 +43,7 @@ function draw_lipo(data) {
 
   // highlight_lipo the specie that is hovered
   const highlight_lipo = function (event, d) {
-    s_group = d.RISK_TC_HDL;
+    s_group = d.Lipoprotein_Risk;
 
     d3.selectAll(".dot_lipo")
       .transition()
@@ -63,7 +63,7 @@ function draw_lipo(data) {
     d3.selectAll(".dot_lipo")
       .transition()
       .duration(200)
-      .style("fill", (d) => color(d.RISK_TC_HDL))
+      .style("fill", (d) => color(d.Lipoprotein_Risk))
       .attr("r", 5);
   };
 
@@ -75,7 +75,7 @@ function draw_lipo(data) {
     .enter()
     .append("circle")
     .attr("class", function (d) {
-      return "dot_lipo " + d.RISK_TC_HDL;
+      return "dot_lipo " + d.Lipoprotein_Risk;
     })
     .attr("cx", function (d) {
       return lipo_x(d.TC_HDL);
@@ -85,7 +85,7 @@ function draw_lipo(data) {
     })
     .attr("r", 5)
     .style("fill", function (d) {
-      return color(d.RISK_TC_HDL);
+      return color(d.Lipoprotein_Risk);
     })
     .on("mouseover", highlight_lipo)
     .on("mouseleave", doNothighlight_lipo);
