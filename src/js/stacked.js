@@ -126,6 +126,36 @@ async function draw_stacked() {
     .attr("fill", "white")
     .style("text-decoration", "underline")
     .text("CVD Diseases Distribution vs centers");
+
+  // Handmade legend
+  svgStacked
+    .append("rect")
+    .attr("x", 350)
+    .attr("y", 20)
+    .attr("width", 10)
+    .attr("height", 10)
+    .style("fill", "#69b3a2");
+  svgStacked
+    .append("rect")
+    .attr("x", 350)
+    .attr("y", 50)
+    .attr("width", 10)
+    .attr("height", 10)
+    .style("fill", "#404080");
+  svgStacked
+    .append("text")
+    .attr("x", 370)
+    .attr("y", 25)
+    .text("Elderly")
+    .style("font-size", "15px")
+    .attr("alignment-baseline", "middle");
+  svgStacked
+    .append("text")
+    .attr("x", 370)
+    .attr("y", 55)
+    .text("Adult")
+    .style("font-size", "15px")
+    .attr("alignment-baseline", "middle");
 }
 
 draw_stacked();
