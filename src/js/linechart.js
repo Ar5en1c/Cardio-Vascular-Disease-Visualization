@@ -1,24 +1,21 @@
 const line_svg = d3.select("#linegraph").append("svg");
 function draw_cood(data) {
-  // console.log("linechart");
   line_svg.selectAll("*").remove();
   data = data.map(function (d) {
     return {
-      cholesterol: d.cholesterol,
+      albumin: d.microalbuminuria,
       creatinine: d.creatinine,
-      glycemia: d.glycemia,
+      hemoglobin: d.glycated_hemoglobin,
       triglycerides: d.triglycerides,
       age_group: d.age_group,
     };
   });
-
   line_svg
     .attr("width", 500)
     .attr("height", 320)
     .append("g")
     .attr("transform", `translate(60,60)`);
 
-  // console.log('data', data)
   // line_color scale: give me a specie name, I return a line_color
   const line_color = d3
     .scaleOrdinal()
@@ -26,19 +23,31 @@ function draw_cood(data) {
     .range(["#440154ff", "#21908dff", "#fde725ff"]);
 
   // Here I set the list of dimension manually to control the order of axis:
-  dimensions = ["cholesterol", "creatinine", "glycemia", "triglycerides"];
+  dimensions = ["albumin", "creatinine", "hemoglobin", "triglycerides"];
 
   // For each dimension, I build a linear scale. I store all in a y object
   const y = {};
-  for (i in dimensions) {
-    col = dimensions[i];
-    y[col] = d3
-      .scaleLinear()
-      .domain([0, 2000]) //.domain( [d3.extent(data, function(d) { return +d[name]; })] )
-      //.domain( [d3.extent(data, function(d) { return +d[col]; })] )
-      .range([300, 50]);
-  }
-  // console.log('y: ', y)
+
+  y['albumin'] = d3
+  .scaleLinear()
+  .domain([0,850])
+  .range([300, 50]);
+
+  y['creatinine'] = d3
+  .scaleLinear()
+  .domain([0,5])
+  .range([300, 50]);
+
+  y['hemoglobin'] = d3
+  .scaleLinear()
+  .domain([0,700])
+  .range([300, 50]);
+
+  y['triglycerides'] = d3
+  .scaleLinear()
+  .domain([0,1300])
+  .range([300, 50]);
+
   // Build the X scale -> it find the best position for each Y axis
   const x = d3
     .scalePoint()
