@@ -55,7 +55,7 @@ function draw_bp(data) {
     .attr("height", bld_height)
     .attr("x", 0)
     .attr("y", 0);
-  
+
   bld_svg
     .append("circle")
     .attr("cx", 350)
@@ -137,7 +137,7 @@ function draw_bp(data) {
     .extent([
       [0, 0],
       [bld_width, bld_height],
-    ]) 
+    ])
     .on("end", updateChart);
 
   // Create the scatter variable: where both the circles and the brush take place
@@ -212,4 +212,34 @@ function draw_bp(data) {
         });
     });
   }
+  bld_svg
+    .append("text")
+    .attr("x", bld_width / 2)
+    .attr("y", -30)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .attr("fill", "white")
+    .style("text-decoration", "underline")
+    .text("Bloodpressure Distrbution");
+
+  bld_svg
+    .append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("y", -45)
+    .attr("x", -80)
+    .attr("dy", ".75em")
+    .attr("transform", "rotate(-90)")
+    .text("Diastolic")
+    .attr("fill", "white");
+
+  bld_svg
+    .append("text")
+    .attr("class", "x label")
+    .attr("text-anchor", "middle")
+    .attr("y", 250)
+    .attr("x", 180)
+    .attr("dy", ".75em")
+    .text("Systolic")
+    .attr("fill", "white");
 }
