@@ -54,7 +54,7 @@ body {
 
 .filter_area {
   height: 30px;
-  width: 800px;
+  width: max-content;
   display: flex;
   /* position: relative; */
   top: 0%;
@@ -64,6 +64,7 @@ body {
   justify-items: stretch;
   justify-content: space-between;
   justify-self: stretch;
+  gap: 3px
 }
 
 .parent {

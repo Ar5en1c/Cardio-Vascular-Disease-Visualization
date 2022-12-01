@@ -13,9 +13,15 @@ const bbl_svg = d3
   .attr("transform", `translate(80, 60)`);
 
 //read data
-d3.csv("./data/dist_data.csv").then(function (data) {
+d3.csv("./data/dis_data.csv").then(function (data) {
   // Get the different categories and count them
-  const categories = ["E780", "E660", "E785", "E116", "I10X"];
+  const categories = [
+    "HYPERTENSION",
+    "DIABETES",
+    "HIGH CHOLESTEROL",
+    "OBESITY",
+    "RENAL",
+  ];
   const n = categories.length;
 
   // Compute the mean of each group
@@ -64,7 +70,7 @@ d3.csv("./data/dist_data.csv").then(function (data) {
     .attr("x", -70)
     .attr("dy", ".75em")
     .attr("transform", "rotate(-90)")
-    .text("Diagnosis Codes")
+    .text("Disease Categories")
     .attr("fill", "white");
 
   // Create a Y scale for densities

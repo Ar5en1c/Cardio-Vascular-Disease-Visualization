@@ -36,11 +36,10 @@
     var dataset;
     async function load_data() {
       dataset = await d3.csv("./data/final_data.csv");
-      trend_data = await d3.csv("./data/trend.csv");
-      default_trend = await d3.csv("./data/default_trend.csv");
       draw_bp(dataset);
       draw_cood(dataset);
       draw_lipo(dataset);
+      RadarChart("#radar_plot", dataset);
       // draw_trend(default_trend)
     }
     load_data();
@@ -55,58 +54,80 @@
       disease = document.getElementById("diseases").value;
       gender = document.getElementById("gender").value;
       disease_code = document.getElementById("disease_code").value;
+
       var gender_val = gender;
       var disease_val = disease;
       var code_val = disease_code;
       var data = dataset;
       // console.log("try", gender);
-      var bubble_data = trend_data;
+      //var bubble_data = trend_data;
       //console.log("try", gender);
 
-      var codes;
-      if (disease === "hypertension") {
-        codes = ['select','I10X','I151','I152','I158','I159'];
-      } else if (disease == "diabetes"){
-        codes = ['select','E100','E101','E102','E103','E104','E105']
-      } else if (disease == "obesity"){
-        codes = ['select','E660','E661','E662','E668','E669']
-      } else {
-        codes = ['select','I10X','I151','I152','I158','I159','E100','E101','E102','E103','E104','E105','E660','E661','E662','E668','E669']
-      }
-      var str = ""
-      for (var c of codes) {
-        str += "<option value=\"" + c + "\">" + c + "</option>"
-      }
-      document.getElementById("disease_code").innerHTML = str;
+      var dia_dict = {
+        "select":"select",
+        "I10X": 'ESSENTIAL (PRIMARY) HYPERTENSION', 
+        "I151": 'HYPERTENSION SECONDARY TO OTHER KIDNEY DISORDERS', 
+        "I152": 'HYPERTENSION SECONDARY TO ENDOCRINE DISORDERS', 
+        "I158": 'OTHER TYPES OF SECONDARY HYPERTENSION', 
+        "I159": 'SECONDARY HYPERTENSION-UNSPECIFIED',
+        "E100": 'INSULIN-DEPENDENT DIABETES MELLITUS-WITH COMA', 
+        "E101": 'INSULIN-DEPENDENT DIABETES MELLITUS-WITH CETOACID CONDITIONS-CONCERNED CONDITIONS Renal', 
+        "E102": 'diabetes mellitus insulin-dependent- with ophthalmic complications', 
+        "E103": 'diabetes mellitus insulin-dependent- with neurological complications', 
+        "E104": 'diabetes mellitus insulin-dependent- with peripheral circulatory complications', 
+        "E105": 'diabetes mellitus insulin-dependent- with other specified complications',
+        "E660": 'OBESITY DUE TO EXCESS CALORIES', 
+        "E661" : 'DRUG-INDUCED OBESITY', 
+        "E662" : 'EXTREME OBESITY WITH ALVEOLAR HYPOVENTILATION', 
+        "E668" : 'OTHER TYPES OF OBESITY',
+        "E669" : 'OBESITY- UNSPECIFIED'
+    };
 
-      if (gender_val != "both" && gender_val != "select") {
-        gender_val = gender_val.toUpperCase();
-        data = data.filter(function (row) {
-          return row.SEX == gender_val;
-        });
-      }
+    var codes;
+    if (disease === "hypertension") {
+      codes = ['select', 'I10X', 'I151', 'I152', 'I158', 'I159'];
+    } else if (disease == "diabetes") {
+      codes = ['select', 'E100', 'E101', 'E102', 'E103', 'E104', 'E105']
+    } else if (disease == "obesity") {
+      codes = ['select', 'E660', 'E661', 'E662', 'E668', 'E669']
+    } else {
+      codes = ['select', 'I10X', 'I151', 'I152', 'I158', 'I159', 'E100', 'E101', 'E102', 'E103', 'E104', 'E105', 'E660', 'E661', 'E662', 'E668', 'E669']
+    }
+    var str = ""
+    for (var c of codes) {
+      str += "<option value=\"" + c + "\">" + dia_dict[c] + "</option>"
+    }
+    document.getElementById("disease_code").innerHTML = str;
 
-      if (disease_val != "both" && disease_val != "select") {
-        disease_val = disease_val.toUpperCase();
-        data = data.filter(function (row) {
-          return row.disease_cat == disease_val;
-        });
-      }
+    if (gender_val != "both" && gender_val != "select") {
+      gender_val = gender_val.toUpperCase();
+      data = data.filter(function (row) {
+        return row.SEX == gender_val;
+      });
+    }
 
-      if (code_val != "both" && code_val != "select") {
-        code_val = code_val.toUpperCase();
-        data = data.filter(function (row) {
-          return row.Diagnosis_Code == code_val;
-        });
-        bubble_data = bubble_data.filter(function (row) {
-          return row.Diagnosis_Code == code_val;
-        });
-      }
+    if (disease_val != "both" && disease_val != "select") {
+      disease_val = disease_val.toUpperCase();
+      data = data.filter(function (row) {
+        return row.disease_cat == disease_val;
+      });
+    }
+
+    if (code_val != "both" && code_val != "select") {
+      code_val = code_val.toUpperCase();
+      data = data.filter(function (row) {
+        return row.Diagnosis_Code == code_val;
+      });
+      bubble_data = bubble_data.filter(function (row) {
+        return row.Diagnosis_Code == code_val;
+      });
+    }
 
       // console.log("data", data);
       draw_bp(data);
       draw_cood(data);
       draw_lipo(data);
+      RadarChart("#radar_plot", data);
       // draw_trend(bubble_data);
     }
   </script>
@@ -151,7 +172,7 @@
     </div>
   </div>
 
-  <script src="./js/radar.js"></script>
+  <script type="text/javascript" src="./js/radar.js"></script>
   <div class="parent">
     <div class="div1" id="linegraph">
       <!-- <img src="images/stack_plot.png" /> -->
@@ -165,58 +186,21 @@
       //////////////////////// Set-Up //////////////////////////////
       //////////////////////////////////////////////////////////////
 
-      var margin = { top: 50, right: 50, bottom: 40, left: 50 },
-        width = 400,
-        height = 300;
+        
 
-      //////////////////////////////////////////////////////////////
-      ////////////////////////// Data //////////////////////////////
-      //////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////
+        ////////////////////////// Data //////////////////////////////
+        //////////////////////////////////////////////////////////////
 
-      var data = [
-        [
-          //Samsung
-          { axis: "Albumin", value: 0.29 },
-          { axis: "creatinine", value: 0.18 },
-          { axis: "Hemoglobin", value: 0.22 },
-          { axis: "Cholestrol", value: 0.12 },
-          { axis: "BMI", value: 0.18 },
-          { axis: "Glycemia", value: 0.05 },
-          { axis: "Triglycerides", value: 0.25 },
-          { axis: "HDL", value: 0.4 },
-        ],
-        [
-          //Nokia Smartphone
-          { axis: "Albumin", value: 0.2 },
-          { axis: "creatinine", value: 0.22 },
-          { axis: "Hemoglobin", value: 0.2 },
-          { axis: "Cholestrol", value: 0.1 },
-          { axis: "BMI", value: 0.14 },
-          { axis: "Glycemia", value: 0.07 },
-          { axis: "Triglycerides", value: 0.15 },
-          { axis: "HDL", value: 0.2 },
-        ],
-      ];
-      //////////////////////////////////////////////////////////////
-      //////////////////// Draw the Chart //////////////////////////
-      //////////////////////////////////////////////////////////////
+        
+        //////////////////////////////////////////////////////////////
+        //////////////////// Draw the Chart //////////////////////////
+        //////////////////////////////////////////////////////////////
 
-      var radar_color = d3
-        .scaleOrdinal()
-        .range(["#EDC951", "#CC333F", "#00A0B0"]);
-
-      var radarChartOptions = {
-        w: width,
-        h: height,
-        margin: margin,
-        maxValue: 0.5,
-        levels: 5,
-        roundStrokes: true,
-        color: radar_color,
-      };
-      //Call function to draw the Radar chart
-      RadarChart("#radar_plot", data, radarChartOptions);
-    </script>
+        
+        //Call function to draw the Radar chart
+        
+      </script>
 
     <div class="div4" id="lipo">
       <!-- <svg id="violin"></svg> -->
@@ -228,7 +212,7 @@
     <!-- <div class="div7" id="animated_barplot"></div> -->
     <div class="div8" id="stack_plot"></div>
   </div>
-  <script src="./js/lipo.js"></script>
+  <script type="text/javascript" src="./js/lipo.js"></script>
   <script type="text/javascript" src="./js/stacked.js"></script>
   <script type="text/javascript" src="js/bubble.js"></script>
   <script type="text/javascript" src="js/linechart.js"></script>
@@ -239,10 +223,6 @@
   <!-- <script src="./js/scatter.js"></script> -->
   <!-- <script type='module' src="./js/filter.js"></script> -->
 
-  <!-- End Documents
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <!-- <script src="./js/lib/d3.min.js"></script> -->
-  <!-- <script src="https://d3js.org/topojson.v2.min.js"></script> -->
 </body>
 
 </html>
