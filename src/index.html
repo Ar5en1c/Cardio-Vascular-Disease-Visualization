@@ -36,8 +36,6 @@
     var dataset;
     async function load_data() {
       dataset = await d3.csv("./data/final_data.csv");
-      trend_data = await d3.csv("./data/trend.csv");
-      default_trend = await d3.csv("./data/default_trend.csv");
       draw_bp(dataset);
       draw_cood(dataset);
       draw_lipo(dataset);
@@ -61,7 +59,7 @@
       var code_val = disease_code;
       var data = dataset;
       // console.log("try", gender);
-      var bubble_data = trend_data;
+      //var bubble_data = trend_data;
       //console.log("try", gender);
 
       var codes;
@@ -99,15 +97,16 @@
         data = data.filter(function (row) {
           return row.Diagnosis_Code == code_val;
         });
-        bubble_data = bubble_data.filter(function (row) {
-          return row.Diagnosis_Code == code_val;
-        });
+        // bubble_data = bubble_data.filter(function (row) {
+        //   return row.Diagnosis_Code == code_val;
+        // });
       }
 
       // console.log("data", data);
       draw_bp(data);
       draw_cood(data);
       draw_lipo(data);
+      RadarChart("#radar_plot", data);
       // draw_trend(bubble_data);
     }
   </script>
@@ -152,7 +151,7 @@
     </div>
   </div>
 
-  <script src="./js/radar.js"></script>
+  <script type="text/javascript" src="./js/radar.js"></script>
   <div class="parent">
     <div class="div1" id="linegraph">
       <!-- <img src="images/stack_plot.png" /> -->
@@ -192,7 +191,7 @@
     <!-- <div class="div7" id="animated_barplot"></div> -->
     <div class="div8" id="stack_plot"></div>
   </div>
-  <script src="./js/lipo.js"></script>
+  <script type="text/javascript" src="./js/lipo.js"></script>
   <script type="text/javascript" src="./js/stacked.js"></script>
   <script type="text/javascript" src="js/bubble.js"></script>
   <script type="text/javascript" src="js/linechart.js"></script>
@@ -203,10 +202,6 @@
   <!-- <script src="./js/scatter.js"></script> -->
   <!-- <script type='module' src="./js/filter.js"></script> -->
 
-  <!-- End Documents
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <!-- <script src="./js/lib/d3.min.js"></script> -->
-  <!-- <script src="https://d3js.org/topojson.v2.min.js"></script> -->
 </body>
 
 </html>

@@ -3,46 +3,54 @@ var radar_margin = { top: 50, right: 50, bottom: 40, left: 50 },
           radar_height = 300;
 
 
+     
 function RadarChart(id, dataset) {
-  const rdr_svg = d3.select("#radar_plot").append("svg").attr("width", 500)
-.attr("height", 320)
-.attr("class", "radar" + '#radar_plot');
-  //console.log('data', d3.mean(dataset, d => d.systolic))
+  //rdr_svg.selectAll("*").remove();
+  d3.select(id).select("svg").remove();
+  const rdr_svg = d3.select("#radar_plot").append("svg"); 
+  rdr_svg.attr("width", 500)
+          .attr("height", 320)
+          .attr("class", "radar" + id);
+  console.log('hemo', d3.mean(dataset, d => d.glycated_hemoglobin))
+  console.log(rdr_svg)
+
+  d3.mean(dataset, d => d.microalbuminuria)
   var data = [
     [
+      //Nokia Smartphone
+      { axis: "Albumin", value: 30 },
+      { axis: "Creatinine", value: 0.8 },
+      { axis: "Hemoglobin", value: 80 },
+      { axis: "Cholestrol", value: 180 },
+      { axis: "BMI", value: 22 },
+      { axis: "Glycemia", value: 90 },
+      { axis: "Triglycerides", value: 150 },
+      { axis: "HDL", value: 60 },
+    ],
+    [
       //Samsun
-      { axis: "Albumin", value: d3.mean(dataset, d => d.microalbuminuria)},
-      { axis: "creatinine", value: d3.mean(dataset, d => d.creatinine) },
+      { axis: "Albumin", value: ((d3.mean(dataset, d => d.microalbuminuria)))},
+      { axis: "Creatinine", value: d3.mean(dataset, d => d.creatinine) },
       { axis: "Hemoglobin", value: d3.mean(dataset, d => d.glycated_hemoglobin) },
       { axis: "Cholestrol", value: d3.mean(dataset, d => d.cholesterol) },
-      { axis: "BMI", value: d3.mean(dataset, d => d.BMI) },
+      { axis: "BMI", value: ((d3.mean(dataset, d => d.BMI)) * 10000) },
       { axis: "Glycemia", value: d3.mean(dataset, d => d.glycemia) },
       { axis: "Triglycerides", value: d3.mean(dataset, d => d.triglycerides) },
       { axis: "HDL", value: d3.mean(dataset, d => d.HDL) },
     ],
-    [
-      //Nokia Smartphone
-      { axis: "Albumin", value: 100 },
-      { axis: "creatinine", value: 100 },
-      { axis: "Hemoglobin", value: 100 },
-      { axis: "Cholestrol", value: 100 },
-      { axis: "BMI", value: 100 },
-      { axis: "Glycemia", value: 100 },
-      { axis: "Triglycerides", value: 100 },
-      { axis: "HDL", value: 100 },
-    ],
+   
   ];
-
+  console.log('datar',data)
   var radar_color = d3
           .scaleOrdinal()
-          .range(["#EDC951", "#CC333F", "#00A0B0"]);
+          .range(["green", '#bc6c25', "green", '#bc6c25']);
 
         var options = {
           w: radar_width,
           h: radar_height,
           margin: radar_margin,
           maxValue: 0.5,
-          levels: 5,
+          levels: 4,
           roundStrokes: true,
           color: radar_color,
         };
@@ -55,13 +63,25 @@ function RadarChart(id, dataset) {
     maxValue: 0, //What is the value that the biggest circle will represent
     labelFactor: 1.25, //How much farther than the radius of the outer circle should the labels be placed
     wrapWidth: 60, //The number of pixels after which a label needs to be given a new line
-    opacityArea: 0.35, //The opacity of the area of the blob
+    opacityArea: 0.8, //The opacity of the area of the blob
     dotRadius: 4, //The size of the colored circles of each blog
     opacityCircles: 0.1, //The opacity of the circles of each blob
     strokeWidth: 2, //The width of the stroke around each blob
     roundStrokes: false, //If true the area and stroke will follow a round path (cardinal-closed)
     color: d3.scaleOrdinal(d3.schemeCategory10), //Color function
   };
+
+  var scaleList = [
+  
+    [0, 15, 30, 45, 60],//"Albumin"
+    [0, 0.5, 1, 1.5, 2],//"Creatinine"
+    [0, 25, 50, 75, 100],//"Hemoglobin":
+    [0, 75, 150, 225, 300],//"Cholesterol"
+    [0, 12, 24, 36, 50],//"BMI":
+    [0, 50, 100, 150, 200],//"Glycemia"
+    [0, 125, 250, 375, 500],//"Triglycerides"
+    [0, 50, 100, 150, 200],//"HDL"
+  ];
 
   //Put all of the options into a variable called cfg
   if ("undefined" !== typeof options) {
@@ -89,11 +109,11 @@ function RadarChart(id, dataset) {
     }), //Names of each axis
     total = allAxis.length, //The number of different axes
     radius = Math.min(cfg.w / 3, cfg.h / 2.8), //Radius of the outermost circle
-    Format = d3.format(""), //Percentage formatting
+    Format = d3.format(".1f"), //Percentage formatting
     angleSlice = (Math.PI * 2) / total; //The width in radians of each "slice"
-  console.log('max', maxValue)
+  //console.log('max', maxValue)
   //Scale for the radius
-  var rScale = d3.scaleLinear().range([0, radius]).domain([0, maxValue]);
+  //var rScale = d3.scaleLinear().range([0, radius]).domain([0, maxValue]);
 
   //Remove whatever chart with the same id/class was present before
   // d3.select("#radar_plot").select("rdr_svg").remove();
@@ -149,24 +169,35 @@ function RadarChart(id, dataset) {
     .style("fill-opacity", cfg.opacityCircles)
     .style("filter", "url(#glow)");
 
-  //Text indicating at what % each level is
-  axisGrid
-    .selectAll(".axisLabel")
-    .data(d3.range(1, cfg.levels + 1).reverse())
-    .enter()
-    .append("text")
-    .attr("class", "axisLabel")
-    .attr("x", 4)
-    .attr("y", function (d) {
-      return (-d * radius) / cfg.levels;
-    })
-    .attr("dy", "0.4em")
-    .style("font-size", "10px")
-    .attr("fill", "white")
-    .text(function (d, i) {
-      return Format((maxValue * d) / cfg.levels);
-    });
-    console.log('ax',allAxis)
+  // //Text indicating at what % each level is
+  // axisGrid
+  //   .selectAll(".axisLabel")
+  //   .data(d3.range(1, cfg.levels + 1).reverse())
+  //   .enter()
+  //   .append("text")
+  //   .attr("class", "axisLabel")
+  //   .attr("x", 4)
+  //   .attr("y", function (d) {
+  //     return (-d * radius) / cfg.levels;
+  //   })
+  //   .attr("dy", "0.4em")
+  //   .style("font-size", "10px")
+  //   .attr("fill", "white")
+  //   .text(function (d, i) {
+  //     return Format((maxValue * d) / cfg.levels);
+  //   });
+    //console.log('ax',allAxis)
+
+    var rScaleList = [
+      d3.scaleLinear().range([0, radius]).domain([0, (scaleList[0])[4]]),//"Length"
+      d3.scaleLinear().range([0, radius]).domain([0, (scaleList[1])[4]]),//"Width"
+      d3.scaleLinear().range([0, radius]).domain([0, (scaleList[2])[4]]),//"Wheel base":
+      d3.scaleLinear().range([0, radius]).domain([0, (scaleList[3])[4]]),//"Retail price"
+      d3.scaleLinear().range([0, radius]).domain([0, (scaleList[4])[4]]),//"Engine size":
+      d3.scaleLinear().range([0, radius]).domain([0, (scaleList[5])[4]]),
+      d3.scaleLinear().range([0, radius]).domain([0, (scaleList[6])[4]]),
+      d3.scaleLinear().range([0, radius]).domain([0, (scaleList[7])[4]]),//"HorsePower"
+    ];
   //Create the straight lines radiating outward from the center
   var axis = axisGrid
     .selectAll(".axis")
@@ -174,6 +205,43 @@ function RadarChart(id, dataset) {
     .enter()
     .append("g")
     .attr("class", "axis");
+
+  //scale
+  for (let echelleNumero = 0; echelleNumero < 8; echelleNumero++) {
+    axis.append("text")
+      .attr("class", "textscale")
+      .style("font-size", "10px")
+      .attr("fill", "#737373")
+      .data(scaleList[echelleNumero])
+      .attr("x", 4) // decale echelle  en abscisse
+      .attr("dy", "-8")
+      .attr("y", function (d, i) { return (-(radius) * i) / scaleList[echelleNumero].length; }) // gere espacement entre données en y 
+      .attr("transform", function (d, i) {
+        var angleI = angleSlice * (echelleNumero) * 180 / Math.PI;   // the angle to rotate the label
+        var flip = (angleI < 90 || angleI > 270) ? false : true; // 180 if label needs to be flipped
+        if (flip == true) {
+
+          return "rotate(" + (angleI) + ")";
+
+        } else {
+
+          return "rotate(" + (angleI) + ")";
+
+
+        }
+
+      })
+      .text(function (d) {
+        if (echelleNumero == 0) {
+          return Format(d);
+        } else {
+          if (d != 0) {
+            return Format(d);
+          } else { return; }
+        }
+
+      });
+  }
   //Append the lines
     
   axis
@@ -181,90 +249,16 @@ function RadarChart(id, dataset) {
     .attr("x1", 0)
     .attr("y1", 0)
     .attr("x2", function (d, i) {
-      return rScale(maxValue * 1.1) * Math.cos(angleSlice * i - Math.PI / 2);
+      return radius * Math.cos(angleSlice * i - Math.PI / 2);
     })
     .attr("y2", function (d, i) {
-      return rScale(maxValue * 1.1) * Math.sin(angleSlice * i - Math.PI / 2);
+      return radius * Math.sin(angleSlice * i - Math.PI / 2);
     })
     .attr("class", "line")
     .style("stroke", "white")
     .style("stroke-width", "2px");
  
-  // axis
-  //   .append("line")
-  //   .attr("x1", 0)
-  //   .attr("y1", 0)
-  //   .attr("x2", rScale(d3.mean(dataset, d => d.microalbuminuria) * 1.1) * Math.cos(angleSlice * 0 - Math.PI / 2))
-  //   .attr("y2", rScale(d3.mean(dataset, d => d.microalbuminuria) * 1.1) * Math.cos(angleSlice * 0 - Math.PI / 2))
-  //   .attr("class", "line")
-  //   .style("stroke", "white")
-  //   .style("stroke-width", "2px");
-  // axis
-  //   .append("line")
-  //   .attr("x1", 0)
-  //   .attr("y1", 0)
-  //   .attr("x2", rScale(d3.mean(dataset, d => d.creatinine) * 1.1) * Math.cos(angleSlice * 1 - Math.PI / 2))
-  //   .attr("y2", rScale(d3.mean(dataset, d => d.creatinine) * 1.1) * Math.cos(angleSlice * 1 - Math.PI / 2))
-  //   .attr("class", "line")
-  //   .style("stroke", "white")
-  //   .style("stroke-width", "2px");
-
-  // axis
-  //   .append("line")
-  //   .attr("x1", 0)
-  //   .attr("y1", 0)
-  //   .attr("x2", rScale(d3.mean(dataset, d => d.glycated_hemoglobin) * 1.1) * Math.cos(angleSlice * 2 - Math.PI / 2))
-  //   .attr("y2", rScale(d3.mean(dataset, d => d.glycated_hemoglobin) * 1.1) * Math.cos(angleSlice * 2 - Math.PI / 2))
-  //   .attr("class", "line")
-  //   .style("stroke", "white")
-  //   .style("stroke-width", "2px");
-
-  // axis
-  //   .append("line")
-  //   .attr("x1", 0)
-  //   .attr("y1", 0)
-  //   .attr("x2", rScale(d3.mean(dataset, d => d.cholesterol) * 1.1) * Math.cos(angleSlice * 3 - Math.PI / 2))
-  //   .attr("y2", rScale(d3.mean(dataset, d => d.cholesterol) * 1.1) * Math.cos(angleSlice * 3 - Math.PI / 2))
-  //   .attr("class", "line")
-  //   .style("stroke", "white")
-  //   .style("stroke-width", "2px");
-  //   axis
-  //   .append("line")
-  //   .attr("x1", 0)
-  //   .attr("y1", 0)
-  //   .attr("x2", rScale(d3.mean(dataset, d => d.BMI) * 1.1) * Math.cos(angleSlice * 4 - Math.PI / 2))
-  //   .attr("y2", rScale(d3.mean(dataset, d => d.BMI) * 1.1) * Math.cos(angleSlice * 4 - Math.PI / 2))
-  //   .attr("class", "line")
-  //   .style("stroke", "white")
-  //   .style("stroke-width", "2px");
-  //   axis
-  //   .append("line")
-  //   .attr("x1", 0)
-  //   .attr("y1", 0)
-  //   .attr("x2", rScale(d3.mean(dataset, d => d.glycemia) * 1.1) * Math.cos(angleSlice * 5 - Math.PI / 2))
-  //   .attr("y2", rScale(d3.mean(dataset, d => d.glycemia) * 1.1) * Math.cos(angleSlice * 5 - Math.PI / 2))
-  //   .attr("class", "line")
-  //   .style("stroke", "white")
-  //   .style("stroke-width", "2px");
-
-  //   axis
-  //   .append("line")
-  //   .attr("x1", 0)
-  //   .attr("y1", 0)
-  //   .attr("x2", rScale(d3.mean(dataset, d => d.triglycerides) * 1.1) * Math.cos(angleSlice * 6 - Math.PI / 2))
-  //   .attr("y2", rScale(d3.mean(dataset, d => d.triglycerides) * 1.1) * Math.cos(angleSlice * 6 - Math.PI / 2))
-  //   .attr("class", "line")
-  //   .style("stroke", "white")
-  //   .style("stroke-width", "2px");
-  //   axis
-  //   .append("line")
-  //   .attr("x1", 0)
-  //   .attr("y1", 0)
-  //   .attr("x2", rScale(d3.mean(dataset, d => d.HDL) * 1.1) * Math.cos(angleSlice * 7 - Math.PI / 2))
-  //   .attr("y2", rScale(d3.mean(dataset, d => d.HDL) * 1.1) * Math.cos(angleSlice * 7 - Math.PI / 2))
-  //   .attr("class", "line")
-  //   .style("stroke", "white")
-  //   .style("stroke-width", "2px");
+  
   //Append the labels at each axis
   axis
     .append("text")
@@ -275,13 +269,13 @@ function RadarChart(id, dataset) {
     .attr("dy", "1px")
     .attr("x", function (d, i) {
       return (
-        rScale(maxValue * cfg.labelFactor) *
+        (radius * 1.3) *
         Math.cos(angleSlice * i - Math.PI / 2)
       );
     })
     .attr("y", function (d, i) {
       return (
-        rScale(maxValue * cfg.labelFactor) *
+        (radius * 1.1) *
         Math.sin(angleSlice * i - Math.PI / 2)
       );
     })
@@ -294,8 +288,8 @@ function RadarChart(id, dataset) {
   var radarLine = d3
     .lineRadial()
     .curve(d3.curveLinearClosed)
-    .radius(function (d) {
-      return rScale(d.value);
+    .radius(function (d, i) {
+      return rScaleList[i](d.value);
     })
     .angle(function (d, i) {
       return i * angleSlice;
@@ -366,10 +360,10 @@ function RadarChart(id, dataset) {
     .attr("class", "radarCircle")
     .attr("r", cfg.dotRadius)
     .attr("cx", function (d, i) {
-      return rScale(d.value) * Math.cos(angleSlice * i - Math.PI / 2);
+      return rScaleList[i](d.value) * Math.cos(angleSlice * i - Math.PI / 2);
     })
     .attr("cy", function (d, i) {
-      return rScale(d.value) * Math.sin(angleSlice * i - Math.PI / 2);
+      return rScaleList[i](d.value) * Math.sin(angleSlice * i - Math.PI / 2);
     })
     .style("fill", function (d, i, j) {
       return cfg.color(j);
@@ -395,10 +389,10 @@ function RadarChart(id, dataset) {
     .attr("class", "radarInvisibleCircle")
     .attr("r", cfg.dotRadius * 1.5)
     .attr("cx", function (d, i) {
-      return rScale(d.value) * Math.cos(angleSlice * i - Math.PI / 2);
+      return rScaleList[i](d.value) * Math.cos(angleSlice * i - Math.PI / 2);
     })
     .attr("cy", function (d, i) {
-      return rScale(d.value) * Math.sin(angleSlice * i - Math.PI / 2);
+      return rScaleList[i](d.value) * Math.sin(angleSlice * i - Math.PI / 2);
     })
     .style("fill", "none")
     .style("pointer-events", "all")
