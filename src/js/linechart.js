@@ -1,6 +1,6 @@
 var line_margin = { top: 50, right: 50, bottom: 40, left: 50 },
-          line_width = 400,
-          line_height = 300;
+  line_width = 400,
+  line_height = 300;
 const line_svg = d3.select("#linegraph").append("svg");
 function draw_cood(data) {
   line_svg.selectAll("*").remove();
@@ -106,5 +106,5 @@ function draw_cood(data) {
     .style("font-size", "16px")
     .style("text-decoration", "underline")
     .attr("fill", "white")
-    .text("Protien Levels vs Age Group");
+    .text("Protein Levels vs Age Group");
 }

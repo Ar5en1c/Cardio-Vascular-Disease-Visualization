@@ -164,4 +164,37 @@ function draw_lipo(data) {
     .attr("fill", "white")
     .style("font-size", "12px")
     .attr("alignment-baseline", "middle");
+
+  lipo_svg
+    .append("text")
+    .attr("x", lipo_width / 2)
+    .attr("y", -30)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .attr("fill", "white")
+    .style("text-decoration", "underline")
+    .text("Lipo Protien Ratio Distribution");
+
+  lipo_svg
+    .append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "middle")
+    .attr("y", -45)
+    .attr("x", -100)
+    .style("font-size", "11px")
+    .attr("dy", ".75em")
+    .attr("transform", "rotate(-90)")
+    .text("Low Density Lipoprotein / High Density Lipoprotein")
+    .attr("fill", "white");
+
+  lipo_svg
+    .append("text")
+    .attr("class", "x label")
+    .attr("text-anchor", "middle")
+    .attr("y", 250)
+    .attr("x", 180)
+    .style("font-size", "11px")
+    .attr("dy", ".75em")
+    .text("Total Cholestrol / High Density Lipoprotein ")
+    .attr("fill", "white");
 }

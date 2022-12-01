@@ -10,7 +10,6 @@
   <meta name="description" content="Cardiovascular Disease Visualization" />
   <meta name="author" content="Kuldeep Singh, Nikita Thakur and Aditya Ranganathan" />
 
-
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -23,7 +22,6 @@
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="stylesheet" href="css/normalize.css" />
-
 
   <script>
     var dataset;
@@ -40,52 +38,74 @@
     var gender = "select";
     var disease_code = "select";
 
-
     function filter_data(el) {
       disease = document.getElementById("diseases").value;
       gender = document.getElementById("gender").value;
       disease_code = document.getElementById("disease_code").value;
 
+      temp_code = disease_code;
       var gender_val = gender;
       var disease_val = disease;
       var code_val = disease_code;
       var data = dataset;
 
-
       var dia_dict = {
-        "select": "select",
-        "I10X": 'ESSENTIAL (PRIMARY) HYPERTENSION',
-        "I151": 'HYPERTENSION SECONDARY TO OTHER KIDNEY DISORDERS',
-        "I152": 'HYPERTENSION SECONDARY TO ENDOCRINE DISORDERS',
-        "I158": 'OTHER TYPES OF SECONDARY HYPERTENSION',
-        "I159": 'SECONDARY HYPERTENSION-UNSPECIFIED',
-        "E100": 'INSULIN-DEPENDENT DIABETES MELLITUS-WITH COMA',
-        "E101": 'INSULIN-DEPENDENT DIABETES MELLITUS-WITH CETOACID CONDITIONS-CONCERNED CONDITIONS Renal',
-        "E102": 'diabetes mellitus insulin-dependent- with ophthalmic complications',
-        "E103": 'diabetes mellitus insulin-dependent- with neurological complications',
-        "E104": 'diabetes mellitus insulin-dependent- with peripheral circulatory complications',
-        "E105": 'diabetes mellitus insulin-dependent- with other specified complications',
-        "E660": 'OBESITY DUE TO EXCESS CALORIES',
-        "E661": 'DRUG-INDUCED OBESITY',
-        "E662": 'EXTREME OBESITY WITH ALVEOLAR HYPOVENTILATION',
-        "E668": 'OTHER TYPES OF OBESITY',
-        "E669": 'OBESITY- UNSPECIFIED'
+        select: "select",
+        I10X: "ESSENTIAL (PRIMARY) HYPERTENSION",
+        I151: "HYPERTENSION SECONDARY TO OTHER KIDNEY DISORDERS",
+        I152: "HYPERTENSION SECONDARY TO ENDOCRINE DISORDERS",
+        I158: "OTHER TYPES OF SECONDARY HYPERTENSION",
+        I159: "SECONDARY HYPERTENSION-UNSPECIFIED",
+        E100: "INSULIN-DEPENDENT DIABETES MELLITUS-WITH COMA",
+        E101: "INSULIN-DEPENDENT DIABETES MELLITUS-WITH CETOACID CONDITIONS-CONCERNED CONDITIONS Renal",
+        E102: "diabetes mellitus insulin-dependent- with ophthalmic complications",
+        E103: "diabetes mellitus insulin-dependent- with neurological complications",
+        E104: "diabetes mellitus insulin-dependent- with peripheral circulatory complications",
+        E105: "diabetes mellitus insulin-dependent- with other specified complications",
+        E660: "OBESITY DUE TO EXCESS CALORIES",
+        E661: "DRUG-INDUCED OBESITY",
+        E662: "EXTREME OBESITY WITH ALVEOLAR HYPOVENTILATION",
+        E668: "OTHER TYPES OF OBESITY",
+        E669: "OBESITY- UNSPECIFIED",
       };
 
       var codes;
       if (disease === "hypertension") {
-        codes = ['select', 'I10X', 'I151', 'I152', 'I158', 'I159'];
+        codes = ["select", "I10X", "I151", "I152", "I158", "I159"];
       } else if (disease == "diabetes") {
-        codes = ['select', 'E100', 'E101', 'E102', 'E103', 'E104', 'E105']
+        codes = ["select", "E100", "E101", "E102", "E103", "E104", "E105"];
       } else if (disease == "obesity") {
-        codes = ['select', 'E660', 'E661', 'E662', 'E668', 'E669']
+        codes = ["select", "E660", "E661", "E662", "E668", "E669"];
       } else {
-        codes = ['select', 'I10X', 'I151', 'I152', 'I158', 'I159', 'E100', 'E101', 'E102', 'E103', 'E104', 'E105', 'E660', 'E661', 'E662', 'E668', 'E669']
+        codes = [
+          "select",
+          "I10X",
+          "I151",
+          "I152",
+          "I158",
+          "I159",
+          "E100",
+          "E101",
+          "E102",
+          "E103",
+          "E104",
+          "E105",
+          "E660",
+          "E661",
+          "E662",
+          "E668",
+          "E669",
+        ];
       }
-      var str = ""
+      var str = "";
       for (var c of codes) {
-        str += "<option value=\"" + c + "\">" + dia_dict[c] + "</option>"
+        if (c == temp_code) {
+          str += '<option value="' + c + '" selected>' + dia_dict[c].toUpperCase() + "</option>";
+        } else {
+        str += '<option value="' + c + '">' + dia_dict[c].toUpperCase() + "</option>";
+        }
       }
+
       document.getElementById("disease_code").innerHTML = str;
 
       if (gender_val != "both" && gender_val != "select") {
@@ -129,17 +149,16 @@
       <div>
         <label for="diseases">select a disease</label>
         <select name="diseases" id="diseases" onchange="filter_data(this)">
-          <option value="select">Select</option>
+          <option value="select" selected>Select</option>
           <option value="hypertension">Hypertension</option>
           <option value="diabetes">Diabetes</option>
           <option value="obesity">Obesity</option>
-          <option value="high cholesterol">High cholesterol</option>
         </select>
       </div>
       <div>
         <label for="gender">select a gender</label>
         <select name="gender" id="gender" onchange="filter_data(this)">
-          <option value="select">Select</option>
+          <option value="select" selected>Select</option>
           <option value="male">Male</option>
           <option value="female">Female</option>
           <option value="both">Both</option>
@@ -148,7 +167,7 @@
       <div>
         <label for="disease">select a disease code</label>
         <select name="disease" id="disease_code" onchange="filter_data(this)">
-          <option value="select">Select</option>
+          <option value="select" selected>Select</option>
         </select>
       </div>
     </div>
@@ -162,8 +181,7 @@
     <div class="div2" id="blood_pressure"></div>
     <div class="div3" id="radar_plot"></div>
 
-    <div class="div4" id="lipo">
-    </div>
+    <div class="div4" id="lipo"></div>
     <div class="div6" id="bubble">
       <div id="bubble_1"></div>
     </div>
@@ -174,7 +192,6 @@
   <script type="text/javascript" src="js/ridge.js"></script>
   <script type="text/javascript" src="js/linechart.js"></script>
   <script type="text/javascript" src="./js/bloodpressure.js "></script>
-
 </body>
 
 </html>
