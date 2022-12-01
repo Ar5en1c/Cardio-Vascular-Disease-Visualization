@@ -24,20 +24,17 @@ function RadarChart(id, dataset) {
       { axis: "HDL", value: 60 },
     ],
     [
-      { axis: "Albumin", value: d3.mean(dataset, (d) => d.microalbuminuria) },
-      { axis: "Creatinine", value: d3.mean(dataset, (d) => d.creatinine) },
-      {
-        axis: "Hemoglobin",
-        value: d3.mean(dataset, (d) => d.glycated_hemoglobin),
-      },
-      { axis: "Cholestrol", value: d3.mean(dataset, (d) => d.cholesterol) },
-      { axis: "BMI", value: d3.mean(dataset, (d) => d.BMI) * 10000 },
-      { axis: "Glycemia", value: d3.mean(dataset, (d) => d.glycemia) },
-      {
-        axis: "Triglycerides",
-        value: d3.mean(dataset, (d) => d.triglycerides),
-      },
-      { axis: "HDL", value: d3.mean(dataset, (d) => d.HDL) },
+
+      
+      { axis: "Albumin", value: d3.mean(dataset, d => d.microalbuminuria)},
+      { axis: "Creatinine", value: d3.mean(dataset, d => d.creatinine) },
+      { axis: "Hemoglobin", value: d3.mean(dataset, d => d.glycated_hemoglobin) },
+      { axis: "Cholestrol", value: d3.mean(dataset, d => d.cholesterol) },
+      { axis: "BMI", value: d3.mean(dataset, d => d.bmi) },
+      { axis: "Glycemia", value: d3.mean(dataset, d => d.glycemia) },
+      { axis: "Triglycerides", value: d3.mean(dataset, d => d.triglycerides) },
+      { axis: "HDL", value: d3.mean(dataset, d => d.HDL) },
+
     ],
   ];
 
@@ -72,14 +69,17 @@ function RadarChart(id, dataset) {
   };
 
   var scaleList = [
-    [0, 15, 30, 45, 60], //"Albumin"
-    [0, 0.5, 1, 1.5, 2], //"Creatinine"
-    [0, 25, 50, 75, 100], //"Hemoglobin":
-    [0, 75, 150, 225, 300], //"Cholesterol"
-    [0, 12, 24, 36, 50], //"BMI":
-    [0, 50, 100, 150, 200], //"Glycemia"
-    [0, 125, 250, 375, 500], //"Triglycerides"
-    [0, 50, 100, 150, 200], //"HDL"
+
+  
+    [0, 25, 50, 75, 100],//"Albumin"
+    [0, 0.5, 1, 1.5, 2],//"Creatinine"
+    [0, 25, 50, 75, 100],//"Hemoglobin":
+    [0, 75, 150, 225, 300],//"Cholesterol"
+    [0, 25, 50, 75, 100],//"BMI":
+    [0, 50, 100, 150, 200],//"Glycemia"
+    [0, 125, 250, 375, 500],//"Triglycerides"
+    [0, 50, 100, 150, 200],//"HDL"
+
   ];
 
   //Put all of the options into a variable called cfg
@@ -356,7 +356,7 @@ function RadarChart(id, dataset) {
     })
     .style("fill", "none")
     .style("pointer-events", "all")
-    .on("mouseover", function (d, i) {
+    .on("mouseover", function (d) {
       newX = parseFloat(d3.select(this).attr("cx")) - 10;
       newY = parseFloat(d3.select(this).attr("cy")) - 10;
 
