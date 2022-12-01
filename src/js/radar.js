@@ -33,7 +33,7 @@ function RadarChart(id, dataset) {
       { axis: "Creatinine", value: d3.mean(dataset, d => d.creatinine) },
       { axis: "Hemoglobin", value: d3.mean(dataset, d => d.glycated_hemoglobin) },
       { axis: "Cholestrol", value: d3.mean(dataset, d => d.cholesterol) },
-      { axis: "BMI", value: ((d3.mean(dataset, d => d.BMI)) * 10000) },
+      { axis: "BMI", value: ((d3.mean(dataset, d => d.BMI)) * 1000) },
       { axis: "Glycemia", value: d3.mean(dataset, d => d.glycemia) },
       { axis: "Triglycerides", value: d3.mean(dataset, d => d.triglycerides) },
       { axis: "HDL", value: d3.mean(dataset, d => d.HDL) },
@@ -396,7 +396,7 @@ function RadarChart(id, dataset) {
     })
     .style("fill", "none")
     .style("pointer-events", "all")
-    .on("mouseover", function (d, i) {
+    .on("mouseover", function (d) {
       newX = parseFloat(d3.select(this).attr("cx")) - 10;
       newY = parseFloat(d3.select(this).attr("cy")) - 10;
 
