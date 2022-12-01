@@ -66,7 +66,7 @@ function draw_cood(data) {
     .style("stroke", function (d) {
       return line_color(d.age_group);
     })
-    .style("opacity", 0.5);
+    .style("opacity", 0.7);
   // .on("mouseover", highlight)
   // .on("mouseleave", doNotHighlight);
 
