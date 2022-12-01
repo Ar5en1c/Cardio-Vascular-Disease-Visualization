@@ -12,15 +12,10 @@
       content="Kuldeep Singh, Nikita Thakur and Aditya Ranganathan"
     />
 
-    <!-- <script type="text/javascript" src="./js/radar.js"></script> -->
-
     <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://d3js.org/d3.v7.min.js" charset="utf-8"></script>
-    <!-- <script src="https://d3js.org/d3.v4.js"></script> -->
-    <!-- <script src="https://d3js.org/d3.v7.min.js" charset="utf-8"></script> -->
-    <!-- <script src="https://d3js.org/d3.v4.js"></script> -->
 
     <!-- FONT
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -34,10 +29,6 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
     <link rel="stylesheet" href="css/normalize.css" />
 
-    <!-- Favicon
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <!--<link rel="icon" type="image/png" href="images/favicon.png" /> -->
-
     <script>
       var dataset;
       async function load_data() {
@@ -46,15 +37,12 @@
         draw_cood(dataset);
         draw_lipo(dataset);
         RadarChart("#radar_plot", dataset);
-        // draw_trend(default_trend)
       }
       load_data();
-      // filter values
+
       var disease = "select";
       var gender = "select";
       var disease_code = "select";
-
-      // console.log(disease);
 
       function filter_data(el) {
         disease = document.getElementById("diseases").value;
@@ -65,9 +53,6 @@
         var disease_val = disease;
         var code_val = disease_code;
         var data = dataset;
-        // console.log("try", gender);
-        //var bubble_data = trend_data;
-        //console.log("try", gender);
 
         var dia_dict = {
           select: "select",
@@ -147,12 +132,10 @@
           });
         }
 
-        // console.log("data", data);
         draw_bp(data);
         draw_cood(data);
         draw_lipo(data);
         RadarChart("#radar_plot", data);
-        // draw_trend(bubble_data);
       }
     </script>
   </head>
@@ -186,11 +169,6 @@
           <label for="disease">select a disease code</label>
           <select name="disease" id="disease_code" onchange="filter_data(this)">
             <option value="select">Select</option>
-            <!-- <option value="select">Select</option>
-            <option value="E100">E100</option>
-            <option value="I10X">I10X</option>
-            <option value="O102">O102</option>
-            <option value="D-124">D-124</option> -->
           </select>
         </div>
       </div>
@@ -199,47 +177,21 @@
     <script type="text/javascript" src="./js/radar.js"></script>
     <div class="parent">
       <div class="div1" id="linegraph">
-        <!-- <img src="images/stack_plot.png" /> -->
         <div id="bubble_1"></div>
       </div>
       <div class="div2" id="blood_pressure"></div>
       <div class="div3" id="radar_plot"></div>
 
-      <script>
-        //////////////////////////////////////////////////////////////
-        //////////////////////// Set-Up //////////////////////////////
-        //////////////////////////////////////////////////////////////
-
-        //////////////////////////////////////////////////////////////
-        ////////////////////////// Data //////////////////////////////
-        //////////////////////////////////////////////////////////////
-
-        //////////////////////////////////////////////////////////////
-        //////////////////// Draw the Chart //////////////////////////
-        //////////////////////////////////////////////////////////////
-
-        //Call function to draw the Radar chart
-      </script>
-
-      <div class="div4" id="lipo">
-        <!-- <svg id="violin"></svg> -->
-      </div>
-      <!-- <div class="div5" id="heat_map"></div> -->
+      <div class="div4" id="lipo"></div>
       <div class="div6" id="bubble">
         <div id="bubble_1"></div>
       </div>
-      <!-- <div class="div7" id="animated_barplot"></div> -->
       <div class="div8" id="stack_plot"></div>
     </div>
     <script type="text/javascript" src="./js/lipo.js"></script>
     <script type="text/javascript" src="./js/stacked.js"></script>
-    <script type="text/javascript" src="js/bubble.js"></script>
+    <script type="text/javascript" src="js/ridge.js"></script>
     <script type="text/javascript" src="js/linechart.js"></script>
-    <!-- <script type="text/javascript" src="js/voilin_scatter_copy.js"></script> -->
-    <!-- <script type="text/javascript" src="js/radar.js"></script> -->
     <script type="text/javascript" src="./js/bloodpressure.js "></script>
-    <!-- <script src="./js/heatmap.js"></script> -->
-    <!-- <script src="./js/scatter.js"></script> -->
-    <!-- <script type='module' src="./js/filter.js"></script> -->
   </body>
 </html>
