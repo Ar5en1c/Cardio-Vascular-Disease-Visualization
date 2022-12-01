@@ -10,7 +10,7 @@ const bbl_svg = d3
   .attr("width", bbl_width + bbl_margin.left + bbl_margin.right)
   .attr("height", bbl_height + bbl_margin.top + bbl_margin.bottom)
   .append("g")
-  .attr("transform", `translate(80, 60)`);
+  .attr("transform", `translate(100, 60)`);
 
 //read data
 d3.csv("./data/dis_data.csv").then(function (data) {
@@ -62,17 +62,6 @@ d3.csv("./data/dis_data.csv").then(function (data) {
     .text("Age")
     .attr("fill", "white");
 
-  bbl_svg
-    .append("text")
-    .attr("class", "y label")
-    .attr("text-anchor", "end")
-    .attr("y", -60)
-    .attr("x", -70)
-    .attr("dy", ".75em")
-    .attr("transform", "rotate(-90)")
-    .text("Disease Categories")
-    .attr("fill", "white");
-
   // Create a Y scale for densities
   const y = d3.scaleLinear().domain([0, 0.25]).range([bbl_height, 0]);
 
@@ -85,6 +74,7 @@ d3.csv("./data/dis_data.csv").then(function (data) {
   bbl_svg
     .append("g")
     .call(d3.axisLeft(yName).tickSize(0))
+    .style("font-size", "9px")
     .select(".domain")
     .remove();
 
@@ -100,7 +90,7 @@ d3.csv("./data/dis_data.csv").then(function (data) {
     );
     allDensity.push({ key: key, density: density });
   }
- 
+
   // Add areas
   bbl_svg
     .selectAll("areas")
