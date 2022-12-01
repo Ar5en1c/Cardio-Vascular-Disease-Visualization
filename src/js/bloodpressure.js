@@ -251,7 +251,7 @@ function draw_bp(data) {
 
     // If user double click, reinitialize the chart
     bld_svg.on("dblclick", function () {
-      x.domain(d3.extent(data, (d) => d.systolic));
+      x.domain([60, 230]);
       xAxis.transition().call(d3.axisBottom(x));
       scatter
         .selectAll("circle")
