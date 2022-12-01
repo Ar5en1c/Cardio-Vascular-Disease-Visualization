@@ -56,7 +56,7 @@ async function draw_stacked() {
   const color = d3
     .scaleOrdinal()
     .domain(subgroups)
-    .range(["#C7EFCF", "#FE5F55", "#EEF5DB"]);
+    .range(["#e8486d", "#43c1cc", "#ff6536"]);
 
   //stack the data? --> stack per subgroup
   const stackedData = d3.stack().keys(subgroups)(dataset_stack);
@@ -131,29 +131,47 @@ async function draw_stacked() {
   svgStacked
     .append("rect")
     .attr("x", 350)
-    .attr("y", 20)
+    .attr("y", 10)
     .attr("width", 10)
     .attr("height", 10)
-    .style("fill", "#69b3a2");
+    .style("fill", "#ff6536");
   svgStacked
     .append("rect")
     .attr("x", 350)
-    .attr("y", 50)
+    .attr("y", 30)
     .attr("width", 10)
     .attr("height", 10)
-    .style("fill", "#404080");
+    .style("fill", "#43c1cc");
   svgStacked
     .append("text")
     .attr("x", 370)
-    .attr("y", 25)
+    .attr("y", 15)
+    .attr("fill", "white")
     .text("Elderly")
     .style("font-size", "15px")
     .attr("alignment-baseline", "middle");
   svgStacked
     .append("text")
     .attr("x", 370)
-    .attr("y", 55)
+    .attr("y", 35)
     .text("Adult")
+    .attr("fill", "white")
+    .style("font-size", "15px")
+    .attr("alignment-baseline", "middle");
+
+  svgStacked
+    .append("rect")
+    .attr("x", 350)
+    .attr("y", 50)
+    .attr("width", 10)
+    .attr("height", 10)
+    .style("fill", "#e8486d");
+  svgStacked
+    .append("text")
+    .attr("x", 370)
+    .attr("y", 55)
+    .text("Juvenile")
+    .attr("fill", "white")
     .style("font-size", "15px")
     .attr("alignment-baseline", "middle");
 }
