@@ -29,7 +29,7 @@ svgStacked
   .attr("x", -70)
   .attr("dy", ".75em")
   .attr("transform", "rotate(-90)")
-  .text("Count")
+  .text("No. of Cases")
   .attr("fill", "white");
 
 // Parse the Data
