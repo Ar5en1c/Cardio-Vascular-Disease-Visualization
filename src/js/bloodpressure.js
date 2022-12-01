@@ -189,7 +189,7 @@ function draw_bp(data) {
     .brushX() // Add the brush feature using the d3.brush function
     .extent([
       [0, 0],
-      [width, height],
+      [bld_width, bld_height],
     ]) // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
     .on("end", updateChart); // Each time the brush selection changes, trigger the 'updateChart' function
 
@@ -251,7 +251,7 @@ function draw_bp(data) {
 
     // If user double click, reinitialize the chart
     bld_svg.on("dblclick", function () {
-      x.domain(d3.extent(data, (d) => d.systolic));
+      x.domain([60, 230]);
       xAxis.transition().call(d3.axisBottom(x));
       scatter
         .selectAll("circle")
