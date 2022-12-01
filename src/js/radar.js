@@ -11,8 +11,6 @@ function RadarChart(id, dataset) {
   rdr_svg.attr("width", 500)
           .attr("height", 320)
           .attr("class", "radar" + id);
-  console.log('hemo', d3.mean(dataset, d => d.glycated_hemoglobin))
-  console.log(rdr_svg)
 
   d3.mean(dataset, d => d.microalbuminuria)
   var data = [
@@ -40,7 +38,7 @@ function RadarChart(id, dataset) {
     ],
    
   ];
-  console.log('datar',data)
+ 
   var radar_color = d3
           .scaleOrdinal()
           .range(["green", '#bc6c25', "green", '#bc6c25']);

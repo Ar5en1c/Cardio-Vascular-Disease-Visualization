@@ -100,7 +100,7 @@ d3.csv("./data/dis_data.csv").then(function (data) {
     );
     allDensity.push({ key: key, density: density });
   }
-  // console.log(allMeans)
+ 
   // Add areas
   bbl_svg
     .selectAll("areas")
