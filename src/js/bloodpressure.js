@@ -189,7 +189,7 @@ function draw_bp(data) {
     .brushX() // Add the brush feature using the d3.brush function
     .extent([
       [0, 0],
-      [width, height],
+      [bld_width, bld_height],
     ]) // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
     .on("end", updateChart); // Each time the brush selection changes, trigger the 'updateChart' function
 
