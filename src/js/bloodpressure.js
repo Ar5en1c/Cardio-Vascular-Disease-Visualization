@@ -55,60 +55,7 @@ function draw_bp(data) {
     .attr("height", bld_height)
     .attr("x", 0)
     .attr("y", 0);
-  // highlit the specie that is hovered
-  // const highlit = function (event, d) {
-  //   selected_group = d.BP_Risk;
-
-  //   d3.selectAll(".dot")
-  //     .transition()
-  //     .duration(200)
-  //     .style("fill", "lightgrey")
-  //     .attr("r", 3);
-
-  //   d3.selectAll("." + selected_group)
-  //     .transition()
-  //     .duration(200)
-  //     .style("fill", color(selected_group))
-  //     .attr("r", 7);
-  // };
-
-  // // highlit the specie that is hovered
-  // const doNothighlit = function (event, d) {
-  //   d3.selectAll(".dot")
-  //     .transition()
-  //     .duration(200)
-  //     .style("fill", (d) => color(d.BP_Risk))
-  //     .attr("r", 5);
-  // };
-
-  // Add dots
-  // bld_svg
-  //   .append("g")
-  //   .selectAll("dot")
-  //   .data(data)
-  //   .enter()
-  //   .append("circle")
-  //   // .call(
-  //   //   d3.zoom().on("zoom", function () {
-  //   //     svg.attr("transform", d3.event.transform);
-  //   //   })
-  //   // )
-  //   .attr("class", function (d) {
-  //     return "dot " + d.BP_Risk;
-  //   })
-  //   .attr("cx", function (d) {
-  //     return x(d.systolic);
-  //   })
-  //   .attr("cy", function (d) {
-  //     return y(d.diastolic);
-  //   })
-  //   .attr("r", 5)
-  //   .style("fill", function (d) {
-  //     return color(d.BP_Risk);
-  //   })
-  //   .on("mouseover", highlit)
-  //   .on("mouseleave", doNothighlit);
-
+  
   bld_svg
     .append("circle")
     .attr("cx", 350)
@@ -190,8 +137,8 @@ function draw_bp(data) {
     .extent([
       [0, 0],
       [bld_width, bld_height],
-    ]) // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
-    .on("end", updateChart); // Each time the brush selection changes, trigger the 'updateChart' function
+    ]) 
+    .on("end", updateChart);
 
   // Create the scatter variable: where both the circles and the brush take place
   const scatter = bld_svg.append("g").attr("clip-path", "url(#clip)");

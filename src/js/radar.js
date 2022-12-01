@@ -17,7 +17,7 @@ function RadarChart(id, dataset) {
   d3.mean(dataset, d => d.microalbuminuria)
   var data = [
     [
-      //Nokia Smartphone
+      
       { axis: "Albumin", value: 30 },
       { axis: "Creatinine", value: 0.8 },
       { axis: "Hemoglobin", value: 80 },
@@ -28,7 +28,7 @@ function RadarChart(id, dataset) {
       { axis: "HDL", value: 60 },
     ],
     [
-      //Samsun
+      
       { axis: "Albumin", value: ((d3.mean(dataset, d => d.microalbuminuria)))},
       { axis: "Creatinine", value: d3.mean(dataset, d => d.creatinine) },
       { axis: "Hemoglobin", value: d3.mean(dataset, d => d.glycated_hemoglobin) },
@@ -111,18 +111,7 @@ function RadarChart(id, dataset) {
     radius = Math.min(cfg.w / 3, cfg.h / 2.8), //Radius of the outermost circle
     Format = d3.format(".1f"), //Percentage formatting
     angleSlice = (Math.PI * 2) / total; //The width in radians of each "slice"
-  //console.log('max', maxValue)
-  //Scale for the radius
-  //var rScale = d3.scaleLinear().range([0, radius]).domain([0, maxValue]);
-
-  //Remove whatever chart with the same id/class was present before
-  // d3.select("#radar_plot").select("rdr_svg").remove();
-
-  //Initiate the radar chart rdr_svg
-  // rdr_svg.attr("width", 500)
-  //   .attr("height", 320)
-  //   .attr("class", "radar" + id);
-  //Append a g element
+  
   var g = rdr_svg
     .append("g")
     .attr(
@@ -168,25 +157,6 @@ function RadarChart(id, dataset) {
     .style("stroke", "#CDCDCD")
     .style("fill-opacity", cfg.opacityCircles)
     .style("filter", "url(#glow)");
-
-  // //Text indicating at what % each level is
-  // axisGrid
-  //   .selectAll(".axisLabel")
-  //   .data(d3.range(1, cfg.levels + 1).reverse())
-  //   .enter()
-  //   .append("text")
-  //   .attr("class", "axisLabel")
-  //   .attr("x", 4)
-  //   .attr("y", function (d) {
-  //     return (-d * radius) / cfg.levels;
-  //   })
-  //   .attr("dy", "0.4em")
-  //   .style("font-size", "10px")
-  //   .attr("fill", "white")
-  //   .text(function (d, i) {
-  //     return Format((maxValue * d) / cfg.levels);
-  //   });
-    //console.log('ax',allAxis)
 
     var rScaleList = [
       d3.scaleLinear().range([0, radius]).domain([0, (scaleList[0])[4]]),//"Length"
