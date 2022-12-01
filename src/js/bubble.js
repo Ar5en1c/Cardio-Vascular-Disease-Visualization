@@ -1,5 +1,5 @@
 // set the dimensions and bbl_margins of the graph
-const bbl_margin = { top: 50, right: 50, bottom: 50, left: 50},
+const bbl_margin = { top: 50, right: 50, bottom: 50, left: 50 },
   bbl_width = 500 - bbl_margin.left - bbl_margin.right,
   bbl_height = 320 - bbl_margin.top - bbl_margin.bottom;
 
@@ -13,12 +13,14 @@ const bbl_svg = d3
   .attr("transform", `translate(80, 60)`);
 
 //read data
-d3.csv(
-  "./data/dis_data.csv"
-).then(function (data) {
+d3.csv("./data/dis_data.csv").then(function (data) {
   // Get the different categories and count them
   const categories = [
-    'HYPERTENSION',	'DIABETES',	'HIGH CHOLESTEROL',	'OBESITY',	'RENAL'
+    "HYPERTENSION",
+    "DIABETES",
+    "HIGH CHOLESTEROL",
+    "OBESITY",
+    "RENAL",
   ];
   const n = categories.length;
 
