@@ -13,13 +13,9 @@ const bbl_svg = d3
   .attr("transform", `translate(80, 60)`);
 
 //read data
-d3.csv(
-  "./data/dist_data.csv"
-).then(function (data) {
+d3.csv("./data/dist_data.csv").then(function (data) {
   // Get the different categories and count them
-  const categories = [
-    'E780', 'E660', 'E785', 'E116', 'I10X'
-  ];
+  const categories = ["E780", "E660", "E785", "E116", "I10X"];
   const n = categories.length;
 
   // Compute the mean of each group
@@ -98,7 +94,7 @@ d3.csv(
     );
     allDensity.push({ key: key, density: density });
   }
-  console.log(allMeans)
+  // console.log(allMeans)
   // Add areas
   bbl_svg
     .selectAll("areas")
