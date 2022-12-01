@@ -95,7 +95,7 @@ function draw_lipo(data) {
     .attr("cx", 350)
     .attr("cy", 15)
     .attr("r", 7)
-    .style("fill", "#900000");
+    .style("fill", "#571089");
   lipo_svg
     .append("text")
     .attr("x", 365)
@@ -110,7 +110,7 @@ function draw_lipo(data) {
     .attr("cx", 350)
     .attr("cy", 30)
     .attr("r", 7)
-    .style("fill", "#ee2400");
+    .style("fill", "#6d23b6");
   lipo_svg
     .append("text")
     .attr("x", 365)
@@ -125,7 +125,7 @@ function draw_lipo(data) {
     .attr("cx", 350)
     .attr("cy", 45)
     .attr("r", 7)
-    .style("fill", "#FFA500");
+    .style("fill", "#973aa8");
   lipo_svg
     .append("text")
     .attr("x", 365)
@@ -140,7 +140,7 @@ function draw_lipo(data) {
     .attr("cx", 350)
     .attr("cy", 60)
     .attr("r", 7)
-    .style("fill", "#FFF200");
+    .style("fill", "#c05299");
   lipo_svg
     .append("text")
     .attr("x", 365)
@@ -155,7 +155,7 @@ function draw_lipo(data) {
     .attr("cx", 350)
     .attr("cy", 75)
     .attr("r", 7)
-    .style("fill", "#39e75f");
+    .style("fill", "#ea698b");
   lipo_svg
     .append("text")
     .attr("x", 365)
